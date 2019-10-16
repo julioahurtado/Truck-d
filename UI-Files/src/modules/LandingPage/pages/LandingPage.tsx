@@ -18,20 +18,20 @@ export default class LandingPage extends React.Component<LandingPageProps> {
                         <div>
                             <h1>Choose your experience</h1>
                             <div>
-                                <Link to={'/Customer'} >
+                                <Link to={'/customer'} >
                                     <button>Customer</button>
                                 </Link>
-                                <Link to={'/Vendor'} >
+                                <Link to={'/vendor'} >
                                     <button>Vendor</button>
                                 </Link>
                             </div>
                         </div>
                     </Route>
-                    <Route path='/Customer'>
+                    <Route path='/customer'>
                         <CustomerLandingPage>
                         </CustomerLandingPage>
                     </Route>
-                    <Route path='/Vendor'>
+                    <Route path='/vendor'>
                         <VendorLandingPage>
                         </VendorLandingPage>
                     </Route>
