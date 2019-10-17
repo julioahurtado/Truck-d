@@ -5,11 +5,8 @@ import history from '../../History/history'
 import VendorLandingPage from '../../Vendor/pages/VendorLandingPage'
 import CustomerLandingPage from '../../Customer/pages/CustomerLandingPage'
  
-interface LandingPageProps{
-    description: String;
-}
 
-export default class LandingPage extends React.Component<LandingPageProps> {
+export default class LandingPage extends React.Component<any> {
     render(){
         return (
             <Router history={history}>
