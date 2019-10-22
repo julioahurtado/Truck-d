@@ -1,37 +1,74 @@
-import { MenuItem, Order} from '../InterfaceFiles/types'
+import { MenuItem, Order, VendorInfo} from '../InterfaceFiles/types'
 
 /*
 * VENDOR ACTION TYPES
 */
 
-export const SEND_AUTH = 'SEND_AUTH'
+export const SIGN_IN_BEGIN = 'SIGN_IN_BEGIN';
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
 
-export const UPDATE_PROFILE_INFO = 'UPDATE_PROFILE_INFO'
-export const UPDATE_MENU = 'UPDATE_MENU'
+export const FETCH_VENDOR_BEGIN = 'FETCH_VENDOR_BEGIN';
+export const FETCH_VENDOR_SUCCESS = 'FETCH_VENDOR_SUCCESS';
+export const FETCH_VENDOR_FAILURE = 'FETCH_VENDOR_FAILURE';
 
-export const CANCEL_ORDER = 'CANCEL_ORDER'
-export const FINISH_ORDER = 'FINISH_ORDER'
+export const UPDATE_PROFILE_INFO = 'UPDATE_PROFILE_INFO';
+export const UPDATE_MENU = 'UPDATE_MENU';
+
+export const CANCEL_ORDER = 'CANCEL_ORDER';
+export const FINISH_ORDER = 'FINISH_ORDER';
 
 /*
 * VENDOR ACTION CREATORS
 */
 
-export function sendAuth(user: String, pass: String) {
-    return { type: SEND_AUTH, user, pass }
-}
+export const signInBegin = () => ({
+    type: SIGN_IN_BEGIN
+});
 
-export function updateProfileInfo(item: MenuItem) {
-    return { type: UPDATE_PROFILE_INFO, item }
-}
+export const signInSuccess = (user: String, pass: String) => ({
+    type: SIGN_IN_SUCCESS,
+    payload: {
+        user: user,
+        pass: pass
+    }
+});
 
-export function updateMenu(item: MenuItem) {
-    return { type: UPDATE_MENU, item }
-}
+export const signInFailure = (error: Error) => ({
+    type: SIGN_IN_FAILURE,
+    payload: error
+});
 
-export function cancelOrder(order: Order) {
-    return { type: CANCEL_ORDER, order }
-}
+export const fetchVendorBegin = () => ({
+    type: FETCH_VENDOR_BEGIN
+});
 
-export function finishOrder(order: Order) {
-    return { type: FINISH_ORDER, order }
-}
+export const fetchVendorSuccess = (vendor: VendorInfo) => ({
+    type: FETCH_VENDOR_SUCCESS,
+    payload: vendor
+});
+
+export const fetchVendorFailure = (error: Error) => ({
+    type: FETCH_VENDOR_FAILURE,
+    payload: error
+});
+
+export const updateProfileInfo = (item: MenuItem) => ({
+    type: UPDATE_PROFILE_INFO,
+    payload: item
+});
+
+export const updateMenu = (item: MenuItem) => ({
+    type: UPDATE_MENU,
+    payload: item
+});
+
+export const cancelOrder = (order: Order) => ({
+    type: CANCEL_ORDER,
+    payload: order
+});
+
+export const finishOrder = (order: Order) => ({
+    type: FINISH_ORDER,
+    payload: order
+});
