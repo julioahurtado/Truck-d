@@ -1,4 +1,4 @@
-import { MenuItem, Order, VendorInfo} from '../InterfaceFiles/types'
+import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
 
 /*
 * VENDOR ACTION TYPES
