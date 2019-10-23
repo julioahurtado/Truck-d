@@ -21,14 +21,14 @@ export const vendorSearchBegin = () => ({
     type: VENDOR_SEARCH_BEGIN
 });
 
-export const vendorSearchSuccess = (vendor: VendorInfo) => ({
+export const vendorSearchSuccess = (vendors: VendorInfo[]) => ({
     type: VENDOR_SEARCH_SUCCESS,
-    payload: vendor
+    payload: vendors
 });
 
 export const vendorSearchFailure = (error: Error) => ({
     type: VENDOR_SEARCH_FAILURE,
-    payload: error
+    error: error
 });
 
 export const addToCart = (item: MenuItem) => ({
