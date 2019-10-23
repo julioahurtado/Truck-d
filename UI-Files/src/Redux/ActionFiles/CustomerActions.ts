@@ -29,7 +29,7 @@ export const vendorSearchSuccess = (vendor: VendorInfo) => ({
 export const vendorSearchFailure = (error: Error) => ({
     type: VENDOR_SEARCH_FAILURE,
     payload: error
-})
+});
 
 export const addToCart = (item: MenuItem) => ({
     type: ADD_TO_CART,
