@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
+# pip3 install mysql-connector-python
 import mysql.connector
+from mysql.connector import errorcode
 from flask import Flask
 
 app = Flask(__name__)
@@ -11,32 +13,39 @@ app.config["DEBUG"] = True
 def home():
     return "home() function call."
 
-
+# When a vendor creates an account their data is added to the Database
 def create_vendor_user(restuarant, location, email, password, cuisine):
+    customerID = 12345
     connection = connect_to_db()
-    dbCursor = connection.dbCursor()
-    customerID = random() # Random number for customerID
-    sql = ("""INSERT INTO Vendors"
-           VALUES (%d, %s, %s, %s, %s, %s)""")
+    dbCursor = connection.cursor()
+    #customerID = random() # Random number for customerID
+    sql = ("""INSERT INTO Vendors
+           VALUES (%s, %s, %s, %s, %s, %s);""")
 
     data = (customerID, restuarant, location, email, password, cuisine)
+
+    # Try to execute the sql statement and commit it
     try:
         dbCursor.execute(sql, data)
         connection.commit()
+    # If Failure to insert then it rollsback and throws an error
     except Exception as e:
         connection.rollback()
         print(e)
+    # Close the cursor and the databse connection
     finally:
         dbCursor.close()
-        connection.disconnect_from_db()
+        disconnect_from_db(connection)
 
-def connect_to_db()
+
+# Used to connect to the database to perform queries
+def connect_to_db():
     try:
         connection = mysql.connector.connect(
             user = "admin", password = "truckdpassword",
             host = "truckd.cy00g7ft3yfp.us-east-1.rds.amazonaws.com",
-            database = "Truckd", port = "3306"
-        )
+            database = "Truckd", port = "3306")
+
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Username or password incorrect.\n")
@@ -44,9 +53,11 @@ def connect_to_db()
             print("Database does not exist\n")
         else:
             print(err)
+
         return None
     return connection
 
+# Closes given connection
 def disconnect_from_db(connection):
     try:
         connection.close()
@@ -67,3 +78,8 @@ def insert_into_table(data):
     do_the_thing()
 
 """
+def main():
+    create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'losper@ucsc.edu', 'pass', 'Mexican')
+
+if __name__ == '__main__':
+    main()
