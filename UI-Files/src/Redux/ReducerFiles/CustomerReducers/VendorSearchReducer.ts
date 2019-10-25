@@ -1,5 +1,5 @@
-import { VENDOR_SEARCH_BEGIN, VENDOR_SEARCH_SUCCESS, VENDOR_SEARCH_FAILURE } from '../ActionFiles/CustomerActions';
-import { VendorInfo } from '../InterfaceFiles/types'
+import { VENDOR_SEARCH_BEGIN, VENDOR_SEARCH_SUCCESS, VENDOR_SEARCH_FAILURE } from '../../ActionFiles/CustomerActions';
+import { VendorInfo } from '../../InterfaceFiles/types'
 
 interface VendorSearchState {
     vendors: VendorInfo[],

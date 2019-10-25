@@ -1,4 +1,4 @@
 import { combineReducers } from "redux";
-import VendorSearch from './VendorSearchReducer';
+import VendorSearch from './CustomerReducers/VendorSearchReducer';
 
 export default combineReducers(VendorSearch);
