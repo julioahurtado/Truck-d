@@ -13,8 +13,7 @@ let initState: VendorSearchState = {
     error: null
 };
 
-// TODO: need to create default state interface
-const VendorSearch = (state = initState, action) => {
+let VendorSearch = (state = initState, action) => {
     switch(action.type) {
 
         // Signals start of vendor-list fetch
@@ -39,11 +38,11 @@ const VendorSearch = (state = initState, action) => {
                 vendors: null,
                 isLoading: false,
                 error: action.error
-            }
+            };
 
         default:
             return state
     }
-}
+};
 
 export default VendorSearch;

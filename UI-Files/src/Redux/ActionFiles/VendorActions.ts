@@ -22,12 +22,8 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 * VENDOR ACTION CREATORS
 */
 
-export const signInBegin = (user: String, pass: String) => ({
-    type: SIGN_IN_BEGIN,
-    payload: {
-        user: user,
-        pass: pass
-    }
+export const signInBegin = () => ({
+    type: SIGN_IN_BEGIN
 });
 
 export const signInSuccess = (vendor: VendorInfo) => ({
@@ -37,16 +33,11 @@ export const signInSuccess = (vendor: VendorInfo) => ({
 
 export const signInFailure = (error: Error) => ({
     type: SIGN_UP_FAILURE,
-    payload: error
+    error: error
 });
 
-export const signUpBegin = (email: String, user: String, pass: String) => ({
-    type: SIGN_UP_BEGIN,
-    payload: {
-        email: email,
-        user: user,
-        pass: pass
-    }
+export const signUpBegin = () => ({
+    type: SIGN_UP_BEGIN
 });
 
 export const signUpSuccess = (vendor: VendorInfo) => ({
@@ -56,7 +47,7 @@ export const signUpSuccess = (vendor: VendorInfo) => ({
 
 export const signUpFailure = (error: Error) => ({
     type: SIGN_IN_FAILURE,
-    payload: error
+    error: error
 });
 
 export const updateProfileInfo = (item: MenuItem) => ({
