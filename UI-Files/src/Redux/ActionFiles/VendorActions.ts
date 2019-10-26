@@ -69,3 +69,37 @@ export const finishOrder = (order: Order) => ({
     type: FINISH_ORDER,
     payload: order
 });
+
+/*
+* thunk async requests
+*/
+
+const signIn = async (user: String, pass: String) => {
+    return null
+};
+
+const signUp = async (emai: String, user: String, pass: String) => {
+    return null
+}
+
+// attempt vendor sign-in
+export const vendorSignIn = (user: String, pass: String) => {
+    return (dispatch) => {
+        dispatch(signInBegin());
+        signIn(user, pass).then(
+            (vendor) => dispatch(signInSuccess(vendor)),
+            (error) => dispatch(signInFailure(error))
+        )
+    }
+};
+
+// attempt vendor sign-up
+export const vendorSignUp = (email: String, user: String, pass: String) => {
+    return (dispatch) => {
+        dispatch(signUpBegin());
+        signUp(email, user, pass).then(
+            (vendor) => dispatch(signUpSuccess(vendor)),
+            (error) => dispatch(signUpFailure(error))
+        )
+    }
+};

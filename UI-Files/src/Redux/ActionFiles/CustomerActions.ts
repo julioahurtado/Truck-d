@@ -50,3 +50,18 @@ export const sendOrder = (info: CustomerInfo) => ({
     type: SEND_ORDER,
     payload: info
 });
+
+/*
+* thunk async requests
+*/
+
+// retrieves vendor-list based on user search-string
+export const fetchVendors = (query: String) => {
+    return (dispatch) => {
+        dispatch(vendorSearchBegin());
+        fetch('api-path/' + query).then(
+            (vendors) => dispatch(vendorSearchSuccess(vendors),
+            (error) => dispatch(vendorSearchFailure(error)))
+        );
+    }
+}
