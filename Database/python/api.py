@@ -3,7 +3,9 @@
 # pip3 install mysql-connector-python
 import mysql.connector
 from mysql.connector import errorcode
-from flask import Flask
+from flask import Flask, request
+from flask_cors import CORS, cross_origin
+import random
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -15,14 +17,21 @@ def home():
 
 # When a vendor creates an account their data is added to the Database
 def create_vendor_user(restuarant, location, email, password, cuisine):
-    customerID = 12345
+
+    # IDs will be in range 1000 - 10000
+    vendorID = random.randint(1000,10000)
+
+    # If the vendor ID is already in the DB we need to create a new one
+    while(check_vendor_id(vendorID)):
+        vendorID = random.randint(1000, 10000)
+
     connection = connect_to_db()
     dbCursor = connection.cursor()
     #customerID = random() # Random number for customerID
     sql = ("""INSERT INTO Vendors
            VALUES (%s, %s, %s, %s, %s, %s);""")
 
-    data = (customerID, restuarant, location, email, password, cuisine)
+    data = (vendorID, restuarant, location, email, password, cuisine)
 
     # Try to execute the sql statement and commit it
     try:
@@ -38,14 +47,34 @@ def create_vendor_user(restuarant, location, email, password, cuisine):
         disconnect_from_db(connection)
 
 
+# Check to make sure ID is not already in database
+# return 1 if ID IS in database
+# 0 otherwise
+def check_vendor_id(id):
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    sql = ("""SELECT vendorID FROM Vendors
+                WHERE vendorID = %""")
+    data = (id)
+
+    dbCursor.execute(sql, data)
+    for x in dbCursor:
+        if x == id:
+            disconnect_from_db(connection)
+            return 1
+
+    disconnect_from_db(connection)
+    return 0
+
 # Used to connect to the database to perform queries
 def connect_to_db():
+    # Attempt to connect
     try:
         connection = mysql.connector.connect(
             user = "admin", password = "truckdpassword",
             host = "truckd.cy00g7ft3yfp.us-east-1.rds.amazonaws.com",
             database = "Truckd", port = "3306")
-
+    # Connection failed - Error Handling
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Username or password incorrect.\n")
@@ -53,8 +82,8 @@ def connect_to_db():
             print("Database does not exist\n")
         else:
             print(err)
-
         return None
+
     return connection
 
 # Closes given connection
