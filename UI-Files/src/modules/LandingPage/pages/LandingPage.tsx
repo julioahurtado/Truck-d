@@ -6,7 +6,7 @@ import { Button, Container, Row, Col } from 'react-bootstrap'
 import history from '../../History/history'
 import VendorLandingPage from '../../Vendor/pages/VendorLandingPage'
 import CustomerLandingPage from '../../Customer/pages/CustomerLandingPage'
-import './Style.css'
+import './style.css'
 
 export default class LandingPage extends React.Component<any> {
     render() {
@@ -23,12 +23,12 @@ export default class LandingPage extends React.Component<any> {
                             <Row>
                                 <Col className="Customer">
                                     <Link to={'/customer'} >
-                                        <Button variant="primary">Customer</Button>                                        
+                                        <Button variant="warning">Customer</Button>                                        
                                     </Link>
                                 </Col>
                                 <Col className="Vendor" >
                                     <Link to={'/vendor'} >
-                                        <Button variant="primary">Vendor</Button>
+                                        <Button variant="danger">Vendor</Button>
                                     </Link>
                                 </Col>
                             </Row>
