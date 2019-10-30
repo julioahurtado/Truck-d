@@ -1,5 +1,6 @@
 import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
-import { Dispatch } from 'react';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
 /*
 * VENDOR ACTION TYPES
@@ -21,6 +22,7 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 * VENDOR ACTION INTERFACES
 */
 
+type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
 
 // TODO: add error property 
@@ -128,26 +130,26 @@ const signUp = async (emai: String, user: String, pass: String): Promise<VendorI
     return vendor
 }
 
-// TODO: Add dispatch type from redux typescript package
-
 // attempt vendor sign-in
-export const vendorSignIn = (user: String, pass: String) => {
-    return (dispatch: any) => {
+export const vendorSignIn = (user: String, pass: String): LoginThunkAction => {
+    return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         dispatch(signInBegin());
-        signIn(user, pass).then(
-            (vendor: VendorInfo) => dispatch(signInSuccess(vendor)),
-            (error: Error) => dispatch(signInFailure(error))
-        )
+        signIn(user, pass).then((vendor: VendorInfo) => {
+            dispatch(signInSuccess(vendor))
+        }).catch((error: Error) => {
+            dispatch(signInFailure(error))
+        })
     }
-};
+}
 
 // attempt vendor sign-up
-export const vendorSignUp = (email: String, user: String, pass: String) => {
-    return (dispatch: any) => {
+export const vendorSignUp = (email: String, user: String, pass: String): LoginThunkAction => {
+    return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         dispatch(signUpBegin());
-        signUp(email, user, pass).then(
-            (vendor: VendorInfo) => dispatch(signUpSuccess(vendor)),
-            (error: Error) => dispatch(signUpFailure(error))
-        )
+        signUp(email, user, pass).then((vendor: VendorInfo) => {
+            dispatch(signUpSuccess(vendor))
+        }).catch((error: Error) => {
+            dispatch(signUpFailure(error))
+        })
     }
-};
+}

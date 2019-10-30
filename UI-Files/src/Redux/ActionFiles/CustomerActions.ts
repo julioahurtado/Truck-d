@@ -102,6 +102,18 @@ let test_vendors: VendorInfo[] = [{
         description: "food description",
         price: 1
     }]
+}, {
+    name: "2",
+    description: "Description for test vendor",
+    phone: 4234,
+    city: "4sdf",
+    state: "zxc",
+    address: "sdf",
+    menu: [{
+        name: "food ff",
+        description: "faood s",
+        price: 134
+    }]
 }];
 
 const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
