@@ -1,38 +1,39 @@
-import { SIGN_IN_BEGIN, SIGN_IN_SUCCESS, SIGN_IN_FAILURE } from '../../ActionFiles/VendorActions';
+import { LOGIN_STATUS, LoginAction } from '../../ActionFiles/VendorActions';
 import { VendorInfo } from '../../InterfaceFiles/types';
 
-interface SignInState {
-    vendor: VendorInfo,
+interface LoginState {
+    vendor?: VendorInfo | null,
     isLoading: Boolean,
-    error: Error
+    error?: Error | null
 };
 
-let initState: SignInState = {
+let initState: LoginState = {
     vendor: null,
     isLoading: false,
     error: null
 };
 
-let SignIn = (state = initState, action) => {
+// TODO: add return type for login reducer
+export const Login = (state: LoginState = initState, action: LoginAction): LoginState => {
     switch(action.type) {
 
-        // Signals start of vendor sign-in
-        case SIGN_IN_BEGIN:
+        // Signals start of vendor login
+        case LOGIN_STATUS.BEGIN:
             return {
                 ...state,
                 isLoading: true,
             };
 
-        // Signals successfull vendor sign-in
-        case SIGN_IN_SUCCESS:
+        // Signals successfull vendor login
+        case LOGIN_STATUS.SUCCESS:
             return {
                 ...state,
                 vendor: action.payload,
                 isLoading: false,
             };
 
-        // Signals failed vendor sign-in
-        case SIGN_IN_FAILURE:
+        // Signals failed vendor login
+        case LOGIN_STATUS.FAILURE:
             return {
                 ...state,
                 vendor: null,
@@ -44,5 +45,3 @@ let SignIn = (state = initState, action) => {
             return state
     }
 };
-
-export default SignIn;
