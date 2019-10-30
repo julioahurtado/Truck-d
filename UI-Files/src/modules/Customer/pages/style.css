@@ -1,0 +1,13 @@
+.customer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 0;
+    padding: 3%;
+}
+img{
+    width:30%;
+}
+.img{
+    align-items: center;
+}
