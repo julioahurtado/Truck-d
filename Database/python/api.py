@@ -79,7 +79,8 @@ def insert_into_table(data):
 
 """
 def main():
-    create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'losper@ucsc.edu', 'pass', 'Mexican')
+    # create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'losper@ucsc.edu', 'pass', 'Mexican')
+    app.run()
 
 if __name__ == '__main__':
     main()
