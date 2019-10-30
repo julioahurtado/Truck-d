@@ -1,16 +1,15 @@
 import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
+import { Dispatch } from 'react';
 
 /*
 * VENDOR ACTION TYPES
 */
 
-export const SIGN_IN_BEGIN = 'SIGN_IN_BEGIN';
-export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
-export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
-
-export const SIGN_UP_BEGIN = 'SIGN_UP_BEGIN';
-export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
-export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+export enum LOGIN_STATUS {
+    BEGIN = 'LOGIN_BEGIN',
+    SUCCESS = 'LOGIN_SUCCESS',
+    FAILURE = 'LOGIN_FAILURE'
+}
 
 export const UPDATE_PROFILE_INFO = 'UPDATE_PROFILE_INFO';
 export const UPDATE_MENU = 'UPDATE_MENU';
@@ -19,87 +18,136 @@ export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const FINISH_ORDER = 'FINISH_ORDER';
 
 /*
+* VENDOR ACTION INTERFACES
+*/
+
+export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
+
+// TODO: add error property 
+export interface LoginAction {
+    type: LoginTypes,
+    payload?: VendorInfo
+    error?: Error
+}
+
+export interface UpdateProfileInfoAction {
+    type: typeof UPDATE_PROFILE_INFO,
+    payload: MenuItem
+}
+
+export interface UpdateMenuAction {
+    type: typeof UPDATE_MENU,
+    payload: MenuItem
+}
+
+export interface CancelOrderAction {
+    type: typeof CANCEL_ORDER,
+    payload: Order
+}
+
+export interface FinishOrderAction {
+    type: typeof FINISH_ORDER,
+    payload: Order
+}
+
+/*
 * VENDOR ACTION CREATORS
 */
 
-export const signInBegin = () => ({
-    type: SIGN_IN_BEGIN
+export const signInBegin = (): LoginAction => ({
+    type: LOGIN_STATUS.BEGIN
 });
 
-export const signInSuccess = (vendor: VendorInfo) => ({
-    type: SIGN_IN_SUCCESS,
+export const signInSuccess = (vendor: VendorInfo): LoginAction => ({
+    type: LOGIN_STATUS.SUCCESS,
     payload: vendor
 });
 
-export const signInFailure = (error: Error) => ({
-    type: SIGN_UP_FAILURE,
+export const signInFailure = (error: Error): LoginAction => ({
+    type: LOGIN_STATUS.FAILURE,
     error: error
 });
 
-export const signUpBegin = () => ({
-    type: SIGN_UP_BEGIN
+export const signUpBegin = (): LoginAction => ({
+    type: LOGIN_STATUS.BEGIN
 });
 
-export const signUpSuccess = (vendor: VendorInfo) => ({
-    type: SIGN_UP_SUCCESS,
+export const signUpSuccess = (vendor: VendorInfo): LoginAction => ({
+    type: LOGIN_STATUS.SUCCESS,
     payload: vendor
 });
 
-export const signUpFailure = (error: Error) => ({
-    type: SIGN_IN_FAILURE,
+export const signUpFailure = (error: Error): LoginAction => ({
+    type: LOGIN_STATUS.FAILURE,
     error: error
 });
 
-export const updateProfileInfo = (item: MenuItem) => ({
+export const updateProfileInfo = (item: MenuItem): UpdateProfileInfoAction  => ({
     type: UPDATE_PROFILE_INFO,
     payload: item
 });
 
-export const updateMenu = (item: MenuItem) => ({
+export const updateMenu = (item: MenuItem): UpdateMenuAction => ({
     type: UPDATE_MENU,
     payload: item
 });
 
-export const cancelOrder = (order: Order) => ({
+export const cancelOrder = (order: Order): CancelOrderAction => ({
     type: CANCEL_ORDER,
     payload: order
 });
 
-export const finishOrder = (order: Order) => ({
+export const finishOrder = (order: Order): FinishOrderAction => ({
     type: FINISH_ORDER,
     payload: order
 });
 
 /*
-* thunk async requests
+* THUNK ASYNC REQUESTS
 */
 
-const signIn = async (user: String, pass: String) => {
-    return null
+let vendor: VendorInfo = {
+    name: "Test",
+    description: "Description for test vendor",
+    phone: 1234567890,
+    city: "City",
+    state: "State",
+    address: "Address",
+    menu: [{
+        name: "food item",
+        description: "food description",
+        price: 1
+    }]
 };
 
-const signUp = async (emai: String, user: String, pass: String) => {
-    return null
+const signIn = async (user: String, pass: String): Promise<VendorInfo> => {
+    return vendor
+};
+
+const signUp = async (emai: String, user: String, pass: String): Promise<VendorInfo> => {
+    return vendor
 }
+
+// TODO: Add dispatch type from redux typescript package
 
 // attempt vendor sign-in
 export const vendorSignIn = (user: String, pass: String) => {
-    return (dispatch) => {
+    return (dispatch: any) => {
         dispatch(signInBegin());
         signIn(user, pass).then(
-            (vendor) => dispatch(signInSuccess(vendor)),
-            (error) => dispatch(signInFailure(error))
+            (vendor: VendorInfo) => dispatch(signInSuccess(vendor)),
+            (error: Error) => dispatch(signInFailure(error))
         )
     }
 };
 
 // attempt vendor sign-up
 export const vendorSignUp = (email: String, user: String, pass: String) => {
-    return (dispatch) => {
+    return (dispatch: any) => {
         dispatch(signUpBegin());
         signUp(email, user, pass).then(
-            (vendor) => dispatch(signUpSuccess(vendor)),
-            (error) => dispatch(signUpFailure(error))
+            (vendor: VendorInfo) => dispatch(signUpSuccess(vendor)),
+            (error: Error) => dispatch(signUpFailure(error))
         )
     }
 };
