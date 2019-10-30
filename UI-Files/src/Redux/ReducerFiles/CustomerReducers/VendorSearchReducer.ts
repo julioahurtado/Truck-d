@@ -2,15 +2,15 @@ import { VENDOR_SEARCH_STATUS, VendorSearchAction } from '../../ActionFiles/Cust
 import { VendorInfo } from '../../InterfaceFiles/types'
 
 interface VendorSearchState {
-    vendors?: VendorInfo[],
+    vendors?: VendorInfo[] | null,
     isLoading: Boolean,
-    error?: Error
+    error?: Error | null
 };
 
 let initState: VendorSearchState = {
-    vendors: [],
+    vendors: null,
     isLoading: false,
-    error: undefined
+    error: null
 };
 
 export const VendorSearch = (state = initState, action: VendorSearchAction) => {
@@ -37,7 +37,7 @@ export const VendorSearch = (state = initState, action: VendorSearchAction) => {
                 ...state,
                 vendors: null,
                 isLoading: false,
-                error: action.payload
+                error: action.error
             };
 
         default:
