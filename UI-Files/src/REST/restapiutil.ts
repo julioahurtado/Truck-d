@@ -65,5 +65,35 @@ function _POST(
     
     return request.responseText;
 }
+function _DELETE(
+    url: string
+){
+    var request = new XMLHttpRequest();
+    request.open('DELETE', url, true);
+    
+    // Fix for CORS
+    request.setRequestHeader('Access-Control-Allow-Origin', '*');
 
-export {_GET, _POST};
+    request.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            // Success!
+            var resp = this.response;
+            console.log("success");
+            
+        } else {
+            // We reached our target server, but it returned an error
+            console.log("ERROR IN GET REQUEST TO " + url);
+        }
+    };
+    
+    request.onerror = function() {
+        console.log("ERROR IN CONNECTION TO " + url);
+    };
+
+    request.send();
+    console.log(request);
+    
+    return request.responseText;
+}
+
+export {_GET, _POST, _DELETE};
