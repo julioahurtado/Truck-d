@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
+import { Login } from './VendorReducers/LoginReducer';
 
-const reducer = {};
-
-export default combineReducers(reducer)
+export const Vendor = combineReducers({
+    Login
+})
