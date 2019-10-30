@@ -1,6 +1,7 @@
 DROP TABLE Customers;
 DROP TABLE Vendors;
 DROP TABLE Menus
+
 -- Customers
 CREATE TABLE Customers(
 	customerID INT PRIMARY KEY,
@@ -24,12 +25,13 @@ CREATE TABLE Vendors(
 	menuID INT UNIQUE NOT NULL,
 );
 
--- Menus table that will join on menuID with the Vendors table
+-- Menus
+-- Table will join on menuID with the Vendors table
 -- Store a menuID that relates to the vendor and stores with it
 -- the name, price, and description of each item.
 CREATE TABLE Menus(
-	menuID INT,
-	name VARCHAR(64),
+	vendorID INT,
+	name VARCHAR(64) NOT NULL,
 	price INT,
 	description VARCHAR(256)
 );

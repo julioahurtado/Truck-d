@@ -53,6 +53,27 @@ def create_vendor_user(restuarant, location, email, password, cuisine):
     return 1
 
 
+# Returns the menu of the given vendorID in JSON format
+@app.route('/menu/<string: vendorID', methods = ['GET'])
+def get_vendor_menu(id):
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+
+    sql = ("""SELECT * FROM Menus JOIN Vendors
+                ON Menus.vendorID = Vendors.vendorID =
+                WHERE menuID = %s;
+                FOR JSON AUTO""")
+    data = (id,)
+
+    dbCursor.execute(sql, data)
+    results = dbCursor.fetchall()
+    dbCursor.close()
+    disconnect_from_db(connection)
+
+    return results
+
+
+
 # queries database with email and login and if email and passowrd match the
 # return true
 #def vendor_login(email, password)
@@ -153,9 +174,9 @@ def disconnect_from_db(connection):
 
 # This main is used for testing purposes, if you need to test the create_vendor_user
 # function, then change these values
-# app.run(# DEBUG: =TRUE)
 def main():
     create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'test@ucsc.edu', 'pass', 'Mexican')
 
 if __name__ == '__main__':
+    app.run(debug=True)
     main()
