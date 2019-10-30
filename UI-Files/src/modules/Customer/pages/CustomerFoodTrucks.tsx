@@ -8,6 +8,7 @@ export default class CustomerFoodTrucks extends React.Component<any> {
     render() {
         return (
             <div>
+
                 <Form>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Food Trucks</Form.Label>
