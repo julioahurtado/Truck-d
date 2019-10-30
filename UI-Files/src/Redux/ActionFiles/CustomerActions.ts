@@ -1,4 +1,6 @@
 import { MenuItem, CustomerInfo, VendorInfo } from '../InterfaceFiles/types'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
 /*
 * CUSTOMER ACTION TYPES
@@ -88,7 +90,7 @@ export const sendOrder = (info: CustomerInfo): SendOrderAction => ({
 * THUNK ASYNC REQUESTS
 */
 
-let vendors: VendorInfo[] = [{
+let test_vendors: VendorInfo[] = [{
     name: "Test",
     description: "Description for test vendor",
     phone: 1234567890,
@@ -103,16 +105,17 @@ let vendors: VendorInfo[] = [{
 }];
 
 const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
-    return vendors
+    return test_vendors
 }
 
 // retrieves vendor-list based on user search-string
-export const fetchVendors = (query: String) => {
-    return (dispatch: any) => {
+export const fetchVendors = (query: String): ThunkAction<void, {}, {}, VendorSearchAction> => {
+    return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         dispatch(vendorSearchBegin());
-        fetch_vendors(query).then(
-            (vendors: VendorInfo[]) => dispatch(vendorSearchSuccess(vendors),
-            (error: Error) => dispatch(vendorSearchFailure(error)))
-        );
+        fetch_vendors(query).then((vendors: VendorInfo[]) => {
+            dispatch(vendorSearchSuccess(vendors))
+        }).catch((error: Error) => {
+            dispatch(vendorSearchFailure(error))
+        })
     }
 }
