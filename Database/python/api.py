@@ -21,19 +21,16 @@ def create_vendor_user(restuarant, location, email, password, cuisine):
 
         # IDs will be in range 1000 - 10000
         vendorID = random.randint(1000,9999)
-        menuID = random.randint(10000, 19999)
 
         # If the these IDs are already in the DB we need to create a new one
         while check_vendor_id(vendorID):
             vendorID = random.randint(1000, 9999)
-        while check_menu_id(menuID):
-            menuID = random.randint(10000, 19999)
 
         connection = connect_to_db()
         dbCursor = connection.cursor()
         sql = ("""INSERT INTO Vendors
                VALUES (%s, %s, %s, %s, %s, %s);""")
-        data = (vendorID, restuarant, location, email, password, cuisine, menuID)
+        data = (vendorID, restuarant, location, email, password, cuisine)
 
         # Try to execute the sql statement and commit it
         try:
@@ -50,11 +47,11 @@ def create_vendor_user(restuarant, location, email, password, cuisine):
     except Exception as e:
         return e
     # Success
-    return 1
+    return "Welcome to Truck-d!"
 
 
 # Returns the menu of the given vendorID in JSON format
-@app.route('/menu/<string: vendorID', methods = ['GET'])
+@app.route('/menu/<string:vendorID>', methods = ['GET'])
 def get_vendor_menu(id):
     connection = connect_to_db()
     dbCursor = connection.cursor()
@@ -147,7 +144,7 @@ def connect_to_db():
     try:
         connection = mysql.connector.connect(
             user = "admin", password = "truckdpassword",
-            host = "truckd.cy00g7ft3yfp.us-east-1.rds.amazonaws.com",
+            host = "truckd.ckfuvt7nenwp.us-east-1.rds.amazonaws.com",
             database = "Truckd", port = "3306")
     # Connection failed - Error Handling
     except mysql.connector.Error as err:
@@ -175,8 +172,8 @@ def disconnect_from_db(connection):
 # This main is used for testing purposes, if you need to test the create_vendor_user
 # function, then change these values
 def main():
-    create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'test@ucsc.edu', 'pass', 'Mexican')
+    print(create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'eeeemial@ucsc.edu', 'pass', 'Mexican'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
     main()

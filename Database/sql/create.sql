@@ -1,6 +1,6 @@
 DROP TABLE Customers;
 DROP TABLE Vendors;
-DROP TABLE Menus
+DROP TABLE Menus;
 
 -- Customers
 CREATE TABLE Customers(
@@ -10,8 +10,7 @@ CREATE TABLE Customers(
 	email VARCHAR(64) UNIQUE NOT NULL,
 	location VARCHAR(128),
 	pswd VARCHAR(256), -- Save as plain text for now, as we might use google login
-	phone_number INT UNIQUE,
-	primary key (customerID, email) -- No two users can have the same ID and email
+	phone_number INT UNIQUE
 );
 
 -- Vendors
@@ -21,8 +20,7 @@ CREATE TABLE Vendors(
 	location VARCHAR(128),
 	email VARCHAR(64) UNIQUE NOT NULL,
 	pswd VARCHAR(256), -- save as plain text for now as we might use google login
-	cuisine VARCHAR(64),
-	menuID INT UNIQUE NOT NULL,
+	cuisine VARCHAR(64)
 );
 
 -- Menus
