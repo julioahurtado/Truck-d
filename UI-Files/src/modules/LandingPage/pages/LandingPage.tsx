@@ -9,12 +9,12 @@ import CustomerLandingPage from '../../Customer/pages/CustomerLandingPage'
 import './Style.css'
 
 import { store } from '../../../Redux/StoreFiles/store';
+import { vendorSignIn } from '../../../Redux/ActionFiles/VendorActions';
 import { fetchVendors } from '../../../Redux/ActionFiles/CustomerActions';
 
 let test_dispatch = () => {
-    store.dispatch<any>(fetchVendors("tst"))
-    console.log('hello')
-    console.log(store.getState())
+    store.dispatch<any>(vendorSignIn("user", "pass"));
+    store.dispatch<any>(fetchVendors("Test"));
 }
 
 export default class LandingPage extends React.Component<any> {

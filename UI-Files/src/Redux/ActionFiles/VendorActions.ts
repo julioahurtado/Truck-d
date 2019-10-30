@@ -25,7 +25,6 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
 
-// TODO: add error property 
 export interface LoginAction {
     type: LoginTypes,
     payload?: VendorInfo

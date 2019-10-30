@@ -5,6 +5,7 @@ import { AnyAction } from 'redux';
 /*
 * CUSTOMER ACTION TYPES
 */
+
 export enum VENDOR_SEARCH_STATUS {
     BEGIN = 'VENDOR_SEARCH_BEGIN',
     SUCCESS = 'VENDOR_SEARCH_SUCCESS',
