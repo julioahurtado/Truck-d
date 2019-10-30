@@ -4,22 +4,31 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 
-@app.route("/",  methods=['GET'])
+@app.route("/<string:query>",  methods=['OPTIONS'])
 @cross_origin()
-def getTest():
-    return "GET RECIEVED"
+def preflightBypass(query):
+    return "OPTIONS RECIEVED: " + query
+
+@app.route("/<string:query>",  methods=['GET'])
+@cross_origin()
+def getTest(query):
+    print('GET: ' + query)
+    return "GET RECIEVED: " + query
+
+    
+@app.route("/<string:query>",  methods=['DELETE'])
+@cross_origin()
+def deleteTest(query):
+    print('DELETE: ' + query)
+    return "DELETE RECIEVED: " + query
 
 @app.route("/",  methods=['POST'])
 @cross_origin()
 def postTest():
     payload = request.get_json(force=True)
-    print(payload)
+    print('POST: ' + str(payload))
     return "POST RECIEVED"
 
-@app.route("/",  methods=['OPTIONS'])
-@cross_origin()
-def preflightBypass():
-    return "OPTIONS RECIEVED"
 
 if __name__ == "__main__":
     app.run(debug=True)
