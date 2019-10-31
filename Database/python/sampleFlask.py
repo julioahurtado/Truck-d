@@ -27,7 +27,7 @@ def deleteTest(query):
 def postTest():
     payload = request.get_json(force=True)
     print('POST: ' + str(payload))
-    return "POST RECIEVED"
+    return payload
 
 
 if __name__ == "__main__":
