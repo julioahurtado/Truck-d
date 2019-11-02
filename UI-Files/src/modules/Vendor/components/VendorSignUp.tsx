@@ -2,15 +2,18 @@ import * as React from 'react'
 import { Form, Container, Button } from 'react-bootstrap'
 import '../css/Style.css'
 
+import { vendorSignUp, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
+import { RootState } from '../../../Redux/StoreFiles/store';
+import { connect } from 'react-redux';
 
  interface VendorSignUpState {
-    emailField:     any;
-    passwordField:  any; 
-    passwordConfirmField:  any; 
+    emailField: any;
+    passwordField: any; 
+    passwordConfirmField: any; 
  }
 
 
-export default class VendorSignUp extends React.Component<any,VendorSignUpState> {
+export class SignUp extends React.Component<any, VendorSignUpState> {
 
     constructor(props: any){
         super(props);
@@ -21,18 +24,25 @@ export default class VendorSignUp extends React.Component<any,VendorSignUpState>
         }
     }
 
-    handleSubmit() {
-        console.log(this.state.emailField.current.value);
-        console.log(this.state.passwordField.current.value);
-        console.log(this.state.passwordField.current.value);
-        
+    // Initiates user sign-up on form submission
+    handleSubmit(): Boolean {
+        const email: String = this.state.emailField.current.value;
+        const pass: String = this.state.passwordField.current.value;
+
+        // Make sure password and confirmation fields match
+        if (pass !== this.state.passwordConfirmField.current.value) {
+            console.log("Passwords do not match")
+            return false
+        }
+
+        this.props.signUp(email, pass)
         return true;
     }
 
     render(){
         return (
                 <Container>
-                    <Form onSubmit={() => this.handleSubmit()}>
+                    <Form onClick={() => this.handleSubmit()}>
                         <Form.Group controlId='formEmail'>
                             <Form.Label>
                                 Email
@@ -53,9 +63,27 @@ export default class VendorSignUp extends React.Component<any,VendorSignUpState>
                             <Form.Control ref={this.state.passwordConfirmField} type="password">
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="submit">Create Account</Button>
+                        <Button variant="primary" type="button">Create Account</Button>
                     </Form>
                 </Container>
         )
     }
 }
+
+// TODO: Add interface for state props
+const mapStateToProps = (state: RootState) => ({
+    isLoading: state.vendor.login.isLoading
+});
+
+// TODO: Add interface for dispatch props
+const mapDispatchToProps = (dispatch: LoginThunkDispatch) => ({
+    signUp: (email: String, pass: String) =>
+        dispatch(vendorSignUp(email, pass))
+});
+
+const VendorSignUp = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SignUp)
+
+export default VendorSignUp;
