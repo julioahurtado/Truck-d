@@ -33,7 +33,7 @@ export default class VendorSignIn extends React.Component<any,VendorSignInState>
                     <Form onSubmit={() => this.handleSubmit()}>
                         <Form.Group controlId='formEmail'>
                             <Form.Label>
-                                Username
+                                Email
                             </Form.Label>
                             <Form.Control type="text" ref={this.state.emailField} ></Form.Control>
                         </Form.Group>
