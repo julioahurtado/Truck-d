@@ -1,69 +1,42 @@
 import * as React from 'react'
 import  { Router, Link, Switch, Route,Redirect} from 'react-router-dom'
+import { Button, Container, Row, Col } from 'react-bootstrap'
 import history from '../../History/history'
 import VendorProfileEditor from './VendorProfileEditor'
 import VendorOrderQueue from './VendorOrderQueue'
-import { Form, Container, Button } from 'react-bootstrap'
+import VenderSignIn from '../components/VendorSignIn'
+import VenderSignUp from '../components/VendorSignUp'
 import '../css/Style.css'
-import { SyntheticEvent } from 'react'
 
 
- interface VendorLandingPageState {
-     signInStatus: Boolean;
- }
 
 
-export default class VendorLandingPage extends React.Component<any,VendorLandingPageState> {
 
-    constructor(props: any){
-        super(props);
-        this.state = {
-            signInStatus: false
-        }
-    }
-
-    handleSubmit(event: SyntheticEvent) {
-        this.setState({signInStatus: true});
-        alert('set state');
-        return true;
-    }
-
+export default class VendorLandingPage extends React.Component<any> {
     render(){
-
-        if(this.state.signInStatus) {
-            return <Redirect to='/vendor/signedIn'/>
-        }
-
-
         return (
             <Router history={history}>
                 <Switch>
                     <Route path={'/vendor'} exact={true}>
                         <Container>
-                            <Form onSubmit={this.handleSubmit}>
-                                <Form.Group controlId='formUsername'>
-                                    <Form.Label>
-                                        Username
-                                    </Form.Label>
-                                    <Form.Control type="text"></Form.Control>
-                                </Form.Group>
-                                <Form.Group controlId='formPassword'>
-                                    <Form.Label>
-                                        Password
-                                    </Form.Label>
-                                    <Form.Control type="password"></Form.Control>
-                                </Form.Group>
-                                <Button variant="primary" type="submit">Submit</Button>
-                            </Form>
+                            <Row>
+                                <Col>
+                                    <Link to={'/vendor/signin'}>
+                                        <Button variant="primary">Sign In</Button>
+                                    </Link>
+                                    {' '}
+                                    <Link to={'/vendor/signup'}>
+                                        <Button variant="primary">Sign Up</Button>
+                                    </Link>
+                                </Col>
+                            </Row>
                         </Container>
-
-
-                        <Link to={'/vendor/editprofile'}>
-                            <button>Edit your profile</button>
-                        </Link>
-                        <Link to={'/vendor/orderqueue'}>
-                            <button>Order Queue</button>
-                        </Link>
+                    </Route>
+                    <Route path={'/vendor/signin'}>
+                        <VenderSignIn></VenderSignIn>
+                    </Route>
+                    <Route path={'/vendor/signup'}>
+                        <VenderSignUp></VenderSignUp>
                     </Route>
                     <Route path={'/vendor/editprofile'}>
                         <VendorProfileEditor>
