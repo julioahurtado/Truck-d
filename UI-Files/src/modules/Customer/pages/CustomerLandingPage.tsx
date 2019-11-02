@@ -37,7 +37,7 @@ export default class CustomerLandingPage extends React.Component<any> {
                             <Col className="customer">
                                 <Row>
                                     <Link to={`/customer/foodtrucks`}>
-                                        <Button variant="danger">Food Trucks</Button>
+                                        <Button variant="warning">Food Trucks</Button>
                                     </Link>
                                 </Row>
                             </Col>
