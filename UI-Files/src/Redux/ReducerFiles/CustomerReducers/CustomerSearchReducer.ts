@@ -1,7 +1,7 @@
 import { CUSTOMER_SEARCH_STATUS, CustomerSearchAction } from '../../ActionFiles/CustomerActions';
 import { VendorInfo } from '../../InterfaceFiles/types'
 
-interface CustomerSearchState {
+export interface CustomerSearchState {
     vendors?: VendorInfo[] | null,
     isLoading: Boolean,
     error?: Error | null
@@ -13,7 +13,7 @@ let initState: CustomerSearchState = {
     error: null
 };
 
-export const CustomerSearch = (state = initState, action: CustomerSearchAction) => {
+export const CustomerSearch = (state = initState, action: CustomerSearchAction): CustomerSearchState => {
     switch(action.type) {
 
         // Signals start of vendor-list fetch

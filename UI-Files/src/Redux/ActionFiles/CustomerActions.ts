@@ -21,8 +21,10 @@ export const SEND_ORDER = 'SEND_ORDER';
 * CUSTOMER ACTION INTERFACES
 */
 
+// TODO: move types and actions to /InterfaceFiles
 export type CustomerSearchTypes = CUSTOMER_SEARCH_STATUS.BEGIN | CUSTOMER_SEARCH_STATUS.SUCCESS | CUSTOMER_SEARCH_STATUS.FAILURE;
 
+// TODO: Merge error prop with payload prop
 export interface CustomerSearchAction {
     type: CustomerSearchTypes
     payload?: VendorInfo[]
@@ -92,7 +94,7 @@ export const sendOrder = (info: CustomerInfo): SendOrderAction => ({
 */
 
 let test_vendors: VendorInfo[] = [{
-    name: "Test",
+    name: "Test - SignIn",
     description: "Description for test vendor",
     phone: 1234567890,
     city: "City",

@@ -1,6 +1,10 @@
 import { combineReducers } from "redux";
-import { Login } from './VendorReducers/LoginReducer';
+import { Login, LoginState } from './VendorReducers/LoginReducer';
 
-export const Vendor = combineReducers({
-    Login
+export interface VendorState {
+    login: LoginState
+}
+
+export const Vendor = combineReducers<VendorState>({
+    login: Login
 })

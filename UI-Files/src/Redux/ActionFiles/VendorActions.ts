@@ -22,9 +22,11 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 * VENDOR ACTION INTERFACES
 */
 
+// TODO: Move types and action interfaces to /InterfaceFiles
 type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
 
+// TODO: Merge error prop with payload prop
 export interface LoginAction {
     type: LoginTypes,
     payload?: VendorInfo
@@ -125,7 +127,7 @@ const signIn = async (user: String, pass: String): Promise<VendorInfo> => {
     return vendor
 };
 
-const signUp = async (emai: String, user: String, pass: String): Promise<VendorInfo> => {
+const signUp = async (emai: String, pass: String): Promise<VendorInfo> => {
     return vendor
 }
 
@@ -142,10 +144,10 @@ export const vendorSignIn = (user: String, pass: String): LoginThunkAction => {
 }
 
 // attempt vendor sign-up
-export const vendorSignUp = (email: String, user: String, pass: String): LoginThunkAction => {
+export const vendorSignUp = (email: String, pass: String): LoginThunkAction => {
     return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
         dispatch(signUpBegin());
-        signUp(email, user, pass).then((vendor: VendorInfo) => {
+        signUp(email, pass).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))
         }).catch((error: Error) => {
             dispatch(signUpFailure(error))
