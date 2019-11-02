@@ -2,6 +2,7 @@
 
 # dependencies
 UI-Files/node_modules
+./node_modules
 /.pnp
 .pnp.js
 
@@ -21,3 +22,5 @@ UI-Files/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+

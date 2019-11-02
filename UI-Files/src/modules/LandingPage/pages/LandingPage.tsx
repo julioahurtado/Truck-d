@@ -6,7 +6,7 @@ import { Button, Container, Row, Col } from 'react-bootstrap'
 import history from '../../History/history'
 import VendorLandingPage from '../../Vendor/pages/VendorLandingPage'
 import CustomerLandingPage from '../../Customer/pages/CustomerLandingPage'
-import './Style.css'
+import '../css/Style.css'
 
 import { store } from '../../../Redux/StoreFiles/store';
 import { vendorSignIn } from '../../../Redux/ActionFiles/VendorActions';
