@@ -1,8 +1,21 @@
-.container{
+.customer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    min-height: 100vh;
+    flex-grow: 0;
+    padding: 3%;
+}
+img{
+    width:30%;
+}
+.img{
+    align-items: center;
+}
+.vendorname{
+    position: relative;
+    display: block;
+    margin-bottom: -1px;
+    border: 3px solid rgb(255, 255, 255);
+    padding: 3%;
+    width:100%;
 }
