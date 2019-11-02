@@ -1,6 +1,5 @@
 import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
 
 /*
 * VENDOR ACTION TYPES
@@ -23,8 +22,9 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 */
 
 // TODO: Move types and action interfaces to /InterfaceFiles
-type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
+export type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
+export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction>
 
 // TODO: Merge error prop with payload prop
 export interface LoginAction {
@@ -133,7 +133,7 @@ const signUp = async (emai: String, pass: String): Promise<VendorInfo> => {
 
 // attempt vendor sign-in
 export const vendorSignIn = (user: String, pass: String): LoginThunkAction => {
-    return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+    return (dispatch: LoginThunkDispatch) => {
         dispatch(signInBegin());
         signIn(user, pass).then((vendor: VendorInfo) => {
             dispatch(signInSuccess(vendor))
@@ -145,7 +145,7 @@ export const vendorSignIn = (user: String, pass: String): LoginThunkAction => {
 
 // attempt vendor sign-up
 export const vendorSignUp = (email: String, pass: String): LoginThunkAction => {
-    return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+    return (dispatch: LoginThunkDispatch) => {
         dispatch(signUpBegin());
         signUp(email, pass).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))

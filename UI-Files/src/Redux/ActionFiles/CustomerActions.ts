@@ -1,6 +1,5 @@
 import { MenuItem, CustomerInfo, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
 
 /*
 * CUSTOMER ACTION TYPES
@@ -23,6 +22,8 @@ export const SEND_ORDER = 'SEND_ORDER';
 
 // TODO: move types and actions to /InterfaceFiles
 export type CustomerSearchTypes = CUSTOMER_SEARCH_STATUS.BEGIN | CUSTOMER_SEARCH_STATUS.SUCCESS | CUSTOMER_SEARCH_STATUS.FAILURE;
+export type SearchThunkAction = ThunkAction<void, {}, {}, CustomerSearchAction>;
+export type SearchThunkDispatch = ThunkDispatch<{}, {}, CustomerSearchAction>;
 
 // TODO: Merge error prop with payload prop
 export interface CustomerSearchAction {
@@ -124,8 +125,8 @@ const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
 }
 
 // retrieves vendor-list based on user search-string
-export const fetchVendors = (query: String): ThunkAction<void, {}, {}, CustomerSearchAction> => {
-    return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+export const fetchVendors = (query: String): SearchThunkAction => {
+    return (dispatch: SearchThunkDispatch) => {
         dispatch(customerSearchBegin());
         fetch_vendors(query).then((vendors: VendorInfo[]) => {
             dispatch(customerSearchSuccess(vendors))
