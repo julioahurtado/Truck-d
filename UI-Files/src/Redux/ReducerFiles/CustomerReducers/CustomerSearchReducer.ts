@@ -1,30 +1,30 @@
-import { VENDOR_SEARCH_STATUS, VendorSearchAction } from '../../ActionFiles/CustomerActions';
+import { CUSTOMER_SEARCH_STATUS, CustomerSearchAction } from '../../ActionFiles/CustomerActions';
 import { VendorInfo } from '../../InterfaceFiles/types'
 
-interface VendorSearchState {
+interface CustomerSearchState {
     vendors?: VendorInfo[] | null,
     isLoading: Boolean,
     error?: Error | null
 };
 
-let initState: VendorSearchState = {
+let initState: CustomerSearchState = {
     vendors: null,
     isLoading: false,
     error: null
 };
 
-export const VendorSearch = (state = initState, action: VendorSearchAction) => {
+export const CustomerSearch = (state = initState, action: CustomerSearchAction) => {
     switch(action.type) {
 
         // Signals start of vendor-list fetch
-        case VENDOR_SEARCH_STATUS.BEGIN:
+        case CUSTOMER_SEARCH_STATUS.BEGIN:
             return {
                 ...state,
                 isLoading: true
             };
 
         // Signals successfull fetch with vendors returned
-        case VENDOR_SEARCH_STATUS.SUCCESS:
+        case CUSTOMER_SEARCH_STATUS.SUCCESS:
             return {
                 ...state,
                 vendors: action.payload,
@@ -32,7 +32,7 @@ export const VendorSearch = (state = initState, action: VendorSearchAction) => {
             };
 
         // Signals failed fetch for vendors with error message
-        case VENDOR_SEARCH_STATUS.FAILURE:
+        case CUSTOMER_SEARCH_STATUS.FAILURE:
             return {
                 ...state,
                 vendors: null,

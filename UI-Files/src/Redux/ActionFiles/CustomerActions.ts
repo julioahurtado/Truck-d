@@ -6,10 +6,10 @@ import { AnyAction } from 'redux';
 * CUSTOMER ACTION TYPES
 */
 
-export enum VENDOR_SEARCH_STATUS {
-    BEGIN = 'VENDOR_SEARCH_BEGIN',
-    SUCCESS = 'VENDOR_SEARCH_SUCCESS',
-    FAILURE = 'VENDOR_SEARCH_FAILURE'
+export enum CUSTOMER_SEARCH_STATUS {
+    BEGIN = 'CUSTOMER_SEARCH_BEGIN',
+    SUCCESS = 'CUSTOMER_SEARCH_SUCCESS',
+    FAILURE = 'CUSTOMER_SEARCH_FAILURE'
 }
 
 export const ADD_TO_CART = 'ADD_TO_CART';
@@ -21,10 +21,10 @@ export const SEND_ORDER = 'SEND_ORDER';
 * CUSTOMER ACTION INTERFACES
 */
 
-export type VendorSearchTypes = VENDOR_SEARCH_STATUS.BEGIN | VENDOR_SEARCH_STATUS.SUCCESS | VENDOR_SEARCH_STATUS.FAILURE;
+export type CustomerSearchTypes = CUSTOMER_SEARCH_STATUS.BEGIN | CUSTOMER_SEARCH_STATUS.SUCCESS | CUSTOMER_SEARCH_STATUS.FAILURE;
 
-export interface VendorSearchAction {
-    type: VendorSearchTypes
+export interface CustomerSearchAction {
+    type: CustomerSearchTypes
     payload?: VendorInfo[]
     error?: Error
 };
@@ -53,17 +53,17 @@ export interface SendOrderAction {
 * CUSTOMER ACTION CREATORS
 */
 
-export const vendorSearchBegin = (): VendorSearchAction => ({
-    type: VENDOR_SEARCH_STATUS.BEGIN
+export const customerSearchBegin = (): CustomerSearchAction => ({
+    type: CUSTOMER_SEARCH_STATUS.BEGIN
 });
 
-export const vendorSearchSuccess = (vendors: VendorInfo[]): VendorSearchAction => ({
-    type: VENDOR_SEARCH_STATUS.SUCCESS,
+export const customerSearchSuccess = (vendors: VendorInfo[]): CustomerSearchAction => ({
+    type: CUSTOMER_SEARCH_STATUS.SUCCESS,
     payload: vendors
 });
 
-export const vendorSearchFailure = (error: Error): VendorSearchAction => ({
-    type: VENDOR_SEARCH_STATUS.FAILURE,
+export const customerSearchFailure = (error: Error): CustomerSearchAction => ({
+    type: CUSTOMER_SEARCH_STATUS.FAILURE,
     error: error
 });
 
@@ -122,13 +122,13 @@ const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
 }
 
 // retrieves vendor-list based on user search-string
-export const fetchVendors = (query: String): ThunkAction<void, {}, {}, VendorSearchAction> => {
+export const fetchVendors = (query: String): ThunkAction<void, {}, {}, CustomerSearchAction> => {
     return (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
-        dispatch(vendorSearchBegin());
+        dispatch(customerSearchBegin());
         fetch_vendors(query).then((vendors: VendorInfo[]) => {
-            dispatch(vendorSearchSuccess(vendors))
+            dispatch(customerSearchSuccess(vendors))
         }).catch((error: Error) => {
-            dispatch(vendorSearchFailure(error))
+            dispatch(customerSearchFailure(error))
         })
     }
 }

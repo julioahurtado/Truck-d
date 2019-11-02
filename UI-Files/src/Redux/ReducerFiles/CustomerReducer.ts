@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import { VendorSearch } from './CustomerReducers/VendorSearchReducer';
+import { CustomerSearch } from './CustomerReducers/CustomerSearchReducer';
 
 export const Customer = combineReducers({
-    VendorSearch
+    search: CustomerSearch
 });
