@@ -8,7 +8,20 @@ import VendorLandingPage from '../../Vendor/pages/VendorLandingPage'
 import CustomerLandingPage from '../../Customer/pages/CustomerLandingPage'
 import '../css/Style.css'
 
+import { store } from '../../../Redux/StoreFiles/store';
+import { vendorSignIn } from '../../../Redux/ActionFiles/VendorActions';
+import { fetchVendors } from '../../../Redux/ActionFiles/CustomerActions';
+
+let test_dispatch = () => {
+    store.dispatch<any>(vendorSignIn("user", "pass"));
+    store.dispatch<any>(fetchVendors("Test"));
+}
+
 export default class LandingPage extends React.Component<any> {
+    componentDidMount() {
+        test_dispatch()
+    }
+
     render() {
         return (
             <Router history={history}>
