@@ -7,6 +7,8 @@ export interface MenuItem {
 export interface VendorInfo {
     name: String
     description: String
+    cuisine: String
+    hours: String
     phone: Number
     city: String
     state: String
