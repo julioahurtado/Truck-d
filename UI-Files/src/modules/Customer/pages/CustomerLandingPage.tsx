@@ -3,14 +3,11 @@ import { Router, Link, Switch, Route, useRouteMatch } from 'react-router-dom'
 import history from '../../History/history'
 import CustomerCart from './CustomerCart'
 import CustomerMenu from './CustomerMenuPage'
-import CustomerFoodTrucks from './CustomerFoodTrucks'
-import { Container, Col, Row, Button } from 'react-bootstrap'
+import CustomerVendorSearch from '../components/CustomerVendorSearch'
 import './style.css'
 
 
 
-interface CustomerLandingPageProps {
-}
 
 export default class CustomerLandingPage extends React.Component<any> {
     render() {
@@ -19,29 +16,8 @@ export default class CustomerLandingPage extends React.Component<any> {
             <Router history={history}>
                 <Switch>
                     <Route path={'/customer'} exact={true}>
-                        <Container>
-                            <Col className="customer">
-                                <Row>
-                                    <Link to={'/customer/cart'}>
-                                        <Button variant="warning">Checkout</Button>
-                                    </Link>
-                                </Row>
-                            </Col>
-                            <Col className="customer">
-                                <Row>
-                                    <Link to={`/customer/menu/${CustomerMenuName}`}>
-                                        <Button variant="danger">Menu</Button>
-                                    </Link>
-                                </Row>
-                            </Col>
-                            <Col className="customer">
-                                <Row>
-                                    <Link to={`/customer/foodtrucks`}>
-                                        <Button variant="danger">Food Trucks</Button>
-                                    </Link>
-                                </Row>
-                            </Col>
-                        </Container>
+                       <CustomerVendorSearch>
+                       </CustomerVendorSearch>
                     </Route>
                     <Route path={'/customer/cart'}>
                         <CustomerCart>
@@ -53,8 +29,8 @@ export default class CustomerLandingPage extends React.Component<any> {
                         </CustomerMenu>
                     </Route>
                     <Route path={'/customer/foodtrucks'}>
-                        <CustomerFoodTrucks>
-                        </CustomerFoodTrucks>
+                        <CustomerVendorSearch>
+                        </CustomerVendorSearch>
                     </Route>
                 </Switch>
             </Router>

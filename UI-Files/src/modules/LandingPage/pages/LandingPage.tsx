@@ -36,12 +36,12 @@ export default class LandingPage extends React.Component<any> {
                             <Row>
                                 <Col className="Customer">
                                     <Link to={'/customer'} >
-                                        <Button variant="warning">Customer</Button>                                        
+                                        <Button variant="primary">Customer</Button>                                        
                                     </Link>
                                 </Col>
                                 <Col className="Vendor" >
                                     <Link to={'/vendor'} >
-                                        <Button variant="danger">Vendor</Button>
+                                        <Button variant="primary">Vendor</Button>
                                     </Link>
                                 </Col>
                             </Row>
