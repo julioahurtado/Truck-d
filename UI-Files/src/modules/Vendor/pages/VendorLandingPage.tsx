@@ -13,7 +13,7 @@ import '../css/Style.css'
 
 
 export default class VendorLandingPage extends React.Component<any> {
-    render(){
+    render() {
         return (
             <Router history={history}>
                 <Switch>
