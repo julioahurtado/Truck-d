@@ -4,7 +4,6 @@ import history from '../../History/history'
 import CustomerCart from './CustomerCart'
 import CustomerMenu from './CustomerMenuPage'
 import CustomerVendorSearch from '../components/CustomerVendorSearch'
-import './style.css'
 
 
 
@@ -27,10 +26,6 @@ export default class CustomerLandingPage extends React.Component<any> {
                         <CustomerMenu
                             RestaurantName={CustomerMenuName}>
                         </CustomerMenu>
-                    </Route>
-                    <Route path={'/customer/foodtrucks'}>
-                        <CustomerVendorSearch>
-                        </CustomerVendorSearch>
                     </Route>
                 </Switch>
             </Router>
