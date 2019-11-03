@@ -2,10 +2,10 @@ import * as React from 'react'
 
 
 interface CustomerVendorListItemProps {
-    vendorName: string;
-    vendorDesription: string;
-    vendorCuisine: string;
-    vendorHours: string;
+    vendorName: String;
+    vendorDescription: String;
+    vendorCuisine: String;
+    vendorHours: String;
 }
 
 
@@ -17,7 +17,7 @@ export default class CustomerVendorListItem extends React.Component<CustomerVend
                     {this.props.vendorName}
                 </p>
                 <p>
-                    {this.props.vendorDesription}
+                    {this.props.vendorDescription}
                 </p>
                 <p>
                     {this.props.vendorCuisine}

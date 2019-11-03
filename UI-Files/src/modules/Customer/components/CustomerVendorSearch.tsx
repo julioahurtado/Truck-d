@@ -1,10 +1,16 @@
 
 import * as React from 'react'
-import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
+import { Form, ListGroup } from 'react-bootstrap'
 import CustomerVendorListItem from './CustomerVendorListItem'
 
+import { fetchVendors, SearchThunkDispatch } from '../../../Redux/ActionFiles/CustomerActions';
+import { VendorInfo } from '../../../Redux/InterfaceFiles/types';
+import { RootState } from '../../../Redux/StoreFiles/store';
+import { connect } from 'react-redux';
+
 interface CustomerVendorSearchProps {
-    vendorList?: any[];
+    vendorList?: VendorInfo[] | null
+    fetchVendors?: any
 }
 
 interface CustomerVendorSearchState {
@@ -12,7 +18,7 @@ interface CustomerVendorSearchState {
 }
 
 
-export default class CustomerVendorSearch extends React.Component<CustomerVendorSearchProps,CustomerVendorSearchState> {
+export class VendorSearch extends React.Component<CustomerVendorSearchProps,CustomerVendorSearchState> {
 
     constructor(props: CustomerVendorSearchProps){
         super(props);
@@ -21,8 +27,10 @@ export default class CustomerVendorSearch extends React.Component<CustomerVendor
         }
     }
 
+    // Fetch vendors based on search query
     handleChange(){
-        console.log(this.state.searchField.current.value);
+        const query: String = this.state.searchField.current.value;
+        this.props.fetchVendors(query)
     }
 
     render() {
@@ -34,37 +42,32 @@ export default class CustomerVendorSearch extends React.Component<CustomerVendor
                     </Form.Group>
                 </div>
                 <ListGroup style={{padding: '2px'}}>
-                    {/* {this.props.vendorList.map((vendor, key) => {
-                        <CustomerVendorListItem 
+                    {this.props.vendorList && this.props.vendorList.map((vendor: VendorInfo) => {
+                        return <CustomerVendorListItem 
                             vendorName={vendor.name}
-                            vendorDesription={vendor.desription}
+                            vendorDescription={vendor.description}
                             vendorCuisine={vendor.cuisine}
                             vendorHours={vendor.hours}
                         ></CustomerVendorListItem>
-                    })} */}
-                    <CustomerVendorListItem 
-                        vendorName="Vallarta"
-                        vendorDesription="Amazing Burritos"
-                        vendorCuisine="Mexican"
-                        vendorHours="9am-10pm"
-                        >
-                    </CustomerVendorListItem>
-                    <CustomerVendorListItem 
-                        vendorName="Los Pericos"
-                        vendorDesription="Amazing Burritos"
-                        vendorCuisine="Mexican"
-                        vendorHours="9am-10pm"
-                        >
-                    </CustomerVendorListItem>
-                    <CustomerVendorListItem 
-                        vendorName="Kianti's"
-                        vendorDesription="Yummy pasta"
-                        vendorCuisine="Italian"
-                        vendorHours="12pm-10pm"
-                        >
-                    </CustomerVendorListItem>
+                    })}
                 </ListGroup>
             </div>
         )
     }
 }
+
+const mapStateToProps = (state: RootState): CustomerVendorSearchProps => ({
+    vendorList: state.customer.search.vendors 
+});
+
+const mapDispatchToProps = (dispatch: SearchThunkDispatch): CustomerVendorSearchProps => ({
+    fetchVendors: (query: String) =>
+        dispatch(fetchVendors(query))
+});
+
+const CustomerVendorSearch = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(VendorSearch)
+
+export default CustomerVendorSearch;
