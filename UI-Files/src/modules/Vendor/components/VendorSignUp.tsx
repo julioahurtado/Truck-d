@@ -6,6 +6,12 @@ import { vendorSignUp, LoginThunkDispatch } from '../../../Redux/ActionFiles/Ven
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 
+// TODO: add type for dispatch function
+interface VendorSignUpProps {
+    isLoading?: Boolean
+    signUp?: any
+}
+
  interface VendorSignUpState {
     emailField: any;
     passwordField: any; 
@@ -13,9 +19,9 @@ import { connect } from 'react-redux';
  }
 
 
-export class SignUp extends React.Component<any, VendorSignUpState> {
+export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState> {
 
-    constructor(props: any){
+    constructor(props: VendorSignUpProps){
         super(props);
         this.state = {
             emailField: React.createRef(),
@@ -70,13 +76,11 @@ export class SignUp extends React.Component<any, VendorSignUpState> {
     }
 }
 
-// TODO: Add interface for state props
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState): VendorSignUpProps => ({
     isLoading: state.vendor.login.isLoading
 });
 
-// TODO: Add interface for dispatch props
-const mapDispatchToProps = (dispatch: LoginThunkDispatch) => ({
+const mapDispatchToProps = (dispatch: LoginThunkDispatch): VendorSignUpProps => ({
     signUp: (email: String, pass: String) =>
         dispatch(vendorSignUp(email, pass))
 });
