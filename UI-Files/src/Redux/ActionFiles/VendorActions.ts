@@ -123,19 +123,20 @@ let vendor: VendorInfo = {
     }]
 };
 
-const signIn = async (user: String, pass: String): Promise<VendorInfo> => {
+// TODO: Replace signIn and signUp with calls to API
+const signIn = async (email: String, pass: String): Promise<VendorInfo> => {
     return vendor
 };
 
-const signUp = async (emai: String, pass: String): Promise<VendorInfo> => {
+const signUp = async (email: String, pass: String): Promise<VendorInfo> => {
     return vendor
 }
 
 // attempt vendor sign-in
-export const vendorSignIn = (user: String, pass: String): LoginThunkAction => {
+export const vendorSignIn = (email: String, pass: String): LoginThunkAction => {
     return (dispatch: LoginThunkDispatch) => {
         dispatch(signInBegin());
-        signIn(user, pass).then((vendor: VendorInfo) => {
+        signIn(email, pass).then((vendor: VendorInfo) => {
             dispatch(signInSuccess(vendor))
         }).catch((error: Error) => {
             dispatch(signInFailure(error))
