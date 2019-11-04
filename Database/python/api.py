@@ -172,7 +172,12 @@ def disconnect_from_db(connection):
 # This main is used for testing purposes, if you need to test the create_vendor_user
 # function, then change these values
 def main():
+<<<<<<< HEAD
     print(create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'eeeemial@ucsc.edu', 'pass', 'Mexican'))
+=======
+    # create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'losper@ucsc.edu', 'pass', 'Mexican')
+    app.run()
+>>>>>>> origin
 
 if __name__ == '__main__':
     #app.run(debug=True)

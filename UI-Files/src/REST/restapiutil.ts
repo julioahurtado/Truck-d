@@ -3,97 +3,94 @@
  */
 
 
-export default function _GET(
+export default async function _GET(
     url: string
-){
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    
-    // Fix for CORS
-    request.setRequestHeader('Access-Control-Allow-Origin', '*');
+): Promise<any>{
 
-    request.onload = function() {
-        if (this.status >= 200 && this.status < 400) {
-            // Success!
-            var resp = this.response;
-            console.log("success");
-            
-        } else {
-            // We reached our target server, but it returned an error
-            console.log("ERROR IN GET REQUEST TO " + url);
-        }
-    };
+    return new Promise<any>((resolve, reject) => {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        
+        // Fix for CORS
+        request.setRequestHeader('Access-Control-Allow-Origin', '*');
     
-    request.onerror = function() {
-        console.log("ERROR IN CONNECTION TO " + url);
-    };
-
-    request.send();
-    console.log(request);
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                var resp = this.response;
+                resolve(this.response);
+            } else if (this.status === 401){
+                reject(new Error("AUTHENTICATION ERROR: " + url));
+            } else {
+                reject(new Error(this.status + " ERROR IN CONNECTION TO " + url));
+            }
+        };
+        
+        request.onerror = function() {
+            reject(new Error(this.status + " ERROR IN CONNECTION TO " + url));
+        };
     
-    return request.responseText;
+        request.send();
+    });
 }
 
-function _POST(
+async function _POST(
     url: string,
     payload: any
-){
-    var request = new XMLHttpRequest();
-    request.open('POST', url, true);
-
-    // Fix for CORS
-    request.setRequestHeader('Access-Control-Allow-Origin', '*');
-    request.setRequestHeader('Content-Type', 'application/json');
-
-    request.onload = function() {
-        if (this.status >= 200 && this.status < 400) {
-            // Success!
-            var resp = this.response;
-            
-        } else {
-            // We reached our target server, but it returned an error
-            console.log("ERROR IN GET REQUEST TO " + url);
-        }
-    };
+): Promise<any>{
+    return new Promise<any>((resolve,reject) => {
+        var request = new XMLHttpRequest();
+        request.open('POST', url, true);
     
-    request.onerror = function() {
-        console.log("ERROR IN CONNECTION TO " + url);
-    };
-
-    request.send(payload);
-    console.log(request);
+        // Fix for CORS
+        request.setRequestHeader('Access-Control-Allow-Origin', '*');
+        request.setRequestHeader('Content-Type', 'application/json');
     
-    return request.responseText;
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                var resp = this.response;
+                resolve(resp);
+            } else if (this.status === 401){
+                reject(new Error("AUTHENTICATION ERROR: " + url));
+            } else {
+                reject(new Error(this.status + " ERROR IN CONNECTION TO " + url));
+            }
+        };
+        
+        request.onerror = function() {
+            reject(new Error(this.status + " ERROR IN CONNECTION TO " + url));
+        };
+    
+        request.send(payload);
+    });
 }
-function _DELETE(
+async function _DELETE(
     url: string
-){
-    var request = new XMLHttpRequest();
-    request.open('DELETE', url, true);
+): Promise<any>{
+    return new Promise<any>((resolve, reject) => {
+        var request = new XMLHttpRequest();
+        request.open('DELETE', url, true);
+        
+        // Fix for CORS
+        request.setRequestHeader('Access-Control-Allow-Origin', '*');
     
-    // Fix for CORS
-    request.setRequestHeader('Access-Control-Allow-Origin', '*');
-
-    request.onload = function() {
-        if (this.status >= 200 && this.status < 400) {
-            // Success!
-            var resp = this.response;
-            console.log("success");
-            
-        } else {
-            // We reached our target server, but it returned an error
-            console.log("ERROR IN GET REQUEST TO " + url);
-        }
-    };
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                var resp = this.response;
+                resolve(resp);
+                
+            } else if (this.status === 401){
+                reject(new Error("AUTHENTICATION ERROR: " + url));
+            } else {
+                reject(new Error(this.status + " ERROR IN CONNECTION TO " + url));
+            }
+        };
+        
+        request.onerror = function() {
+            reject(new Error("ERROR IN CONNECTION TO " + url));
+        };
     
-    request.onerror = function() {
-        console.log("ERROR IN CONNECTION TO " + url);
-    };
-
-    request.send();
-    console.log(request);
-    
-    return request.responseText;
+        request.send();
+    });
 }
 
 export {_GET, _POST, _DELETE};

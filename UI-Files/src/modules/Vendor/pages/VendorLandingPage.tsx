@@ -1,28 +1,42 @@
 import * as React from 'react'
-import  { Router, Link, Switch, Route, useRouteMatch} from 'react-router-dom'
+import  { Router, Link, Switch, Route,Redirect} from 'react-router-dom'
+import { Button, Container, Row, Col } from 'react-bootstrap'
 import history from '../../History/history'
 import VendorProfileEditor from './VendorProfileEditor'
 import VendorOrderQueue from './VendorOrderQueue'
+import VenderSignIn from '../components/VendorSignIn'
+import VenderSignUp from '../components/VendorSignUp'
+import '../css/Style.css'
 
 
- 
+
 
 
 export default class VendorLandingPage extends React.Component<any> {
-    render(){
+    render() {
         return (
             <Router history={history}>
                 <Switch>
                     <Route path={'/vendor'} exact={true}>
-                        <Link to={'/vendor/editprofile'}>
-                            <button>Edit your profile</button>
-                        </Link>
-                        <Link to={'/vendor/orderqueue'}>
-                            <button>Order Queue</button>
-                        </Link>
-                        <Link to={'/vendor/editprofile'}>
-                            <button>Edit your profile</button>
-                        </Link>
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <Link to={'/vendor/signin'}>
+                                        <Button variant="primary">Sign In</Button>
+                                    </Link>
+                                    {' '}
+                                    <Link to={'/vendor/signup'}>
+                                        <Button variant="primary">Sign Up</Button>
+                                    </Link>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Route>
+                    <Route path={'/vendor/signin'}>
+                        <VenderSignIn></VenderSignIn>
+                    </Route>
+                    <Route path={'/vendor/signup'}>
+                        <VenderSignUp></VenderSignUp>
                     </Route>
                     <Route path={'/vendor/editprofile'}>
                         <VendorProfileEditor>
@@ -31,6 +45,9 @@ export default class VendorLandingPage extends React.Component<any> {
                     <Route path={'/vendor/orderqueue'}>
                         <VendorOrderQueue>
                         </VendorOrderQueue>
+                    </Route>
+                    <Route path={'/vendor/signedIn'}>
+                        <h1>Signed In</h1>
                     </Route>
                 </Switch>
             </Router>
