@@ -63,6 +63,42 @@ def create_vendor_user():
     response = Response('Welcome to Truck-d!', 201)
     return response
 
+# Sign in to a vendor profile.
+# will send a verificaiton signal
+@app.route("/login", methods=['GET', 'POST'])
+def vendor_login():
+    payload = request.get_json(force=True)
+    email = payload['email']
+    password = payload['password']
+
+    try:
+        # Query the email and password
+        connection = connect_to_db()
+        dbCursor = connection.cursor()
+        sql = ("""SELECT * FROM Vendors
+                    WHERE email = %s
+                    AND pswd = %s;""")
+        data = (email, password)
+
+        dbCursor.execute(sql, data)
+        results = dbCursor.fetchone()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        # If the query is empty return error 500
+        # otherwise we are successful and return 202
+        if results == None:
+            return Response("Incorrect email or password", 500)
+        else:
+            return Response("Logged in!", 202)
+
+    except:
+        dbCursor.close()
+        disconnect_from_db(connection)
+    return Response("Incorrect email or password", 500)
+
+
+
+
 # Searches for the given restuarant
 @app.route("/search", methods = ['GET', 'POST'])
 def vendor_search():
