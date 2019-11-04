@@ -19,9 +19,7 @@ def home():
 @app.route("/createVendorAccount/",  methods=['GET', 'POST'])
 @cross_origin()
 def create_vendor_user():
-    print("ehre")
     payload = request.get_json(force=True)
-    print(payload)
     restuarant = payload['restuarant']
     location = payload['location']
     email = payload['email']
