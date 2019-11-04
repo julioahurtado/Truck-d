@@ -48,7 +48,7 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
     render(){
         return (
                 <Container>
-                    <Form onClick={() => this.handleSubmit()}>
+                    <Form>
                         <Form.Group controlId='formEmail'>
                             <Form.Label>
                                 Email
@@ -69,7 +69,7 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
                             <Form.Control ref={this.state.passwordConfirmField} type="password">
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="button">Create Account</Button>
+                        <Button variant="primary" type="button" onClick={() => this.handleSubmit()}>Create Account</Button>
                     </Form>
                 </Container>
         )

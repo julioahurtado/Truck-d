@@ -40,7 +40,7 @@ export class SignIn extends React.Component<VendorSignInProps, VendorSignInState
     render(){
         return (
                 <Container>
-                    <Form onClick={() => this.handleSubmit()}>
+                    <Form>
                         <Form.Group controlId='formEmail'>
                             <Form.Label>
                                 Email
@@ -54,7 +54,7 @@ export class SignIn extends React.Component<VendorSignInProps, VendorSignInState
                             <Form.Control ref={this.state.passwordField} type="password">
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="button">Sign In</Button>
+                        <Button variant="primary" type="button" onClick={() => this.handleSubmit()}>Sign In</Button>
                     </Form>
                 </Container>
         )

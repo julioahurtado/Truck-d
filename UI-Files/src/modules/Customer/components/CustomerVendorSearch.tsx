@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import { Form, ListGroup } from 'react-bootstrap'
+import { Form, ListGroup, Spinner } from 'react-bootstrap'
 import CustomerVendorListItem from './CustomerVendorListItem'
 
 import { fetchVendors, SearchThunkDispatch } from '../../../Redux/ActionFiles/CustomerActions';
@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 interface CustomerVendorSearchProps {
     vendorList?: VendorInfo[] | null
+    isLoading?: Boolean
     fetchVendors?: any
 }
 
@@ -41,7 +42,10 @@ export class VendorSearch extends React.Component<CustomerVendorSearchProps,Cust
                         <Form.Control ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search..." />
                     </Form.Group>
                 </div>
-                <ListGroup style={{padding: '2px'}}>
+                {this.props.isLoading && <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>}
+                {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
                     {this.props.vendorList && this.props.vendorList.map((vendor: VendorInfo) => {
                         return <CustomerVendorListItem 
                             vendorName={vendor.name}
@@ -50,14 +54,15 @@ export class VendorSearch extends React.Component<CustomerVendorSearchProps,Cust
                             vendorHours={vendor.hours}
                         ></CustomerVendorListItem>
                     })}
-                </ListGroup>
+                </ListGroup>}
             </div>
         )
     }
 }
 
 const mapStateToProps = (state: RootState): CustomerVendorSearchProps => ({
-    vendorList: state.customer.search.vendors 
+    vendorList: state.customer.search.vendors,
+    isLoading: state.customer.search.isLoading
 });
 
 const mapDispatchToProps = (dispatch: SearchThunkDispatch): CustomerVendorSearchProps => ({
