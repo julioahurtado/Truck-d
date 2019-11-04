@@ -67,13 +67,13 @@ def create_vendor_user():
 @app.route("/search", methods = ['GET', 'POST'])
 def vendor_search():
     payload = request.get_json(force=True)
-    restuarant = payload['restaurant']
+    restuarant = payload['location']
 
     try:
         connection = connect_to_db()
         dbCursor = connection.cursor()
         sql = """SELECT vendorID, restaurant_name, location FROM Vendors
-                    WHERE restaurant_name LIKE %s;"""
+                    WHERE location LIKE %s;"""
 
         restaurant_name = ('%' + restuarant + '%')
         data = (restaurant_name,)
@@ -94,8 +94,8 @@ def vendor_search():
 
 
 # Returns the menu of the given vendorID in JSON format
-@app.route('/menu/<string:vendorID>', methods = ['GET'])
-def get_vendor_menu(id):
+@app.route('/menu', methods = ['GET'])
+def get_vendor_menu():
     connection = connect_to_db()
     dbCursor = connection.cursor()
 
