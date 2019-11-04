@@ -12,12 +12,21 @@ app.config["DEBUG"] = True
 
 # TODO: use sha256 hashing for database passwords
 # When a vendor creates an account their data is added to the Database
-@app.route('/register/', methods = ['GET', 'POST'])
-def create_vendor_user(restuarant, location, email, password, cuisine):
+@app.route("/createVendorAccount",  methods=['POST'])
+@cross_origin()
+def create_vendor_user():
+
+    payload = request.get_json(force=True)
+    restuarant = payload['restuarant']
+    location = payload['location']
+    email = payload['email']
+    password = payload['password']
+    cuisine = payload['cuisine']
 
     try:
         if check_vendor_email(email):
-            return "That email is already registered!"
+            response = Response('That email is already registered!', 409)
+            return response
 
         # IDs will be in range 1000 - 10000
         vendorID = random.randint(1000,9999)
@@ -45,8 +54,9 @@ def create_vendor_user(restuarant, location, email, password, cuisine):
             disconnect_from_db(connection)
 
     except Exception as e:
-        return e
+        return Response('Server ERROR in api.py', 500)
     # Success
+    response = Response('Welcome to Truck-d!', 201)
     return "Welcome to Truck-d!"
 
 
@@ -172,13 +182,9 @@ def disconnect_from_db(connection):
 # This main is used for testing purposes, if you need to test the create_vendor_user
 # function, then change these values
 def main():
-<<<<<<< HEAD
     print(create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'eeeemial@ucsc.edu', 'pass', 'Mexican'))
-=======
-    # create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'losper@ucsc.edu', 'pass', 'Mexican')
     app.run()
->>>>>>> origin
 
 if __name__ == '__main__':
-    #app.run(debug=True)
+    app.run(debug=True)
     main()
