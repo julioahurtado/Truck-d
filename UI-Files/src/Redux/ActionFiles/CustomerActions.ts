@@ -1,5 +1,6 @@
 import { MenuItem, CustomerInfo, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { _GET } from '../../REST/restapiutil';
 
 /*
 * CUSTOMER ACTION TYPES
@@ -94,34 +95,9 @@ export const sendOrder = (info: CustomerInfo): SendOrderAction => ({
 * THUNK ASYNC REQUESTS
 */
 
-let test_vendors: VendorInfo[] = [{
-    name: "Test - SignIn",
-    description: "Description for test vendor",
-    phone: 1234567890,
-    city: "City",
-    state: "State",
-    address: "Address",
-    menu: [{
-        name: "food item",
-        description: "food description",
-        price: 1
-    }]
-}, {
-    name: "2",
-    description: "Description for test vendor",
-    phone: 4234,
-    city: "4sdf",
-    state: "zxc",
-    address: "sdf",
-    menu: [{
-        name: "food ff",
-        description: "faood s",
-        price: 134
-    }]
-}];
-
 const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
-    return test_vendors
+    const vendors = await _GET('http://localhost:5000/'+ query)
+    return JSON.parse(vendors)
 }
 
 // retrieves vendor-list based on user search-string

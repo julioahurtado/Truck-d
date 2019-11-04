@@ -1,5 +1,6 @@
 import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { _POST } from '../../REST/restapiutil';
 
 /*
 * VENDOR ACTION TYPES
@@ -109,27 +110,16 @@ export const finishOrder = (order: Order): FinishOrderAction => ({
 * THUNK ASYNC REQUESTS
 */
 
-let vendor: VendorInfo = {
-    name: "Test",
-    description: "Description for test vendor",
-    phone: 1234567890,
-    city: "City",
-    state: "State",
-    address: "Address",
-    menu: [{
-        name: "food item",
-        description: "food description",
-        price: 1
-    }]
-};
-
-// TODO: Replace signIn and signUp with calls to API
 const signIn = async (email: String, pass: String): Promise<VendorInfo> => {
-    return vendor
+    const user = { email, password: pass };
+    const vendor = await _POST('http://localhost:5000/authenticatevendor', JSON.stringify(user))
+    return JSON.parse(vendor)
 };
 
 const signUp = async (email: String, pass: String): Promise<VendorInfo> => {
-    return vendor
+    const user = { email, password: pass };
+    const vendor = await _POST('http://localhost:5000/createVendorAccount', JSON.stringify(user))
+    return JSON.parse(vendor)
 }
 
 // attempt vendor sign-in
