@@ -3,6 +3,7 @@ import { Router, Link, Switch, Route, useRouteMatch } from 'react-router-dom'
 import history from '../../History/history'
 import CustomerCart from './CustomerCart'
 import CustomerMenu from './CustomerMenuPage'
+<<<<<<< HEAD
 import CustomerFoodTrucks from './CustomerFoodTrucks'
 import { Button, Container, Col, Row } from 'react-bootstrap'
 import '../css/Style.css';
@@ -15,10 +16,21 @@ interface CustomerLandingPageProps {
 export default class CustomerLandingPage extends React.Component<any> {
     render() {
         var CustomerMenuName = 'TestRestaurant'
+=======
+import CustomerVendorSearch from '../components/CustomerVendorSearch'
+
+
+
+
+export default class CustomerLandingPage extends React.Component<any> {
+    render() {
+        var CustomerMenuName = 'Test Restaurant'
+>>>>>>> 943291887636ecf2278b1a4238a2343f77b7d13f
         return (
             <Router history={history}>
                 <Switch>
                     <Route path={'/customer'} exact={true}>
+<<<<<<< HEAD
                         <Container>
                             <Col className="customer">
                                 <Row>
@@ -42,6 +54,10 @@ export default class CustomerLandingPage extends React.Component<any> {
                                 </Row>
                             </Col>
                         </Container>
+=======
+                       <CustomerVendorSearch>
+                       </CustomerVendorSearch>
+>>>>>>> 943291887636ecf2278b1a4238a2343f77b7d13f
                     </Route>
                     <Route path={'/customer/cart'}>
                         <CustomerCart>
