@@ -3,20 +3,25 @@
 # pip3 install mysql-connector-python
 import mysql.connector
 from mysql.connector import errorcode
-from flask import Flask, request
-#from flask_cors import CORS, cross_origin
+from flask import Flask, request, Response
+from flask_cors import CORS, cross_origin
 import random
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
+@app.route("/", methods=['GET'])
+def home():
+    return "Hello, World!"
+
 # TODO: use sha256 hashing for database passwords
 # When a vendor creates an account their data is added to the Database
-@app.route("/createVendorAccount",  methods=['POST'])
+@app.route("/createVendorAccount/",  methods=['GET', 'POST'])
 @cross_origin()
 def create_vendor_user():
-
+    print("ehre")
     payload = request.get_json(force=True)
+    print(payload)
     restuarant = payload['restuarant']
     location = payload['location']
     email = payload['email']
@@ -55,9 +60,9 @@ def create_vendor_user():
 
     except Exception as e:
         return Response('Server ERROR in api.py', 500)
-    # Success
+    # Success and sends logged_in message
     response = Response('Welcome to Truck-d!', 201)
-    return "Welcome to Truck-d!"
+    return response
 
 
 # Returns the menu of the given vendorID in JSON format
@@ -183,8 +188,8 @@ def disconnect_from_db(connection):
 # function, then change these values
 def main():
     print(create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'eeeemial@ucsc.edu', 'pass', 'Mexican'))
-    app.run()
+    #app.run()
 
 if __name__ == '__main__':
     app.run(debug=True)
-    main()
+    #main()
