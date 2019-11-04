@@ -3,24 +3,25 @@
 # pip3 install mysql-connector-python
 import mysql.connector
 from mysql.connector import errorcode
-from flask import Flask, request, Response
+from flask import Flask, request, Response, json, jsonify
 from flask_cors import CORS, cross_origin
 import random
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
-@app.route("/", methods=['GET'])
-def home():
-    return "Hello, World!"
+# @app.route("/", methods=['GET'])
+# def home():
+#     return "Hello, World!"
 
 # TODO: use sha256 hashing for database passwords
 # When a vendor creates an account their data is added to the Database
-@app.route("/createVendorAccount/",  methods=['GET', 'POST'])
+@app.route("/createVendorAccount",  methods=['GET', 'POST'])
 @cross_origin()
 def create_vendor_user():
+    # Get all sent info from a json format
     payload = request.get_json(force=True)
-    restuarant = payload['restuarant']
+    restaurant = payload['restaurant']
     location = payload['location']
     email = payload['email']
     password = payload['password']
@@ -42,7 +43,7 @@ def create_vendor_user():
         dbCursor = connection.cursor()
         sql = ("""INSERT INTO Vendors
                VALUES (%s, %s, %s, %s, %s, %s);""")
-        data = (vendorID, restuarant, location, email, password, cuisine)
+        data = (vendorID, restaurant, location, email, password, cuisine)
 
         # Try to execute the sql statement and commit it
         try:
@@ -57,10 +58,39 @@ def create_vendor_user():
             disconnect_from_db(connection)
 
     except Exception as e:
-        return Response('Server ERROR in api.py', 500)
+        return Response('Server ERROR in api.create_vendor_user', 500)
     # Success and sends logged_in message
     response = Response('Welcome to Truck-d!', 201)
     return response
+
+# Searches for the given restuarant
+@app.route("/search", methods = ['GET', 'POST'])
+def vendor_search():
+    payload = request.get_json(force=True)
+    restuarant = payload['restaurant']
+
+    try:
+        connection = connect_to_db()
+        dbCursor = connection.cursor()
+        sql = """SELECT vendorID, restaurant_name, location FROM Vendors
+                    WHERE restaurant_name LIKE %s;"""
+
+        restaurant_name = ('%' + restuarant + '%')
+        data = (restaurant_name,)
+
+        dbCursor.execute(sql, data)
+        results = dbCursor.fetchall()
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+        return jsonify(results)
+
+    except Exception as e:
+        return Response('Server ERROR in api.vendor_search', 500)
+
+    finally:
+        dbCursor.close()
+        disconnect_from_db(connection)
 
 
 # Returns the menu of the given vendorID in JSON format
