@@ -127,7 +127,24 @@ const signUp = async (email:String,pass:String,restaurant:String,cuisine:String,
     delete vendor.password
     vendor['city'] = loc
 
-    return vendor
+    const vendor_data = {
+        name: vendor[0],
+        restaurant: vendor[1],
+        city: vendor[2],
+        cuisine: vendor[3],
+        description: "",
+        phone: 0,
+        hours: "",
+        state: "",
+        address: "",
+        menu: [{
+            name: "Food",
+            description: "description",
+            price: 0
+        }]
+    }
+
+    return vendor_data
 }
 
 // attempt vendor sign-in

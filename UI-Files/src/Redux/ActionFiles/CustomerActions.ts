@@ -1,6 +1,6 @@
 import { MenuItem, CustomerInfo, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { _GET } from '../../REST/restapiutil';
+import { _POST } from '../../REST/restapiutil';
 
 /*
 * CUSTOMER ACTION TYPES
@@ -96,7 +96,9 @@ export const sendOrder = (info: CustomerInfo): SendOrderAction => ({
 */
 
 const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
-    const vendors = await _GET('http://localhost:5000/'+ query)
+    const search_query = { location: query };
+    console.log(search_query)
+    const vendors = await _POST('http://localhost:5000/search', search_query)
     return JSON.parse(vendors)
 }
 
