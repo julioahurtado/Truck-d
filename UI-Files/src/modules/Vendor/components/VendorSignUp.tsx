@@ -16,6 +16,9 @@ interface VendorSignUpProps {
     emailField: any;
     passwordField: any; 
     passwordConfirmField: any; 
+    restaurantField: any;
+    cuisineField: any; 
+    locationField: any; 
  }
 
 
@@ -26,7 +29,10 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
         this.state = {
             emailField: React.createRef(),
             passwordField: React.createRef(),
-            passwordConfirmField: React.createRef()
+            passwordConfirmField: React.createRef(),
+            restaurantField: React.createRef(),
+            cuisineField: React.createRef(),
+            locationField: React.createRef() 
         }
     }
 
@@ -67,6 +73,27 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
                                 Confirm Password
                             </Form.Label>
                             <Form.Control ref={this.state.passwordConfirmField} type="password">
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='formRestaurantName'>
+                            <Form.Label>
+                                Restaurant Name
+                            </Form.Label>
+                            <Form.Control ref={this.state.restaurantField} type="text">
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='formCuisineType'>
+                            <Form.Label>
+                                Cuisine type
+                            </Form.Label>
+                            <Form.Control ref={this.state.cuisineField} type="text">
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='formCity'>
+                            <Form.Label>
+                                City
+                            </Form.Label>
+                            <Form.Control ref={this.state.locationField} type="text">
                             </Form.Control>
                         </Form.Group>
                         <Button variant="primary" type="button" onClick={() => this.handleSubmit()}>Create Account</Button>
