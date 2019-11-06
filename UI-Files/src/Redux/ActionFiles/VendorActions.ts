@@ -112,14 +112,22 @@ export const finishOrder = (order: Order): FinishOrderAction => ({
 
 const signIn = async (email: String, pass: String): Promise<VendorInfo> => {
     const user = { email, password: pass };
-    const vendor = await _POST('http://localhost:5000/authenticatevendor', JSON.stringify(user))
+    const vendor = await _POST('http://localhost:5000/login', user)
     return JSON.parse(vendor)
 };
 
-const signUp = async (email: String, pass: String): Promise<VendorInfo> => {
-    const user = { email, password: pass };
-    const vendor = await _POST('http://localhost:5000/createVendorAccount', JSON.stringify(user))
-    return JSON.parse(vendor)
+const signUp = async (email:String,pass:String,restaurant:String,cuisine:String,location:String): Promise<VendorInfo> => {
+    const user = { email, password: pass, restaurant, cuisine, location };
+    var vendor = await _POST('http://localhost:5000/createVendorAccount', user)
+    vendor = JSON.parse(vendor)
+    console.log(vendor)
+
+    const loc = vendor.location
+    delete vendor.location
+    delete vendor.password
+    vendor['city'] = loc
+
+    return vendor
 }
 
 // attempt vendor sign-in
@@ -135,10 +143,10 @@ export const vendorSignIn = (email: String, pass: String): LoginThunkAction => {
 }
 
 // attempt vendor sign-up
-export const vendorSignUp = (email: String, pass: String): LoginThunkAction => {
+export const vendorSignUp = (email:String,pass:String,restaurant:String,cuisine:String,location:String): LoginThunkAction => {
     return (dispatch: LoginThunkDispatch) => {
         dispatch(signUpBegin());
-        signUp(email, pass).then((vendor: VendorInfo) => {
+        signUp(email,pass,restaurant,cuisine,location).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))
         }).catch((error: Error) => {
             dispatch(signUpFailure(error))

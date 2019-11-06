@@ -40,6 +40,9 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
     handleSubmit(): Boolean {
         const email: String = this.state.emailField.current.value;
         const pass: String = this.state.passwordField.current.value;
+        const restaurant: String = this.state.restaurantField.current.value;
+        const cuisine: String = this.state.cuisineField.current.value;
+        const location: String = this.state.locationField.current.value;
 
         // Make sure password and confirmation fields match
         if (pass !== this.state.passwordConfirmField.current.value) {
@@ -47,7 +50,7 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
             return false
         }
 
-        this.props.signUp(email, pass)
+        this.props.signUp(email,pass,restaurant,cuisine,location)
         return true;
     }
 
@@ -108,8 +111,8 @@ const mapStateToProps = (state: RootState): VendorSignUpProps => ({
 });
 
 const mapDispatchToProps = (dispatch: LoginThunkDispatch): VendorSignUpProps => ({
-    signUp: (email: String, pass: String) =>
-        dispatch(vendorSignUp(email, pass))
+    signUp: (email:String,pass:String,restaurant:String,cuisine:String,location:String) =>
+        dispatch(vendorSignUp(email, pass, restaurant, cuisine, location))
 });
 
 const VendorSignUp = connect(

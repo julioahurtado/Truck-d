@@ -61,11 +61,12 @@ def create_vendor_user():
         return Response('Server ERROR in api.create_vendor_user', 500)
     # Success and sends logged_in message
     response = Response('Welcome to Truck-d!', 201)
-    return response
+    return jsonify(payload)
 
 # Sign in to a vendor profile.
 # will send a verificaiton signal
 @app.route("/login", methods=['GET', 'POST'])
+@cross_origin()
 def vendor_login():
     payload = request.get_json(force=True)
     email = payload['email']
@@ -101,6 +102,7 @@ def vendor_login():
 
 # Searches for the given restuarant
 @app.route("/search", methods = ['GET', 'POST'])
+@cross_origin()
 def vendor_search():
     payload = request.get_json(force=True)
     restuarant = payload['location']
@@ -131,6 +133,7 @@ def vendor_search():
 
 # Returns the menu of the given vendorID in JSON format
 @app.route('/menu', methods = ['GET'])
+@cross_origin()
 def get_vendor_menu():
     connection = connect_to_db()
     dbCursor = connection.cursor()
