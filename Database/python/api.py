@@ -54,14 +54,20 @@ def create_vendor_user():
             connection.rollback()
         # Close the cursor and the databse connection
         finally:
+            sql = ("""SELECT vendorID, restaurant_name, location, cuisine
+                   FROM Vendors
+                   WHERE email = %s
+                   AND pswd = %s;""")
+            data = (email, password)
+            dbCursor.execute(sql, data)
+            vendorInfo = dbCursor.fetchone()
             dbCursor.close()
             disconnect_from_db(connection)
 
     except Exception as e:
         return Response('Server ERROR in api.create_vendor_user', 500)
     # Success and sends logged_in message
-    response = Response('Welcome to Truck-d!', 201)
-    return response
+    return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
 # will send a verificaiton signal
@@ -75,9 +81,10 @@ def vendor_login():
         # Query the email and password
         connection = connect_to_db()
         dbCursor = connection.cursor()
-        sql = ("""SELECT * FROM Vendors
-                    WHERE email = %s
-                    AND pswd = %s;""")
+        sql = ("""SELECT vendorID, restaurant_name, location, cuisine
+               FROM Vendors
+               WHERE email = %s
+               AND pswd = %s;""")
         data = (email, password)
 
         dbCursor.execute(sql, data)
@@ -89,7 +96,7 @@ def vendor_login():
         if results == None:
             return Response("Incorrect email or password", 500)
         else:
-            return Response("Logged in!", 202)
+            return jsonify(results)
 
     except:
         dbCursor.close()
