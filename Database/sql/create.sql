@@ -16,10 +16,10 @@ CREATE TABLE Customers(
 -- Vendors
 CREATE TABLE Vendors(
 	vendorID INT PRIMARY KEY, -- This needs to be randomonly generated and unique at time of account creation.
-	restaurant_name VARCHAR(128),
+	restaurant_name VARCHAR(128) NOT NULL,
 	location VARCHAR(128),
 	email VARCHAR(64) UNIQUE NOT NULL,
-	pswd VARCHAR(256), -- save as plain text for now as we might use google login
+	pswd VARCHAR(256) NOT NULL, -- save as plain text for now as we might use google login
 	cuisine VARCHAR(64)
 );
 
