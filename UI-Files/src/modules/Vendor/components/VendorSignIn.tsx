@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Form, Container, Button } from 'react-bootstrap'
 import '../css/Style.css'
 
-import { vendorSignIn, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
+import { vendorSignIn, signInForm, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 
@@ -30,10 +30,12 @@ export class SignIn extends React.Component<VendorSignInProps, VendorSignInState
 
     // Initiates user sign-in on form submission
     handleSubmit(): Boolean {
-        const email: String = this.state.emailField.current.value;
-        const pass: String = this.state.passwordField.current.value
-        this.props.signIn(email, pass);
+        const form: signInForm = {
+            email: this.state.emailField.current.value,
+            password: this.state.passwordField.current.value
+        }
 
+        this.props.signIn(form);
         return true;
     }
 
@@ -66,8 +68,8 @@ const mapStateToProps = (state: RootState): VendorSignInProps => ({
 });
 
 const mapDispatchToProps = (dispatch: LoginThunkDispatch): VendorSignInProps => ({
-    signIn: (email: String, pass: String) => 
-        dispatch(vendorSignIn(email, pass))
+    signIn: (form: signInForm) => 
+        dispatch(vendorSignIn(form))
 });
 
 const VendorSignIn = connect(

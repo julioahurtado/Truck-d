@@ -97,7 +97,6 @@ export const sendOrder = (info: CustomerInfo): SendOrderAction => ({
 
 const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
     const search_query = { location: query };
-    console.log(search_query)
     const vendors = await _POST('http://localhost:5000/search', search_query)
     return JSON.parse(vendors)
 }

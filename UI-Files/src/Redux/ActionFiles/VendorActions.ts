@@ -110,48 +110,24 @@ export const finishOrder = (order: Order): FinishOrderAction => ({
 * THUNK ASYNC REQUESTS
 */
 
-const signIn = async (email: String, pass: String): Promise<VendorInfo> => {
-    const user = { email, password: pass };
-    const vendor = await _POST('http://localhost:5000/login', user)
+export interface signUpForm { email: String, password: String, restaurant: String, cuisine: String, location: String }
+export interface signInForm { email: String, password: String }
+
+const signIn = async (data: signInForm): Promise<VendorInfo> => {
+    const vendor = await _POST('http://localhost:5000/login', data)
     return JSON.parse(vendor)
 };
 
-const signUp = async (email:String,pass:String,restaurant:String,cuisine:String,location:String): Promise<VendorInfo> => {
-    const user = { email, password: pass, restaurant, cuisine, location };
-    var vendor = await _POST('http://localhost:5000/createVendorAccount', user)
-    vendor = JSON.parse(vendor)
-    console.log(vendor)
-
-    const loc = vendor.location
-    delete vendor.location
-    delete vendor.password
-    vendor['city'] = loc
-
-    const vendor_data = {
-        name: vendor[0],
-        restaurant: vendor[1],
-        city: vendor[2],
-        cuisine: vendor[3],
-        description: "",
-        phone: 0,
-        hours: "",
-        state: "",
-        address: "",
-        menu: [{
-            name: "Food",
-            description: "description",
-            price: 0
-        }]
-    }
-
-    return vendor_data
-}
+const signUp = async (data: signUpForm): Promise<VendorInfo> => {
+    const vendor = await _POST('http://localhost:5000/createVendorAccount', data)
+    return JSON.parse(vendor)
+};
 
 // attempt vendor sign-in
-export const vendorSignIn = (email: String, pass: String): LoginThunkAction => {
+export const vendorSignIn = (form: signInForm): LoginThunkAction => {
     return (dispatch: LoginThunkDispatch) => {
         dispatch(signInBegin());
-        signIn(email, pass).then((vendor: VendorInfo) => {
+        signIn(form).then((vendor: VendorInfo) => {
             dispatch(signInSuccess(vendor))
         }).catch((error: Error) => {
             dispatch(signInFailure(error))
@@ -160,10 +136,10 @@ export const vendorSignIn = (email: String, pass: String): LoginThunkAction => {
 }
 
 // attempt vendor sign-up
-export const vendorSignUp = (email:String,pass:String,restaurant:String,cuisine:String,location:String): LoginThunkAction => {
+export const vendorSignUp = (form: signUpForm): LoginThunkAction => {
     return (dispatch: LoginThunkDispatch) => {
         dispatch(signUpBegin());
-        signUp(email,pass,restaurant,cuisine,location).then((vendor: VendorInfo) => {
+        signUp(form).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))
         }).catch((error: Error) => {
             dispatch(signUpFailure(error))

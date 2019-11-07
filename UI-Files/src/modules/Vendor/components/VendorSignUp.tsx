@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Form, Container, Button } from 'react-bootstrap'
 import '../css/Style.css'
 
-import { vendorSignUp, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
+import { vendorSignUp, signUpForm, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 
@@ -38,19 +38,21 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
 
     // Initiates user sign-up on form submission
     handleSubmit(): Boolean {
-        const email: String = this.state.emailField.current.value;
-        const pass: String = this.state.passwordField.current.value;
-        const restaurant: String = this.state.restaurantField.current.value;
-        const cuisine: String = this.state.cuisineField.current.value;
-        const location: String = this.state.locationField.current.value;
+        const form: signUpForm = {
+            email: this.state.emailField.current.value,
+            password: this.state.passwordField.current.value,
+            restaurant: this.state.restaurantField.current.value,
+            cuisine: this.state.cuisineField.current.value,
+            location: this.state.locationField.current.value
+        }
 
         // Make sure password and confirmation fields match
-        if (pass !== this.state.passwordConfirmField.current.value) {
+        if (form.password !== this.state.passwordConfirmField.current.value) {
             console.log("Passwords do not match")
             return false
         }
 
-        this.props.signUp(email,pass,restaurant,cuisine,location)
+        this.props.signUp(form)
         return true;
     }
 
@@ -111,8 +113,8 @@ const mapStateToProps = (state: RootState): VendorSignUpProps => ({
 });
 
 const mapDispatchToProps = (dispatch: LoginThunkDispatch): VendorSignUpProps => ({
-    signUp: (email:String,pass:String,restaurant:String,cuisine:String,location:String) =>
-        dispatch(vendorSignUp(email, pass, restaurant, cuisine, location))
+    signUp: (form: signUpForm) =>
+        dispatch(vendorSignUp(form))
 });
 
 const VendorSignUp = connect(
