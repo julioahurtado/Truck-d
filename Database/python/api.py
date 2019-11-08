@@ -18,7 +18,7 @@ app.config["DEBUG"] = True
 # When a vendor creates an account their data is added to the Database
 @app.route("/createVendorAccount",  methods=['GET', 'POST'])
 @cross_origin()
-def create_vendor_user():
+def vendor_create_user():
     # Get all sent info from a json format
     payload = request.get_json(force=True)
     restaurant = payload['restaurant']
@@ -28,7 +28,7 @@ def create_vendor_user():
     cuisine = payload['cuisine']
 
     try:
-        if check_vendor_email(email):
+        if vendor_check_email(email):
             response = Response('That email is already registered!', 409)
             return response
 
@@ -36,7 +36,7 @@ def create_vendor_user():
         vendorID = random.randint(1000,9999)
 
         # If the these IDs are already in the DB we need to create a new one
-        while check_vendor_id(vendorID):
+        while vendor_check_id(vendorID):
             vendorID = random.randint(1000, 9999)
 
         connection = connect_to_db()
@@ -72,6 +72,7 @@ def create_vendor_user():
 # Sign in to a vendor profile.
 # will send a verificaiton signal
 @app.route("/login", methods=['GET', 'POST'])
+@cross_origin()
 def vendor_login():
     payload = request.get_json(force=True)
     email = payload['email']
@@ -103,14 +104,12 @@ def vendor_login():
         disconnect_from_db(connection)
     return Response("Incorrect email or password", 500)
 
-
-
-
 # Searches for the given restuarant
 @app.route("/search", methods = ['GET', 'POST'])
+@cross_origin()
 def vendor_search():
     payload = request.get_json(force=True)
-    restuarant = payload['location']
+    location = payload['location']
 
     try:
         connection = connect_to_db()
@@ -118,8 +117,8 @@ def vendor_search():
         sql = """SELECT vendorID, restaurant_name, location FROM Vendors
                     WHERE location LIKE %s;"""
 
-        restaurant_name = ('%' + restuarant + '%')
-        data = (restaurant_name,)
+        location = ('%' + location + '%')
+        data = (location,)
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchall()
@@ -135,37 +134,72 @@ def vendor_search():
         dbCursor.close()
         disconnect_from_db(connection)
 
+# Adds a menu item to the vendors list of food items
+@app.route("/addItem", methods = ['GET', 'POST'])
+@cross_origin()
+def vendor_add_menu_item():
+    # Fetch all item fields from JSON POST request
+    payload = request.get_json(force=True)
+    vendorID = payload['vendorID']
+    name = payload['name']
+    price = payload['price']
+    description = payload['description']
+
+    sql = """INSERT INTO Menus
+            VALUES (%s, %s, %s, %s);"""
+    data = (vendorID, name, price, description)
+
+    try:
+        # Attempt to insert the menu item
+        connection = connect_to_db()
+        dbCursor = connection.cursor()
+        dbCursor.execute(sql, data)
+        dbCursor.commit()
+    except:
+        # Rollback incase of failure and return an error response
+        connection.rollback()
+        return Response('Server ERROR in api.vendor_add_menu_item', 500)
+
+    # Get list of all menu items and return it as a json object
+    sql = """SELECT * FROM Menus
+            WHERE vendorID = %s;"""
+    data = (vendorID,)
+    dbCursor.execute(sql, data)
+    results = dbCursor.fetchall()
+
+    # finally close connection and return results as a json object
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return jsonify(results)
 
 # Returns the menu of the given vendorID in JSON format
 @app.route('/menu', methods = ['GET'])
-def get_vendor_menu():
+@cross_origin()
+def vendor_get_menu():
+    payload = request.get_json(force=True)
+    vendorID = payload['vendorID']
+
     connection = connect_to_db()
     dbCursor = connection.cursor()
 
-    sql = ("""SELECT * FROM Menus JOIN Vendors
-                ON Menus.vendorID = Vendors.vendorID =
-                WHERE menuID = %s;
-                FOR JSON AUTO""")
-    data = (id,)
+    sql = ("""SELECT * FROM Menus
+                WHERE vendorID = %s;""")
+    data = (vendorID,)
 
-    dbCursor.execute(sql, data)
-    results = dbCursor.fetchall()
+    try:
+        dbCursor.execute(sql, data)
+        results = dbCursor.fetchall()
+    except:
+        return Response('Server ERROR in api.vendor_add_menu_item', 500)
     dbCursor.close()
     disconnect_from_db(connection)
 
-    return results
-
-
-
-# queries database with email and login and if email and passowrd match the
-# return true
-#def vendor_login(email, password)
-#   Essentially the same as create_vendor but with a query instead of an insert
+    return jsonify(results)
 
 # Check to make sure ID is not already in database
 # return 1 if ID IS in database
 # 0 otherwise
-def check_vendor_id(id):
+def vendor_check_id(id):
     connection = connect_to_db()
     dbCursor = connection.cursor()
     sql = ("""SELECT vendorID FROM Vendors
@@ -182,31 +216,10 @@ def check_vendor_id(id):
     disconnect_from_db(connection)
     return False
 
-# Check to make sure ID is not already in database
-# return 1 if ID IS in database
-# 0 otherwise
-def check_menu_id(id):
-    connection = connect_to_db()
-    dbCursor = connection.cursor()
-    sql = ("""SELECT menuID FROM Vendors
-                WHERE menuID = %s;""")
-    data = (id,)
-
-    dbCursor.execute(sql, data)
-    results = dbCursor.fetchall()
-    if dbCursor.rowcount > 0:
-        dbCursor.close()
-        return True
-
-    dbCursor.close()
-    disconnect_from_db(connection)
-    return False
-
-
 # Check to make sure email is not already in database
 # return 1 if email IS in database
 # 0 otherwise
-def check_vendor_email(email):
+def vendor_check_email(email):
     connection = connect_to_db()
     dbCursor = connection.cursor()
     sql = ("""SELECT email FROM Vendors
@@ -252,7 +265,6 @@ def disconnect_from_db(connection):
     except:
         print("Disconnect Failure")
         return -1
-
 
 
 # This main is used for testing purposes, if you need to test the create_vendor_user
