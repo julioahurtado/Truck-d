@@ -18,7 +18,11 @@ interface VendorSignUpProps {
     passwordConfirmField: any; 
     restaurantField: any;
     cuisineField: any; 
-    locationField: any; 
+    addressField: any; 
+    cityField: any; 
+    stateField: any; 
+    beginHoursField: any; 
+    endHoursField: any; 
  }
 
 
@@ -32,7 +36,11 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
             passwordConfirmField: React.createRef(),
             restaurantField: React.createRef(),
             cuisineField: React.createRef(),
-            locationField: React.createRef() 
+            addressField: React.createRef(),
+            cityField: React.createRef(),
+            stateField: React.createRef(),
+            beginHoursField: React.createRef(),
+            endHoursField: React.createRef()
         }
     }
 
@@ -94,11 +102,35 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
                             <Form.Control ref={this.state.cuisineField} type="text">
                             </Form.Control>
                         </Form.Group>
+                        <Form.Group controlId='formBeginHours'>
+                            <Form.Label>
+                                Hours
+                            </Form.Label>
+                            <Form.Control ref={this.state.cuisineField} type="text" defaultValue='Start'>
+                            </Form.Control>
+                            <Form.Control ref={this.state.cuisineField} type="text" defaultValue='End'>
+                            </Form.Control>
+                        </Form.Group>
+                        
+                        <Form.Group controlId='formAddress'>
+                            <Form.Label>
+                                Address
+                            </Form.Label>
+                            <Form.Control ref={this.state.addressField} type="text">
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group controlId='formCity'>
                             <Form.Label>
                                 City
                             </Form.Label>
-                            <Form.Control ref={this.state.locationField} type="text">
+                            <Form.Control ref={this.state.cityField} type="text">
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='formStatey'>
+                            <Form.Label>
+                                State
+                            </Form.Label>
+                            <Form.Control ref={this.state.stateField} type="text">
                             </Form.Control>
                         </Form.Group>
                         <Button variant="primary" type="button" onClick={() => this.handleSubmit()}>Create Account</Button>
