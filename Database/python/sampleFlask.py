@@ -1,4 +1,4 @@
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -49,8 +49,9 @@ def authVendor():
         resp = Response('Authenticated', 200)
         return vendor_auth
     else:
-        resp = Response('Not Authenticated', 401)
-        return '{}'
+        test = jsonify(vendors)
+        resp = Response(test, 401)
+        return test
 
     return Response('Server ERROR', 500)
 
