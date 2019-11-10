@@ -1,6 +1,6 @@
 import { MenuItem, CustomerInfo, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { _POST } from '../../REST/restapiutil';
+import _GET, { _POST } from '../../REST/restapiutil';
 
 /*
 * CUSTOMER ACTION TYPES
@@ -12,9 +12,17 @@ export enum CUSTOMER_SEARCH_STATUS {
     FAILURE = 'CUSTOMER_SEARCH_FAILURE'
 }
 
+export enum GET_MENU_STATUS {
+    BEGIN = 'GET_MENU_BEGIN',
+    SUCCESS = 'GET_MENU_SUCCESS',
+    FAILURE = 'GET_MENU_FAILURE'
+}
+
+// possibly use to update menu state with selected vendor
+export const UPDATE_MENU_WITH_VENDOR = 'UPDATE_MENU_WITH_VENDOR';
+
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
-export const REMOVE_ITEM_TYPE_FROM_CART = 'REMOVE_ITEM_TYPE_FROM_CART';
 export const SEND_ORDER = 'SEND_ORDER';
 
 /*
@@ -26,12 +34,27 @@ export type CustomerSearchTypes = CUSTOMER_SEARCH_STATUS.BEGIN | CUSTOMER_SEARCH
 export type SearchThunkAction = ThunkAction<void, {}, {}, CustomerSearchAction>;
 export type SearchThunkDispatch = ThunkDispatch<{}, {}, CustomerSearchAction>;
 
+export type GetMenuTypes = GET_MENU_STATUS.BEGIN | GET_MENU_STATUS.SUCCESS | GET_MENU_STATUS.FAILURE
+export type GetMenuThunkAction = ThunkAction<void, {}, {}, GetMenuAction>
+export type GetMenuThunkDispatch = ThunkDispatch<{}, {}, GetMenuAction>
+
 // TODO: Merge error prop with payload prop
 export interface CustomerSearchAction {
     type: CustomerSearchTypes
     payload?: VendorInfo[]
     error?: Error
 };
+
+export interface GetMenuAction {
+    type: GetMenuTypes,
+    payload?: MenuItem[]
+    error?: Error
+}
+
+export interface UpdateMenuWithVendorAction {
+    type: typeof UPDATE_MENU_WITH_VENDOR,
+    payload?: VendorInfo,
+}
 
 export interface AddToCartAction {
     type: typeof ADD_TO_CART
@@ -40,11 +63,6 @@ export interface AddToCartAction {
 
 export interface RemoveFromCartAction {
     type: typeof REMOVE_FROM_CART
-    payload: MenuItem
-};
-
-export interface RemoveItemTypeFromCartAction {
-    type: typeof REMOVE_ITEM_TYPE_FROM_CART
     payload: MenuItem
 };
 
@@ -71,6 +89,25 @@ export const customerSearchFailure = (error: Error): CustomerSearchAction => ({
     error: error
 });
 
+export const getMenuBegin = (): GetMenuAction => ({
+    type: GET_MENU_STATUS.BEGIN,
+});
+
+export const getMenuSuccess = (menu: MenuItem[]): GetMenuAction => ({
+    type: GET_MENU_STATUS.SUCCESS,
+    payload: menu
+});
+
+export const getMenuFailure = (error: Error): GetMenuAction => ({
+    type: GET_MENU_STATUS.FAILURE,
+    error: error
+});
+
+export const updateMenuWithVendor = (vendor: VendorInfo): UpdateMenuWithVendorAction => ({
+    type: UPDATE_MENU_WITH_VENDOR,
+    payload: vendor
+})
+
 export const addToCart = (item: MenuItem): AddToCartAction => ({
     type: ADD_TO_CART,
     payload: item
@@ -78,11 +115,6 @@ export const addToCart = (item: MenuItem): AddToCartAction => ({
 
 export const removeFromCart = (item: MenuItem): RemoveFromCartAction => ({
     type: REMOVE_FROM_CART,
-    payload: item
-});
-
-export const removeItemTypeFromCart = (item: MenuItem): RemoveItemTypeFromCartAction => ({
-    type: REMOVE_ITEM_TYPE_FROM_CART,
     payload: item
 });
 
@@ -101,6 +133,11 @@ const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
     return JSON.parse(vendors)
 }
 
+const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
+    const menu = await _GET('http://localhost:5000/menu' + id)
+    return JSON.parse(menu)
+}
+
 // retrieves vendor-list based on user search-string
 export const fetchVendors = (query: String): SearchThunkAction => {
     return (dispatch: SearchThunkDispatch) => {
@@ -109,6 +146,18 @@ export const fetchVendors = (query: String): SearchThunkAction => {
             dispatch(customerSearchSuccess(vendors))
         }).catch((error: Error) => {
             dispatch(customerSearchFailure(error))
+        })
+    }
+}
+
+// retrieves menu for specified vendor
+export const fetchMenu = (id: Number): GetMenuThunkAction => {
+    return (dispatch: GetMenuThunkDispatch) => {
+        dispatch(getMenuBegin())
+        fetch_menu(id).then((menu: MenuItem[]) => {
+            dispatch(getMenuSuccess(menu))
+        }).catch((error: Error) => {
+            dispatch(getMenuFailure(error))
         })
     }
 }

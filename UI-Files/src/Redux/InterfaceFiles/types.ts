@@ -1,10 +1,12 @@
 export interface MenuItem {
+    id: Number,
     name: String
     description: String
     price: Number
 }
 
 export interface VendorInfo {
+    id: Number,
     name: String
     description: String
     cuisine: String
