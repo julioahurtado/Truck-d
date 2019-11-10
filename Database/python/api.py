@@ -10,10 +10,6 @@ import random
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
-# @app.route("/", methods=['GET'])
-# def home():
-#     return "Hello, World!"
-
 # TODO: use sha256 hashing for database passwords
 # When a vendor creates an account their data is added to the Database
 @app.route("/createVendorAccount",  methods=['GET', 'POST'])
@@ -21,11 +17,17 @@ app.config["DEBUG"] = True
 def vendor_create_user():
     # Get all sent info from a json format
     payload = request.get_json(force=True)
-    restaurant = payload['restaurant']
-    location = payload['location']
+    restaurant = payload['name']
+    description = payload['description']
+    cuisine = payload['cuisine']
+    open_hour = payload['hours']['open']
+    close_hour = payload['hours']['closed']
+    phone_number = payload['phone']
+    address = payload['address']
+    city = payload['city']
+    state = payload['state']
     email = payload['email']
     password = payload['password']
-    cuisine = payload['cuisine']
 
     try:
         if vendor_check_email(email):
@@ -42,9 +44,9 @@ def vendor_create_user():
         connection = connect_to_db()
         dbCursor = connection.cursor()
         sql = ("""INSERT INTO Vendors
-               VALUES (%s, %s, %s, %s, %s, %s);""")
-        data = (vendorID, restaurant, location, email, password, cuisine)
-
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""")
+        data = (vendorID, restaurant_name, email, city, state, address,
+                description, open_hour, close_hour, phone_number, cuisine, password)
         # Try to execute the sql statement and commit it
         try:
             dbCursor.execute(sql, data)
@@ -54,7 +56,8 @@ def vendor_create_user():
             connection.rollback()
         # Close the cursor and the databse connection
         finally:
-            sql = ("""SELECT vendorID, restaurant_name, location, cuisine
+            sql = ("""SELECT vendorID, restaurant_name, description, cuisine,
+                   open_hour, close_hour, phone_number, address, city, state
                    FROM Vendors
                    WHERE email = %s
                    AND pswd = %s;""")
@@ -82,7 +85,8 @@ def vendor_login():
         # Query the email and password
         connection = connect_to_db()
         dbCursor = connection.cursor()
-        sql = ("""SELECT vendorID, restaurant_name, location, cuisine
+        sql = ("""SELECT vendorID, restaurant_name, description, cuisine,
+               open_hour, close_hour, phone_number, address, city, state
                FROM Vendors
                WHERE email = %s
                AND pswd = %s;""")
@@ -95,30 +99,102 @@ def vendor_login():
         # If the query is empty return error 500
         # otherwise we are successful and return 202
         if results == None:
+            dbCursor.close()
+            disconnect_from_db(connection)
             return Response("Incorrect email or password", 500)
         else:
+            dbCursor.close()
+            disconnect_from_db(connection)
             return jsonify(results)
 
     except:
         dbCursor.close()
         disconnect_from_db(connection)
+
+    dbCursor.close()
+    disconnect_from_db(connection)
     return Response("Incorrect email or password", 500)
+
+@app.route("/editProfile", methods=['GET', 'POST'])
+@cross_origin()
+def vendor_edit_profile():
+    payload = request.get_json(force=True)
+    vendorID = payload['id']
+    restaurant = payload['name']
+    description = payload['description']
+    cuisine = payload['cuisine']
+    open_hour = payload['hours']['open']
+    close_hour = payload['hours']['closed']
+    phone_number = payload['phone']
+    address = payload['address']
+    city = payload['city']
+    state = payload['state']
+
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+
+    sql = """ UPDATE Vendors
+                    SET restaurant_name = %s, description = %s, cuisine = %s,
+                    open_hour = %s, close_hour = %s, phone_number = %s,
+                    address = %s, city = %s, state = %s
+                    WHERE vendorID = %s;"""
+    data = (restaurant_name, description, cuisine, open_hour, close_hour,
+                phone_number, address, city, state, vendorID)
+
+    try:
+        dbCursor.execute(sql, data)
+        dbCursor.commit()
+    except Exception as e:
+        dbCursor.rollback()
+        return Response(e, 500) # Cant remember the correct error code
+    finally:
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+
 
 # Searches for the given restuarant
 @app.route("/search", methods = ['GET', 'POST'])
 @cross_origin()
 def vendor_search():
     payload = request.get_json(force=True)
-    location = payload['location']
+    restuarant = payload['name']
+    address = payload['address']
+    city = payload['city']
+    state = payload['state']
 
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
     try:
-        connection = connect_to_db()
-        dbCursor = connection.cursor()
-        sql = """SELECT vendorID, restaurant_name, location FROM Vendors
-                    WHERE location LIKE %s;"""
+        sql = """SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE restaurant_name LIKE %s
+                UNION
 
-        location = ('%' + location + '%')
-        data = (location,)
+                SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE address LIKE %s
+                UNION
+
+                SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE city LIKE %s
+                UNION
+
+                SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE state LIKE %s
+                ORDER BY city;"""
+
+        restuarant = ('%' + restaurant + '%')
+        address = ('%' + address + '%')
+        city = ('%' + city + '%')
+        state = ('%' + state + '%')
+        data = (restuarant, address, city, state)
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchall()
@@ -140,7 +216,7 @@ def vendor_search():
 def vendor_add_menu_item():
     # Fetch all item fields from JSON POST request
     payload = request.get_json(force=True)
-    vendorID = payload['vendorID']
+    vendorID = payload['id']
     name = payload['name']
     price = payload['price']
     description = payload['description']
@@ -160,24 +236,17 @@ def vendor_add_menu_item():
         connection.rollback()
         return Response('Server ERROR in api.vendor_add_menu_item', 500)
 
-    # Get list of all menu items and return it as a json object
-    sql = """SELECT * FROM Menus
-            WHERE vendorID = %s;"""
-    data = (vendorID,)
-    dbCursor.execute(sql, data)
-    results = dbCursor.fetchall()
-
     # finally close connection and return results as a json object
     dbCursor.close()
     disconnect_from_db(connection)
-    return jsonify(results)
+    return Response("Successfully added item", 201)
 
 # Returns the menu of the given vendorID in JSON format
 @app.route('/menu', methods = ['GET'])
 @cross_origin()
 def vendor_get_menu():
     payload = request.get_json(force=True)
-    vendorID = payload['vendorID']
+    vendorID = payload['id']
 
     connection = connect_to_db()
     dbCursor = connection.cursor()
