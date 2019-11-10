@@ -110,7 +110,7 @@ export const finishOrder = (order: Order): FinishOrderAction => ({
 * THUNK ASYNC REQUESTS
 */
 
-export interface signUpForm { email: String, password: String, restaurant: String, cuisine: String, location: String }
+export interface signUpForm { email: String, password: String, name: String, description: String, cuisine: String, phone: String, address: String, city: String, state: String, open: Number, close: Number }
 export interface signInForm { email: String, password: String }
 
 const signIn = async (data: signInForm): Promise<VendorInfo> => {

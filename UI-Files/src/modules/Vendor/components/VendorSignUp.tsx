@@ -25,7 +25,7 @@ interface VendorSignUpProps {
     endHoursField: any; 
  }
 
-
+// TODO: Add description and phone inputs to form
 export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState> {
 
     constructor(props: VendorSignUpProps){
@@ -49,9 +49,15 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
         const form: signUpForm = {
             email: this.state.emailField.current.value,
             password: this.state.passwordField.current.value,
-            restaurant: this.state.restaurantField.current.value,
+            name: this.state.restaurantField.current.value,
+            description: "",
             cuisine: this.state.cuisineField.current.value,
-            location: this.state.locationField.current.value
+            phone: "",
+            address: this.state.addressField.current.value,
+            city: this.state.cityField.current.value,
+            state: this.state.stateField.current.value,
+            open: this.state.beginHoursField.current.value,
+            close: this.state.endHoursField.current.value,
         }
 
         // Make sure password and confirmation fields match
