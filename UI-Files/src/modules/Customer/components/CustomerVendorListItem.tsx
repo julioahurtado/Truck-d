@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 
 
 interface CustomerVendorListItemProps {
@@ -6,16 +7,26 @@ interface CustomerVendorListItemProps {
     vendorDescription: String;
     vendorCuisine: String;
     vendorHours: String;
+    vendorID: Number;
 }
 
 
 export default class CustomerVendorListItem extends React.Component<CustomerVendorListItemProps> {
+
+    handleCick(){
+        console.log('BRUHS');
+        
+    }
+
     render() {
         return (
             <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
-                <p>
-                    {this.props.vendorName}
-                </p>
+                <Link to={'/customer/menu/'} onClick={() => this.handleCick()}>
+                    <h1>
+                        {this.props.vendorName}
+                    </h1>
+
+                </Link>
                 <p>
                     {this.props.vendorDescription}
                 </p>

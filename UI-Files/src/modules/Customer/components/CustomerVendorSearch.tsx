@@ -7,6 +7,10 @@ import { fetchVendors, SearchThunkDispatch } from '../../../Redux/ActionFiles/Cu
 import { VendorInfo } from '../../../Redux/InterfaceFiles/types';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
+import { Switch, Router, Route } from 'react-router';
+import history from '../../History/history'
+import CustomerMenu from '../pages/CustomerMenuPage';
+import { Link } from 'react-router-dom';
 
 interface CustomerVendorSearchProps {
     vendorList?: VendorInfo[] | null
@@ -33,29 +37,41 @@ export class VendorSearch extends React.Component<CustomerVendorSearchProps,Cust
         const query: String = this.state.searchField.current.value;
         this.props.fetchVendors(query)
     }
-
+    
     render() {
         return (
-            <div>
-                <div style={{margin: 10}}>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Control ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search..." />
-                    </Form.Group>
-                </div>
-                {this.props.isLoading && <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </Spinner>}
-                {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
-                    {this.props.vendorList && this.props.vendorList.map((vendor: VendorInfo) => {
-                        return <CustomerVendorListItem 
-                            vendorName={vendor.name}
-                            vendorDescription={vendor.description}
-                            vendorCuisine={vendor.cuisine}
-                            vendorHours={vendor.hours}
-                        ></CustomerVendorListItem>
-                    })}
-                </ListGroup>}
-            </div>
+                <Router history={history}>  
+                    <div>
+                        <div style={{margin: 10}}>
+                            <Form.Group controlId="formBasicPassword">
+                                <Form.Control ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search..." />
+                            </Form.Group>
+                        </div>
+                        {this.props.isLoading && <Spinner animation="border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </Spinner>}
+                            {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
+                                {this.props.vendorList && this.props.vendorList.map((vendor: VendorInfo) => {
+                                    return (
+                                        <CustomerVendorListItem 
+                                            vendorName={vendor.name}
+                                            vendorDescription={vendor.description}
+                                            vendorCuisine={vendor.cuisine}
+                                            vendorHours={vendor.hours}
+                                            vendorID={1232156}
+                                            ></CustomerVendorListItem>
+                                    )
+                                })}
+                                <CustomerVendorListItem 
+                                            vendorName={'vendor.name'}
+                                            vendorDescription={'vendor.description'}
+                                            vendorCuisine={'vendor.cuisine'}
+                                            vendorHours={'vendor.hour'}
+                                            vendorID={1232156}
+                                            ></CustomerVendorListItem>
+                            </ListGroup>}
+                    </div>
+                </Router>
         )
     }
 }

@@ -22,7 +22,7 @@ export default class CustomerLandingPage extends React.Component<any> {
                         <CustomerCart>
                         </CustomerCart>
                     </Route>
-                    <Route path={'/customer/menu/:restaurantName'}>
+                    <Route path={'/customer/menu/'}>
                         <CustomerMenu
                             RestaurantName={CustomerMenuName}>
                         </CustomerMenu>
