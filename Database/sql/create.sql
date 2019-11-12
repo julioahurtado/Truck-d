@@ -1,3 +1,4 @@
+-- mysql -h truckd.ckfuvt7nenwp.us-east-1.rds.amazonaws.com --user admin --port 3306 -p
 DROP TABLE Customers;
 DROP TABLE Vendors;
 DROP TABLE Menus;
@@ -28,8 +29,7 @@ CREATE TABLE Vendors(
 	close_hour INT,
 	phone_number VARCHAR(10),
 	cuisine VARCHAR(64),
-	pswd VARCHAR(256) NOT NULL, -- save as plain text for now as we might use google login
-	FOREIGN KEY (vendorID) REFERENCES Menus(vendorID)
+	pswd VARCHAR(256) NOT NULL -- save as plain text for now as we might use google login
 );
 
 -- Menus
@@ -38,7 +38,7 @@ CREATE TABLE Vendors(
 -- the name, price, and description of each item.
 CREATE TABLE Menus(
 	vendorID INT,
-	menuItemID INT,
+	menuItemID INT UNIQUE,
 	name VARCHAR(64) NOT NULL,
 	price DECIMAL(6,2), -- Limit of a price of 9999.99
 	description VARCHAR(256)
@@ -47,18 +47,17 @@ CREATE TABLE Menus(
 -- Orders
 -- Stores the vendor
 CREATE TABLE Orders(
-	orderID PRIMARY KEY,
-	vendorID INT,
+	orderID INT,
+	vendorID INT NOT NULL,
 	price DECIMAL(6,2),
 	customer_name VARCHAR(64),
 	customer_email VARCHAR(64),
-	customer_phone VARCHAR(10)
-	FOREIGN KEY (orderID) REFERENCES OrderItems(orderID)
-
+	customer_phone VARCHAR(10),
+	PRIMARY KEY(orderID)
 );
 
 CREATE TABLE OrderItems(
-	orderID INT,
+	orderID INT NOT NULL,
 	menuItemID INT,
 	quantity INT
 );

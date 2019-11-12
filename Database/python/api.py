@@ -20,8 +20,8 @@ def vendor_create_user():
     restaurant = payload['name']
     description = payload['description']
     cuisine = payload['cuisine']
-    open_hour = payload['hours']['open']
-    close_hour = payload['hours']['closed']
+    open_hour = payload['open']
+    close_hour = payload['close']
     phone_number = payload['phone']
     address = payload['address']
     city = payload['city']
@@ -45,31 +45,30 @@ def vendor_create_user():
         dbCursor = connection.cursor()
         sql = ("""INSERT INTO Vendors
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""")
-        data = (vendorID, restaurant_name, email, city, state, address,
+        data = (vendorID, restaurant, email, city, state, address,
                 description, open_hour, close_hour, phone_number, cuisine, password)
         # Try to execute the sql statement and commit it
         try:
             dbCursor.execute(sql, data)
             connection.commit()
+            sql = ("""SELECT vendorID, restaurant_name, description, cuisine,
+                       open_hour, close_hour, phone_number, address, city, state
+                       FROM Vendors
+                       WHERE email = %s
+                       AND pswd = %s;""")
+            data = (email, password)
+            dbCursor.execute(sql, data)
+            vendorInfo = dbCursor.fetchone()
         # If Failure to insert then it rollsback and throws an error
         except:
             connection.rollback()
         # Close the cursor and the databse connection
-        finally:
-            sql = ("""SELECT vendorID, restaurant_name, description, cuisine,
-                   open_hour, close_hour, phone_number, address, city, state
-                   FROM Vendors
-                   WHERE email = %s
-                   AND pswd = %s;""")
-            data = (email, password)
-            dbCursor.execute(sql, data)
-            vendorInfo = dbCursor.fetchone()
-            dbCursor.close()
-            disconnect_from_db(connection)
 
     except Exception as e:
-        return Response('Server ERROR in api.create_vendor_user', 500)
+        return Response(str(e), 500)
     # Success and sends logged_in message
+    dbCursor.close()
+    disconnect_from_db(connection)
     return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
@@ -123,8 +122,8 @@ def vendor_edit_profile():
     restaurant = payload['name']
     description = payload['description']
     cuisine = payload['cuisine']
-    open_hour = payload['hours']['open']
-    close_hour = payload['hours']['closed']
+    open_hour = payload['open']
+    close_hour = payload['close']
     phone_number = payload['phone']
     address = payload['address']
     city = payload['city']
@@ -133,23 +132,28 @@ def vendor_edit_profile():
     connection = connect_to_db()
     dbCursor = connection.cursor()
 
-    sql = """ UPDATE Vendors
-                    SET restaurant_name = %s, description = %s, cuisine = %s,
-                    open_hour = %s, close_hour = %s, phone_number = %s,
-                    address = %s, city = %s, state = %s
-                    WHERE vendorID = %s;"""
-    data = (restaurant_name, description, cuisine, open_hour, close_hour,
+    sql = """UPDATE Vendors
+                SET restaurant_name = %s, description = %s, cuisine = %s,
+                open_hour = %s, close_hour = %s, phone_number = %s,
+                address = %s, city = %s, state = %s
+                WHERE vendorID = %s;"""
+    data = (restaurant, description, cuisine, open_hour, close_hour,
                 phone_number, address, city, state, vendorID)
 
     try:
         dbCursor.execute(sql, data)
-        dbCursor.commit()
+        connection.commit()
     except Exception as e:
-        dbCursor.rollback()
-        return Response(e, 500) # Cant remember the correct error code
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response(str(e), 500) # Cant remember the correct error code
     finally:
         dbCursor.close()
         disconnect_from_db(connection)
+
+    return Response("Successfully updated.", 201)
+
 
 
 
@@ -158,7 +162,7 @@ def vendor_edit_profile():
 @cross_origin()
 def vendor_search():
     payload = request.get_json(force=True)
-    restuarant = payload['name']
+    restaurant = payload['name']
     address = payload['address']
     city = payload['city']
     state = payload['state']
@@ -190,11 +194,11 @@ def vendor_search():
                 WHERE state LIKE %s
                 ORDER BY city;"""
 
-        restuarant = ('%' + restaurant + '%')
+        restaurant = ('%' + restaurant + '%')
         address = ('%' + address + '%')
         city = ('%' + city + '%')
         state = ('%' + state + '%')
-        data = (restuarant, address, city, state)
+        data = (restaurant, address, city, state)
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchall()
@@ -204,7 +208,7 @@ def vendor_search():
         return jsonify(results)
 
     except Exception as e:
-        return Response('Server ERROR in api.vendor_search', 500)
+        return Response(str(e), 500)
 
     finally:
         dbCursor.close()
