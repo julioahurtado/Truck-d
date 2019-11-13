@@ -1,6 +1,7 @@
 
 import * as React from 'react'
 import { ListGroup } from 'react-bootstrap'
+import MenuItem from '../components/CustomerMenuItem';
 
 interface CustomerMenuProps extends deleteWhenReduxIsAdded{
     vendor?: any;
@@ -23,14 +24,18 @@ export default class CustomerMenu extends React.Component<CustomerMenuProps> {
                     <br/>
                         {!this.props.isLoading && 
                         <ListGroup style={{padding: '2px'}}>
-                            {this.props.items.map((item: any) => 
+                            {this.props.items && this.props.items.map((item: any) => 
                                 {
                                     return (
-                                        <div>
-
-                                        </div>
+                                            <MenuItem>
+                                            </MenuItem>
                                     )
                                 })}
+                            <MenuItem
+                                itemName={'food'}
+                                itemDescriptiion={'tasty'}
+                                itemPrice={23.13}>
+                            </MenuItem>
                         </ListGroup>
                             }
             </div>

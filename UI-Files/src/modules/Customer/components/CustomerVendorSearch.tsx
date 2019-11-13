@@ -62,6 +62,7 @@ export class VendorSearch extends React.Component<CustomerVendorSearchProps,Cust
                                             ></CustomerVendorListItem>
                                     )
                                 })}
+                                {/* Remove after testing is done */}
                                 <CustomerVendorListItem 
                                             vendorName={'vendor.name'}
                                             vendorDescription={'vendor.description'}
