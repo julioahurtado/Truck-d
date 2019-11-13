@@ -6,3 +6,19 @@
     text-align: center;
     min-height: 100vh;
 }
+
+
+
+.RestaurantName, h1{
+    text-align: center;
+}
+
+.CustomerMenu, Button{
+    position: relative;
+
+}
+
+.MenuList{
+    position: relative;
+    
+}

@@ -7,9 +7,6 @@ import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
 
 
 
-
-
-
 interface CustomerCartProps{
     itemName: string
     itemDescriptiion :string
@@ -26,11 +23,16 @@ class ItemsInCart extends React.Component<CustomerCartProps> {
                 </p>
                 <p>
                     {this.props.itemDescriptiion}
-                    {this.props.itemPrice}
+                    <p style={{ textAlign:  'right'}}>
+                        {this.props.itemPrice}
+                    </p>
                 </p>
-                <Button style={{margin: 10}}variant="warning" type="button">minus 1</Button>
-                <Button style={{margin: 10}}variant="success" type="button">plus 1</Button>
-                <Button style={{margin: 10}}variant="danger" type="button">remove</Button>
+                <div className='text-right'>          
+                        <Button variant="warning" style={{margin: .5}} type="button">-</Button>
+                        <Button variant="success" style={{margin: .5}}type="button">+</Button>
+                        <Button variant="danger" style={{margin: .5}}type="button">x</Button>
+                </div>
+                
             </div>
 
         )
@@ -71,7 +73,6 @@ export default class CustomerCart extends React.Component<any> {
                         itemDescriptiion="3 Tacos Al pastor plate with grilled onions, choice of sauce on top and rich cilantro leaves."
                         itemPrice="  $10.99"
                         >
-                            
                     </ItemsInCart>
                 </ListGroup>
                     
