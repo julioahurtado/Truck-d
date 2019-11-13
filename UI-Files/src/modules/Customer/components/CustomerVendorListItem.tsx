@@ -1,13 +1,12 @@
 import * as React from 'react'
-
+import { VendorHours } from '../../../Redux/InterfaceFiles/types';
 
 interface CustomerVendorListItemProps {
     vendorName: String;
     vendorDescription: String;
     vendorCuisine: String;
-    vendorHours: String;
+    vendorHours: VendorHours;
 }
-
 
 export default class CustomerVendorListItem extends React.Component<CustomerVendorListItemProps> {
     render() {
@@ -23,7 +22,7 @@ export default class CustomerVendorListItem extends React.Component<CustomerVend
                     {this.props.vendorCuisine}
                 </p>
                 <p>
-                    {this.props.vendorHours}
+                    {"OPEN: " + this.props.vendorHours.open + ",CLOSE: " + this.props.vendorHours.close}
                 </p>
             </div>
 

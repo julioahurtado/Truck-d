@@ -5,12 +5,17 @@ export interface MenuItem {
     price: Number
 }
 
+export interface VendorHours {
+    open: Number,
+    close: Number
+}
+
 export interface VendorInfo {
     id: Number,
     name: String
     description: String
     cuisine: String
-    hours: String
+    hours: VendorHours
     phone: Number
     city: String
     state: String

@@ -78,7 +78,7 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
             return false
         }
 
-        // this.props.signUp(form)
+        this.props.signUp(form)
         return true;
     }
 
