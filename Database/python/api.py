@@ -69,7 +69,23 @@ def vendor_create_user():
     # Success and sends logged_in message
     dbCursor.close()
     disconnect_from_db(connection)
-    return jsonify(vendorInfo)
+
+    vendor = {
+        "id": vendorInfo[0],
+        "name": vendorInfo[1],
+        "description": vendorInfo[2],
+        "cuisine": vendorInfo[3],
+        "hours": {
+            "open": vendorInfo[4],
+            "close": vendorInfo[5],
+        },
+        "phone": vendorInfo[6],
+        "address": vendorInfo[7],
+        "city": vendorInfo[8],
+        "state": vendorInfo[9]
+    }
+
+    return jsonify(vendor)
 
 # Sign in to a vendor profile.
 # will send a verificaiton signal
@@ -92,7 +108,7 @@ def vendor_login():
         data = (email, password)
 
         dbCursor.execute(sql, data)
-        results = dbCursor.fetchone()
+        vendorInfo = dbCursor.fetchone()
         dbCursor.close()
         disconnect_from_db(connection)
         # If the query is empty return error 500
@@ -104,7 +120,23 @@ def vendor_login():
         else:
             dbCursor.close()
             disconnect_from_db(connection)
-            return jsonify(results)
+
+            vendor = {
+                "id": vendorInfo[0],
+                "name": vendorInfo[1],
+                "description": vendorInfo[2],
+                "cuisine": vendorInfo[3],
+                "hours": {
+                    "open": vendorInfo[4],
+                    "close": vendorInfo[5],
+                },
+                "phone": vendorInfo[6],
+                "address": vendorInfo[7],
+                "city": vendorInfo[8],
+                "state": vendorInfo[9]
+            }
+
+            return jsonify(vendor)
 
     except:
         dbCursor.close()
@@ -205,7 +237,24 @@ def vendor_search():
         dbCursor.close()
         disconnect_from_db(connection)
 
-        return jsonify(results)
+        vendors = []
+        for i in range(len(results)):
+            vendors.append({
+                "id": results[i][0],
+                "name": results[i][1],
+                "description": results[i][2],
+                "cuisine": results[i][3],
+                "hours": {
+                    "open": results[i][4],
+                    "close": results[i][5],
+                },
+                "phone": results[i][6],
+                "address": results[i][7],
+                "city": results[i][8],
+                "state": results[i][9]
+            })
+
+        return jsonify(vendors)
 
     except Exception as e:
         return Response(str(e), 500)
