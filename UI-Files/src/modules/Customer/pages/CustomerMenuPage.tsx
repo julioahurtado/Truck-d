@@ -2,17 +2,12 @@
 import * as React from 'react'
 import { ListGroup } from 'react-bootstrap'
 import CustomerMenuItem from '../components/CustomerMenuItem';
-import { VendorInfo, MenuItem } from '../../../Redux/InterfaceFiles/types';
+import { MenuItem } from '../../../Redux/InterfaceFiles/types';
 import { MenuState } from '../../../Redux/ReducerFiles/CustomerReducers/MenuReducer';
 import { RootState } from '../../../Redux/StoreFiles/store';
-import { fetchMenu, updateMenuWithVendor } from '../../../Redux/ActionFiles/CustomerActions';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 
-interface CustomerMenuProps extends MenuState {
-    fetchMenu?: any,
-    updateVendor?: any
-}
+interface CustomerMenuProps extends MenuState {}
 
 export class CustomerMenu extends React.Component<CustomerMenuProps> {
    
@@ -45,16 +40,8 @@ const mapStateToProps = (state: RootState): CustomerMenuProps => ({
     isLoading: state.customer.menuPage.menu.isLoading
 });
 
-const mapDispatchToProps = (dispatch: any): CustomerMenuProps => ({
-    fetchMenu: (id: Number) =>
-        dispatch(fetchMenu(id)),
-    updateVendor: (vendor: VendorInfo) =>
-        dispatch(updateMenuWithVendor(vendor))
-});
-
 const CustomerMenuViewer = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(CustomerMenu)
 
 export default CustomerMenuViewer;

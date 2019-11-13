@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import { Form, ListGroup, Spinner } from 'react-bootstrap'
-import CustomerVendorListItem from './CustomerVendorListItem'
+import CustomerVendorListItem, { CustomerVendorItem } from './CustomerVendorListItem'
 
 import { fetchVendors, SearchThunkDispatch } from '../../../Redux/ActionFiles/CustomerActions';
 import { VendorInfo } from '../../../Redux/InterfaceFiles/types';
@@ -47,11 +47,8 @@ export class VendorSearch extends React.Component<CustomerVendorSearchProps,Cust
                 </Spinner>}
                 {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
                     {this.props.vendorList && this.props.vendorList.map((vendor: VendorInfo) => {
-                        return <CustomerVendorListItem 
-                            vendorName={vendor.name}
-                            vendorDescription={vendor.description}
-                            vendorCuisine={vendor.cuisine}
-                            vendorHours={vendor.hours}
+                        return <CustomerVendorListItem
+                            vendor={vendor}
                         ></CustomerVendorListItem>
                     })}
                 </ListGroup>}
