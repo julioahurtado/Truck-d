@@ -15,17 +15,23 @@ app.config["DEBUG"] = True
 # When a vendor creates an account their data is added to the Database
 @app.route("/createVendorAccount",  methods=['GET', 'POST'])
 @cross_origin()
-def create_vendor_user():
+def vendor_create_user():
     # Get all sent info from a json format
     payload = request.get_json(force=True)
-    restaurant = payload['restaurant']
-    location = payload['location']
+    restaurant = payload['name']
+    description = payload['description']
+    cuisine = payload['cuisine']
+    open_hour = payload['open']
+    close_hour = payload['close']
+    phone_number = payload['phone']
+    address = payload['address']
+    city = payload['city']
+    state = payload['state']
     email = payload['email']
     password = payload['password']
-    cuisine = payload['cuisine']
 
     try:
-        if check_vendor_email(email):
+        if vendor_check_email(email):
             response = Response('That email is already registered!', 409)
             return response
 
@@ -33,43 +39,43 @@ def create_vendor_user():
         vendorID = random.randint(1000,9999)
 
         # If the these IDs are already in the DB we need to create a new one
-        while check_vendor_id(vendorID):
+        while vendor_check_id(vendorID):
             vendorID = random.randint(1000, 9999)
 
         connection = connect_to_db()
         dbCursor = connection.cursor()
         sql = ("""INSERT INTO Vendors
-               VALUES (%s, %s, %s, %s, %s, %s);""")
-        data = (vendorID, restaurant, location, email, password, cuisine)
-
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""")
+        data = (vendorID, restaurant, email, city, state, address,
+                description, open_hour, close_hour, phone_number, cuisine, password)
         # Try to execute the sql statement and commit it
         try:
             dbCursor.execute(sql, data)
             connection.commit()
+            sql = ("""SELECT vendorID, restaurant_name, description, cuisine,
+                       open_hour, close_hour, phone_number, address, city, state
+                       FROM Vendors
+                       WHERE email = %s
+                       AND pswd = %s;""")
+            data = (email, password)
+            dbCursor.execute(sql, data)
+            vendorInfo = dbCursor.fetchone()
         # If Failure to insert then it rollsback and throws an error
         except:
             connection.rollback()
         # Close the cursor and the databse connection
-        finally:
-            sql = ("""SELECT vendorID, restaurant_name, location, cuisine
-                   FROM Vendors
-                   WHERE email = %s
-                   AND pswd = %s;""")
-            data = (email, password)
-            dbCursor.execute(sql, data)
-            vendorInfo = dbCursor.fetchone()
-            dbCursor.close()
-            disconnect_from_db(connection)
 
     except Exception as e:
-        return Response('Server ERROR in api.create_vendor_user', 500)
+        return Response(str(e), 500)
     # Success and sends logged_in message
+    dbCursor.close()
+    disconnect_from_db(connection)
     return jsonify(vendorInfo)
-
 
 # Sign in to a vendor profile.
 # will send a verificaiton signal
 @app.route("/login", methods=['GET', 'POST'])
+@cross_origin()
 def vendor_login():
     payload = request.get_json(force=True)
     email = payload['email']
@@ -79,7 +85,8 @@ def vendor_login():
         # Query the email and password
         connection = connect_to_db()
         dbCursor = connection.cursor()
-        sql = ("""SELECT vendorID, restaurant_name, location, cuisine
+        sql = ("""SELECT vendorID, restaurant_name, description, cuisine,
+               open_hour, close_hour, phone_number, address, city, state
                FROM Vendors
                WHERE email = %s
                AND pswd = %s;""")
@@ -92,13 +99,20 @@ def vendor_login():
         # If the query is empty return error 500
         # otherwise we are successful and return 202
         if results == None:
+            dbCursor.close()
+            disconnect_from_db(connection)
             return Response("Incorrect email or password", 500)
         else:
+            dbCursor.close()
+            disconnect_from_db(connection)
             return jsonify(results)
 
     except:
         dbCursor.close()
         disconnect_from_db(connection)
+
+    dbCursor.close()
+    disconnect_from_db(connection)
     return Response("Incorrect email or password", 500)
 
 @app.route("/editProfile", methods=['GET', 'POST'])
@@ -144,18 +158,43 @@ def vendor_edit_profile():
 
 # Searches for the given restuarant
 @app.route("/search", methods = ['GET', 'POST'])
+@cross_origin()
 def vendor_search():
     payload = request.get_json(force=True)
-    restuarant = payload['location']
+    restaurant = payload['name']
+    address = payload['address']
+    city = payload['city']
+    state = payload['state']
 
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
     try:
-        connection = connect_to_db()
-        dbCursor = connection.cursor()
-        sql = """SELECT vendorID, restaurant_name, location FROM Vendors
-                    WHERE location LIKE %s;"""
+        sql = """SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE restaurant_name LIKE %s
+                UNION
+                SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE address LIKE %s
+                UNION
+                SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE city LIKE %s
+                UNION
+                SELECT vendorID, restaurant_name, description, cuisine,
+                        open_hour, close_hour, phone_number, address, city, state
+                FROM Vendors
+                WHERE state LIKE %s
+                ORDER BY city;"""
 
-        restaurant_name = ('%' + restuarant + '%')
-        data = (restaurant_name,)
+        restaurant = ('%' + restaurant + '%')
+        address = ('%' + address + '%')
+        city = ('%' + city + '%')
+        state = ('%' + state + '%')
+        data = (restaurant, address, city, state)
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchall()
@@ -165,7 +204,7 @@ def vendor_search():
         return jsonify(results)
 
     except Exception as e:
-        return Response('Server ERROR in api.vendor_search', 500)
+        return Response(str(e), 500)
 
     finally:
         dbCursor.close()
