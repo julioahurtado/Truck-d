@@ -2,9 +2,11 @@ import { GET_MENU_STATUS, GetMenuAction, UpdateMenuWithVendorAction, UPDATE_MENU
 import { MenuItem, VendorInfo } from '../../InterfaceFiles/types'
 import { combineReducers } from 'redux';
 
-interface MenuState {
+export interface MenuState extends MenuItemsState, VendorState {}
+
+interface MenuItemsState {
     menu?: MenuItem[] | null,
-    isLoading: Boolean,
+    isLoading?: Boolean,
     error?: Error | null
 }
 
@@ -16,13 +18,13 @@ let vendorState: VendorState = {
     vendor: null
 }
 
-let menuState: MenuState = {
+let menuState: MenuItemsState = {
     menu: null,
     isLoading: false,
     error: null
 }
 
-export const Menu = (state = menuState, action: GetMenuAction): MenuState => {
+export const Menu = (state = menuState, action: GetMenuAction): MenuItemsState => {
     switch(action.type) {
 
         // Begin menu fetch
