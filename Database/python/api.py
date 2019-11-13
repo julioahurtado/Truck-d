@@ -101,6 +101,46 @@ def vendor_login():
         disconnect_from_db(connection)
     return Response("Incorrect email or password", 500)
 
+@app.route("/editProfile", methods=['GET', 'POST'])
+@cross_origin()
+def vendor_edit_profile():
+    payload = request.get_json(force=True)
+    vendorID = payload['id']
+    restaurant = payload['name']
+    description = payload['description']
+    cuisine = payload['cuisine']
+    open_hour = payload['open']
+    close_hour = payload['close']
+    phone_number = payload['phone']
+    address = payload['address']
+    city = payload['city']
+    state = payload['state']
+
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+
+    sql = """UPDATE Vendors
+                SET restaurant_name = %s, description = %s, cuisine = %s,
+                open_hour = %s, close_hour = %s, phone_number = %s,
+                address = %s, city = %s, state = %s
+                WHERE vendorID = %s;"""
+    data = (restaurant, description, cuisine, open_hour, close_hour,
+                phone_number, address, city, state, vendorID)
+
+    try:
+        dbCursor.execute(sql, data)
+        connection.commit()
+    except Exception as e:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response(str(e), 500) # Cant remember the correct error code
+    finally:
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+    return Response("Successfully updated.", 201)
+
 
 # Searches for the given restuarant
 @app.route("/search", methods = ['GET', 'POST'])
