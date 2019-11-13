@@ -18,6 +18,8 @@ interface VendorSignUpProps {
     passwordConfirmField: any; 
     restaurantField: any;
     cuisineField: any; 
+    descriptionField: any; 
+    phoneNumberField: any; 
     addressField: any; 
     cityField: any; 
     stateField: any; 
@@ -36,12 +38,21 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
             passwordConfirmField: React.createRef(),
             restaurantField: React.createRef(),
             cuisineField: React.createRef(),
+            descriptionField: React.createRef(),
+            phoneNumberField: React.createRef(),
             addressField: React.createRef(),
             cityField: React.createRef(),
             stateField: React.createRef(),
             beginHoursField: React.createRef(),
             endHoursField: React.createRef()
         }
+    }
+
+    translateTime(timeStr: String): Number {
+        let hours = parseInt(timeStr.substring(0,2)) * 100;
+        let mins = parseInt(timeStr.substring(3))
+        let time = (hours + mins);
+        return time;
     }
 
     // Initiates user sign-up on form submission
@@ -59,14 +70,15 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
             open: this.state.beginHoursField.current.value,
             close: this.state.endHoursField.current.value,
         }
-
+        
+        
         // Make sure password and confirmation fields match
         if (form.password !== this.state.passwordConfirmField.current.value) {
             console.log("Passwords do not match")
             return false
         }
 
-        this.props.signUp(form)
+        // this.props.signUp(form)
         return true;
     }
 
@@ -108,16 +120,32 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
                             <Form.Control ref={this.state.cuisineField} type="text">
                             </Form.Control>
                         </Form.Group>
+                        <Form.Group controlId='formDescription' >
+                            <Form.Label>
+                                Description
+                            </Form.Label>
+                            <Form.Control ref={this.state.descriptionField} type="textarea">
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group controlId='formBeginHours'>
                             <Form.Label>
                                 Hours
                             </Form.Label>
-                            <Form.Control ref={this.state.cuisineField} type="text" defaultValue='Start'>
-                            </Form.Control>
-                            <Form.Control ref={this.state.cuisineField} type="text" defaultValue='End'>
-                            </Form.Control>
+                            <div style={{display: 'flex'}}>
+                                <Form.Label>
+                                    Opening
+                                </Form.Label>
+                                <Form.Control ref={this.state.beginHoursField} type="time">
+                                </Form.Control> 
+                            </div>
+                            <div style={{display: 'flex'}}>
+                                <Form.Label>
+                                    Closing
+                                </Form.Label>
+                                <Form.Control ref={this.state.endHoursField} type="time">
+                                </Form.Control>
+                            </div>
                         </Form.Group>
-                        
                         <Form.Group controlId='formAddress'>
                             <Form.Label>
                                 Address
