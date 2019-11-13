@@ -9,8 +9,8 @@ interface CustomerMenuProps extends deleteWhenReduxIsAdded{
 }
 
 interface deleteWhenReduxIsAdded {
-    RestaurantName: String;
-    items: any[];
+    RestaurantName?: String;
+    items?: any[];
 }
 
 
