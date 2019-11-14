@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 # pip3 install mysql-connector-python
+# Build minimum viable project
 import mysql.connector
 from mysql.connector import errorcode
 from flask import Flask, request, Response, json, jsonify
@@ -251,6 +252,7 @@ def vendor_add_menu_item():
 
 # Returns the menu of the given vendorID in JSON format
 @app.route('/menu', methods = ['GET'])
+@cross_origin()
 def get_vendor_menu():
     connection = connect_to_db()
     dbCursor = connection.cursor()
