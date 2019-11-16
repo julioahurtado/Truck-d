@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Button, Container, Row, Col } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 interface CustomerCartProps{
-    itemName?: String;
-    itemDescriptiion?: String;
-    itemPrice?: Number;
+    itemName?: String,
+    itemDescription?: String,
+    itemPrice?: Number
 }
 
  export default class CustomerMenuItem extends React.Component<CustomerCartProps> {
@@ -24,7 +24,7 @@ interface CustomerCartProps{
                     {this.props.itemName}
                 </p>
                 <p>
-                    {this.props.itemDescriptiion}
+                    {this.props.itemDescription}
                 </p>
                 <p>
                     {this.props.itemPrice}

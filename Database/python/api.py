@@ -295,27 +295,33 @@ def vendor_add_menu_item():
     return Response("Successfully added item", 201)
 
 # Returns the menu of the given vendorID in JSON format
-@app.route('/menu', methods = ['GET'])
+@app.route('/menu', methods = ['POST'])
 @cross_origin()
-def vendor_get_menu():
-    payload = request.get_json(force=True)
-    vendorID = payload['id']
-
+def get_vendor_menu():
     connection = connect_to_db()
     dbCursor = connection.cursor()
-
+    payload = request.get_json(force=True)
+    id = payload['id']
     sql = ("""SELECT * FROM Menus
-                WHERE vendorID = %s;""")
-    data = (vendorID,)
-
-    try:
-        dbCursor.execute(sql, data)
-        results = dbCursor.fetchall()
-    except:
-        return Response('Server ERROR in api.vendor_add_menu_item', 500)
+               WHERE vendorID = %s;""")
+    data = (id,)
+    dbCursor.execute(sql, data)
+    results = dbCursor.fetchall()
     dbCursor.close()
     disconnect_from_db(connection)
 
+    menu_items = []
+    for i in range(len(results)):
+        menu_items.append({
+            "id": results[i][1],
+            "name": results[i][2],
+            "description": results[i][4],
+            "price": 2,
+        })
+
+    return jsonify(menu_items)
+
+    print(results)
     return jsonify(results)
 
 # Check to make sure ID is not already in database
