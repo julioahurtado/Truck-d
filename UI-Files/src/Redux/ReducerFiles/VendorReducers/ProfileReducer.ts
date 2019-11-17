@@ -11,7 +11,7 @@ export interface ProfileState {
     error?: Error | null
 };
 
-let initState: ProfileState = {
+export const initState: ProfileState = {
     vendor: null,
     isLoading: false,
     error: null
