@@ -168,8 +168,36 @@ export const addMenuItemBegin = (): AddMenuItemAction  => ({
     type: ADD_MENU_ITEM_STATUS.BEGIN
 });
 
+export const addMenuItemSuccess = (item: MenuItem): AddMenuItemAction  => ({
+    type: ADD_MENU_ITEM_STATUS.SUCCESS,
+    payload: item
+});
+
+export const addMenuItemFailure = (error: Error): AddMenuItemAction  => ({
+    type: ADD_MENU_ITEM_STATUS.FAILURE,
+    error: error
+});
+
+export const deleteMenuItemBegin = (item: MenuItem): DeleteMenuItemAction  => ({
+    type: DELETE_MENU_ITEM_STATUS.BEGIN
+});
+
 export const deleteMenuItemSuccess = (item: MenuItem): DeleteMenuItemAction  => ({
     type: DELETE_MENU_ITEM_STATUS.SUCCESS,
+    payload: item
+});
+
+export const deleteMenuItemFailure = (error: Error): DeleteMenuItemAction  => ({
+    type: DELETE_MENU_ITEM_STATUS.FAILURE,
+    error: error
+});
+
+export const editMenuItemBegin = (): EditMenuItemAction  => ({
+    type: EDIT_MENU_ITEM_STATUS.BEGIN
+});
+
+export const editMenuItemSuccess = (item: MenuItem): EditMenuItemAction  => ({
+    type: EDIT_MENU_ITEM_STATUS.FAILURE,
     payload: item
 });
 

@@ -20,7 +20,7 @@ export interface VendorInfo {
     city: String
     state: String
     address: String
-    menu: MenuItem[]
+    menu: (MenuItem | undefined)[]
 }
 
 export interface CustomerInfo {

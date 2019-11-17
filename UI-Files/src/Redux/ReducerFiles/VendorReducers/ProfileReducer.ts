@@ -60,20 +60,18 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
         * HANDLE MENU ITEM CREATION
         */
 
-        // Signals start of vendor login
         case ADD_MENU_ITEM_STATUS.BEGIN:
             return {
                 ...state,
                 isLoading: true
             };
 
-        // Signals successfull vendor login
         case ADD_MENU_ITEM_STATUS.SUCCESS:
             return {
                 ...state,
-                vendor: {
+                vendor: state.vendor && {
                     ...state.vendor,
-                    menu: [
+                    menu: state.vendor.menu && [
                         ...state.vendor.menu,
                         action.payload
                     ]
@@ -81,7 +79,6 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
                 isLoading: false
             };
 
-        // Signals failed vendor login
         case ADD_MENU_ITEM_STATUS.FAILURE:
             return {
                 ...state,
@@ -93,25 +90,26 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
         * HANDLE MENU ITEM DELETION
         */
 
-         // Signals start of vendor login
          case DELETE_MENU_ITEM_STATUS.BEGIN:
             return {
                 ...state,
                 isLoading: true
             };
 
-        // Signals successfull vendor login
         case DELETE_MENU_ITEM_STATUS.SUCCESS:
             return {
                 ...state,
-                vendor: {
+                vendor: state.vendor && {
                     ...state.vendor,
-                    menu: state.vendor.menu.filter(item => item !== action.payload),
+                    menu: state.vendor.menu && state.vendor.menu.map(item => {
+                        if (action.payload && item && item.id != action.payload.id) {
+                            return item
+                        }
+                    }),
                 },
                 isLoading: false
             };
 
-        // Signals failed vendor login
         case DELETE_MENU_ITEM_STATUS.FAILURE:
             return {
                 ...state,
@@ -123,35 +121,26 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
         * HANDLE MENU ITEM EDITING
         */
 
-         // Signals start of vendor login
          case EDIT_MENU_ITEM_STATUS.BEGIN:
             return {
                 ...state,
                 isLoading: true
             };
 
-        // Signals successfull vendor login
         case EDIT_MENU_ITEM_STATUS.SUCCESS:
             return {
                 ...state,
-                vendor: {
+                vendor: state.vendor && {
                     ...state.vendor,
-                    menu: state.vendor.menu.map((item) => {
-                        if (item.id !== action.payload.id) {
-                          return item
-                        }
-                    
-                        // Otherwise, this is the one we want - return an updated value
-                        return {
-                          ...item,
-                          ...action.payload
-                        }
-                      })
-                    },
+                    menu: state.vendor.menu && state.vendor.menu.map(item => {
+                        if (action.payload && item && item.id == action.payload.id) {
+                            return action.payload
+                        } else return item
+                    }),
+                },
                 isLoading: false
             };
 
-        // Signals failed vendor login
         case EDIT_MENU_ITEM_STATUS.FAILURE:
             return {
                 ...state,
