@@ -1,6 +1,7 @@
 import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { _POST } from '../../REST/restapiutil';
+import { reject } from 'q';
 
 /*
 * VENDOR ACTION TYPES
@@ -12,8 +13,31 @@ export enum LOGIN_STATUS {
     FAILURE = 'LOGIN_FAILURE'
 }
 
-export const UPDATE_PROFILE_INFO = 'UPDATE_PROFILE_INFO';
-export const UPDATE_MENU = 'UPDATE_MENU';
+export enum UPDATE_PROFILE_STATUS {
+    BEGIN = 'UPDATE_PROFILE_BEGIN',
+    SUCCESS = 'UPDATE_PROFILE_SUCCESS',
+    FAILURE = 'UPDATE_PROFILE_FAILURE'
+}
+
+export enum ADD_MENU_ITEM_STATUS {
+    BEGIN = 'ADD_MENU_ITEM_BEGIN',
+    SUCCESS = 'ADD_MENU_ITEM_SUCCESS',
+    FAILURE = 'ADD_MENU_ITEM_FAILURE'
+}
+
+export enum DELETE_MENU_ITEM_STATUS {
+    BEGIN = 'DELETE_MENU_ITEM_BEGIN',
+    SUCCESS = 'DELETE_MENU_ITEM_SUCCESS',
+    FAILURE = 'DELETE_MENU_ITEM_FAILURE'
+}
+
+export enum EDIT_MENU_ITEM_STATUS {
+    BEGIN = 'EDIT_MENU_ITEM_BEGIN',
+    SUCCESS = 'EDIT_MENU_ITEM_SUCCESS',
+    FAILURE = 'EDIT_MENU_ITEM_FAILURE'
+}
+
+export const UPDATE_VENDOR = 'UPDATE_VENDOR';
 
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const FINISH_ORDER = 'FINISH_ORDER';
@@ -25,23 +49,58 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 // TODO: Move types and action interfaces to /InterfaceFiles
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
 export type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
-export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction>
+export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction|UpdateVendorAction>
+
+export type UpdateProfileTypes = UPDATE_PROFILE_STATUS.BEGIN | UPDATE_PROFILE_STATUS.SUCCESS | UPDATE_PROFILE_STATUS.FAILURE
+export type UpdateProfileThunkAction = ThunkAction<void, {}, {}, UpdateProfileAction>
+export type UpdateProfileThunkDispatch = ThunkDispatch<{}, {}, UpdateProfileAction>
+
+export type AddMenuItemTypes = ADD_MENU_ITEM_STATUS.BEGIN | ADD_MENU_ITEM_STATUS.SUCCESS | ADD_MENU_ITEM_STATUS.FAILURE
+export type AddMenuItemThunkAction = ThunkAction<void, {}, {}, AddMenuItemAction>
+export type AddMenuItemThunkDispatch = ThunkDispatch<{}, {}, AddMenuItemAction>
+
+export type DeleteMenuItemTypes = DELETE_MENU_ITEM_STATUS.BEGIN | DELETE_MENU_ITEM_STATUS.SUCCESS | DELETE_MENU_ITEM_STATUS.FAILURE
+export type DeleteMenuItemThunkAction = ThunkAction<void, {}, {}, DeleteMenuItemAction>
+export type DeleteMenuItemThunkDispatch = ThunkDispatch<{}, {}, DeleteMenuItemAction>
+
+export type EditMenuItemTypes = EDIT_MENU_ITEM_STATUS.BEGIN | EDIT_MENU_ITEM_STATUS.SUCCESS | EDIT_MENU_ITEM_STATUS.FAILURE
+export type EditMenuItemThunkAction = ThunkAction<void, {}, {}, EditMenuItemAction>
+export type EditMenuItemThunkDispatch = ThunkDispatch<{}, {}, EditMenuItemAction>
 
 // TODO: Merge error prop with payload prop
 export interface LoginAction {
     type: LoginTypes,
-    payload?: VendorInfo
+    payload?: VendorInfo,
     error?: Error
 }
 
-export interface UpdateProfileInfoAction {
-    type: typeof UPDATE_PROFILE_INFO,
-    payload: MenuItem
+export interface UpdateProfileAction {
+    type: UPDATE_PROFILE_STATUS,
+    payload?: VendorInfo,
+    error?: Error
 }
 
-export interface UpdateMenuAction {
-    type: typeof UPDATE_MENU,
-    payload: MenuItem
+export interface AddMenuItemAction {
+    type: ADD_MENU_ITEM_STATUS,
+    payload?: MenuItem,
+    error?: Error
+}
+
+export interface DeleteMenuItemAction {
+    type: DELETE_MENU_ITEM_STATUS,
+    payload?: MenuItem,
+    error?: Error
+}
+
+export interface EditMenuItemAction {
+    type: EDIT_MENU_ITEM_STATUS,
+    payload?: MenuItem,
+    error?: Error
+}
+
+export interface UpdateVendorAction {
+    type: typeof UPDATE_VENDOR,
+    payload: VendorInfo
 }
 
 export interface CancelOrderAction {
@@ -86,14 +145,37 @@ export const signUpFailure = (error: Error): LoginAction => ({
     error: error
 });
 
-export const updateProfileInfo = (item: MenuItem): UpdateProfileInfoAction  => ({
-    type: UPDATE_PROFILE_INFO,
+export const updateVendor = (vendor: VendorInfo): UpdateVendorAction => ({
+    type: UPDATE_VENDOR,
+    payload: vendor
+})
+
+export const updateProfileBegin = (): UpdateProfileAction  => ({
+    type: UPDATE_PROFILE_STATUS.BEGIN
+});
+
+export const updateProfileSuccess = (vendor: VendorInfo): UpdateProfileAction  => ({
+    type: UPDATE_PROFILE_STATUS.SUCCESS,
+    payload: vendor
+});
+
+export const updateProfileFailure = (error: Error): UpdateProfileAction  => ({
+    type: UPDATE_PROFILE_STATUS.FAILURE,
+    error: error
+});
+
+export const addMenuItemBegin = (): AddMenuItemAction  => ({
+    type: ADD_MENU_ITEM_STATUS.BEGIN
+});
+
+export const deleteMenuItemSuccess = (item: MenuItem): DeleteMenuItemAction  => ({
+    type: DELETE_MENU_ITEM_STATUS.SUCCESS,
     payload: item
 });
 
-export const updateMenu = (item: MenuItem): UpdateMenuAction => ({
-    type: UPDATE_MENU,
-    payload: item
+export const editMenuItemFailure = (error: Error): EditMenuItemAction  => ({
+    type: EDIT_MENU_ITEM_STATUS.FAILURE,
+    error: error
 });
 
 export const cancelOrder = (order: Order): CancelOrderAction => ({
@@ -129,6 +211,7 @@ export const vendorSignIn = (form: signInForm): LoginThunkAction => {
         dispatch(signInBegin());
         signIn(form).then((vendor: VendorInfo) => {
             dispatch(signInSuccess(vendor))
+            dispatch(updateVendor(vendor))
         }).catch((error: Error) => {
             dispatch(signInFailure(error))
         })
@@ -141,8 +224,29 @@ export const vendorSignUp = (form: signUpForm): LoginThunkAction => {
         dispatch(signUpBegin());
         signUp(form).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))
+            dispatch(updateVendor(vendor))
         }).catch((error: Error) => {
             dispatch(signUpFailure(error))
+        })
+    }
+}
+
+// profile editor
+export const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
+    const resp = await _POST('http://localhost:5000/vendorUpdate', vendor);
+    if (resp != '200') {
+        reject(new Error('Error updating profile'))
+    }
+    return vendor
+}
+
+export const vendorUpdateProfile = (vendor: VendorInfo): UpdateProfileThunkAction => {
+    return (dispatch: UpdateProfileThunkDispatch) => {
+        dispatch(updateProfileBegin());
+        update_profile(vendor).then((vendor: VendorInfo) => {
+            dispatch(updateProfileSuccess(vendor))
+        }).catch((error: Error) => {
+            dispatch(updateProfileFailure(error))
         })
     }
 }
