@@ -32,7 +32,7 @@ def vendor_create_user():
     password = payload['password']
 
     try:
-        if vendor_check_email(email):
+        if check_vendor_email(email):
             response = Response('That email is already registered!', 409)
             return response
 
@@ -40,7 +40,7 @@ def vendor_create_user():
         vendorID = random.randint(1000,9999)
 
         # If the these IDs are already in the DB we need to create a new one
-        while vendor_check_id(vendorID):
+        while check_vendor_id(vendorID):
             vendorID = random.randint(1000, 9999)
 
         connection = connect_to_db()
@@ -60,17 +60,33 @@ def vendor_create_user():
                        AND pswd = %s;""")
             data = (email, password)
             dbCursor.execute(sql, data)
-            vendorInfo = dbCursor.fetchone()
+            results = dbCursor.fetchone()
         # If Failure to insert then it rollsback and throws an error
         except:
             connection.rollback()
         # Close the cursor and the databse connection
 
     except Exception as e:
+        connection.rollback()
         return Response(str(e), 500)
     # Success and sends logged_in message
     dbCursor.close()
     disconnect_from_db(connection)
+    vendorInfo = []
+    vendorInfo.append({
+               "id": results[0],
+               "name": results[1],
+               "description": results[2],
+               "cuisine": results[3],
+               "hours": {
+                   "open": results[4],
+                   "close": results[5],
+               },
+               "phone": results[6],
+               "address": results[7],
+               "city": results[8],
+               "state": results[9]
+           })
     return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
@@ -106,7 +122,22 @@ def vendor_login():
         else:
             dbCursor.close()
             disconnect_from_db(connection)
-            return jsonify(results)
+            vendorInfo = []
+            vendorInfo.append({
+                       "id": results[0],
+                       "name": results[1],
+                       "description": results[2],
+                       "cuisine": results[3],
+                       "hours": {
+                           "open": results[4],
+                           "close": results[5],
+                       },
+                       "phone": results[6],
+                       "address": results[7],
+                       "city": results[8],
+                       "state": results[9]
+                   })
+            return jsonify(vendorInfo)
 
     except:
         dbCursor.close()
@@ -188,8 +219,7 @@ def vendor_search():
                 SELECT vendorID, restaurant_name, description, cuisine,
                         open_hour, close_hour, phone_number, address, city, state
                 FROM Vendors
-                WHERE state LIKE %s
-                ORDER BY city;"""
+                WHERE state LIKE %s;"""
 
         restaurant = ('%' + restaurant + '%')
         address = ('%' + address + '%')
@@ -199,10 +229,6 @@ def vendor_search():
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchall()
-        dbCursor.close()
-        disconnect_from_db(connection)
-
-        return jsonify(results)
 
     except Exception as e:
         return Response(str(e), 500)
@@ -210,7 +236,23 @@ def vendor_search():
     finally:
         dbCursor.close()
         disconnect_from_db(connection)
-
+    vendors = []
+    for i in range(len(results)):
+        vendors.append({
+               "id": results[i][0],
+               "name": results[i][1],
+               "description": results[i][2],
+               "cuisine": results[i][3],
+               "hours": {
+                   "open": results[i][4],
+                   "close": results[i][5],
+               },
+               "phone": results[i][6],
+               "address": results[i][7],
+               "city": results[i][8],
+               "state": results[i][9]
+           })
+    return jsonify(vendors)
 
 # Adds a menu item to the vendors list of food items
 @app.route("/addItem", methods = ['GET', 'POST'])
@@ -249,11 +291,44 @@ def vendor_add_menu_item():
     disconnect_from_db(connection)
     return Response("Successfully added item", 201)
 
+@app.route("/editItem", methods = ['GET', 'POST'])
+@cross_origin()
+def vendor_edit_menu_item():
+    payload = request.get_json(force=True)
+    menuItemID = payload['id']
+    name = payload['name']
+    price = payload['price']
+    description = payload['description']
+
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+
+    sql = """UPDATE Menus
+                SET name = %s, price = %s, description = %s
+                WHERE menuItemID = %s;"""
+    data = (name, price, description, menuItemID)
+
+    try:
+        dbCursor.execute(sql, data)
+        connection.commit()
+        results = dbCursor.fetchone()
+
+    except Exception as e:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response(str(e), 500) # Cant remember the correct error code
+    finally:
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+    return Response("Successfully updated.", 201)
+
 
 # Returns the menu of the given vendorID in JSON format
 @app.route('/menu', methods = ['GET'])
 @cross_origin()
-def get_vendor_menu():
+def vendor_get_menu():
     connection = connect_to_db()
     dbCursor = connection.cursor()
     payload = request.get_json(force=True)
@@ -268,8 +343,34 @@ def get_vendor_menu():
     dbCursor.close()
     disconnect_from_db(connection)
 
-    return jsonify(results)
+    menu = []
+    for i in range(len(results)):
+        menu.append({
+               "id": results[i][1],
+               "name": results[i][2],
+               "price": results[i][3],
+               "description": results[i][4]
+           })
 
+    return jsonify(menu)
+
+@app.route('addOrder', methods = ['GET', 'POST'])
+def vendor_add_order():
+    payload = request.get_json(force=True)
+    vendorID = payload['id']
+    name = payload['name']
+    email = payload['email']
+    price = payload['price']
+    menuList = []
+    for i in range(len(payload['item'])):
+        menuList.appendpayload['item']
+
+
+
+
+
+# --------- Helper Functions --------- #
+#--------------------------------------#
 
 # Check to make sure ID is not already in database
 # return 1 if ID IS in database
@@ -333,7 +434,9 @@ def check_vendor_email(email):
     disconnect_from_db(connection)
     return False
 
-# --------- Connection Methods --------- #
+# --------- Connection Functions --------- #
+#------------------------------------------#
+
 # Used to connect to the database to perform queries
 def connect_to_db():
     # Attempt to connect
@@ -363,13 +466,6 @@ def disconnect_from_db(connection):
         print("Disconnect Failure")
         return -1
 
-
-
-# This main is used for testing purposes, if you need to test the create_vendor_user
-# function, then change these values
-def main():
-    print(create_vendor_user('Los Pericos', 'Santa Cruz, CA', 'eeeemial@ucsc.edu', 'pass', 'Mexican'))
-    #app.run()
 
 if __name__ == '__main__':
     app.run(debug=True)
