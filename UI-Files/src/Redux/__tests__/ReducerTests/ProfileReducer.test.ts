@@ -34,7 +34,7 @@ const updated_vendor = {
 }
 
 const menu_item: MenuItem = {
-  id: 3,
+  id: 1,
   name: "Beyond Burger",
   description: "Buger made from plants",
   price: 6.99
@@ -85,9 +85,7 @@ describe('The Profile Reducer', () => {
       ...vendor_base_state,
       vendor: {
         ...vendor_base_state.vendor,
-        menu: vendor_base_state.vendor.menu.filter(item => {
-          item && item.id != menu_item.id
-        })
+        menu: vendor_base_state.vendor.menu.filter(item => item && item.id != menu_item.id)
       }
     }))
   })
