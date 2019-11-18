@@ -101,11 +101,9 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
                 ...state,
                 vendor: state.vendor && {
                     ...state.vendor,
-                    menu: state.vendor.menu && state.vendor.menu.map(item => {
-                        if (action.payload && item && item.id != action.payload.id) {
-                            return item
-                        }
-                    }),
+                    menu: state.vendor.menu && state.vendor.menu.filter(item => {
+                        item && action.payload && item.id != action.payload.id
+                      }),
                 },
                 isLoading: false
             };
@@ -133,9 +131,11 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
                 vendor: state.vendor && {
                     ...state.vendor,
                     menu: state.vendor.menu && state.vendor.menu.map(item => {
-                        if (action.payload && item && item.id == action.payload.id) {
+                        if (action.payload && item && action.payload.id == item.id) {
                             return action.payload
-                        } else return item
+                        } else {
+                            return item
+                        }
                     }),
                 },
                 isLoading: false

@@ -197,7 +197,7 @@ export const editMenuItemBegin = (): EditMenuItemAction  => ({
 });
 
 export const editMenuItemSuccess = (item: MenuItem): EditMenuItemAction  => ({
-    type: EDIT_MENU_ITEM_STATUS.FAILURE,
+    type: EDIT_MENU_ITEM_STATUS.SUCCESS,
     payload: item
 });
 
