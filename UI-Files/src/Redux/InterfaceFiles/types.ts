@@ -1,22 +1,31 @@
 export interface MenuItem {
-    id: Number,
+    id: number,
     name: String
     description: String
-    price: Number
+    price: number
+}
+
+export interface OrderItem extends MenuItem {
+    quantity: number
+}
+
+export interface CartInfo {
+    cart: OrderItem[],
+    vendor: VendorInfo
 }
 
 export interface VendorHours {
-    open: Number,
-    close: Number
+    open: number,
+    close: number
 }
 
 export interface VendorInfo {
-    id: Number,
+    id: number,
     name: String
     description: String
     cuisine: String
     hours: VendorHours
-    phone: Number
+    phone: number
     city: String
     state: String
     address: String
@@ -26,11 +35,11 @@ export interface VendorInfo {
 export interface CustomerInfo {
     name: String
     email: String
-    phone: Number
+    phone: number
 }
 
 export interface Order {
     customerInfo: CustomerInfo
     orderNumber: Number
-    orderItems: MenuItem[]
+    orderItems: OrderItem[]
 }

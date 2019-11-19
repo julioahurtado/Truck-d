@@ -40,9 +40,9 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
 }
 
 const mapStateToProps = (state: RootState): CustomerMenuProps => ({
-    menu: state.customer.menuPage.menu.menu,
-    vendor: state.customer.menuPage.vendor.vendor,
-    isLoading: state.customer.menuPage.menu.isLoading
+    menu: state.customer.menuPage.menu,
+    vendor: state.customer.menuPage.vendor,
+    isLoading: state.customer.menuPage.isLoading
 });
 
 const CustomerMenuViewer = connect(
