@@ -1,5 +1,5 @@
 import * as React from 'react'
-import  { Router, Link, Switch, Route,Redirect} from 'react-router-dom'
+import { Router, Link, Switch, Route, Redirect } from 'react-router-dom'
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import history from '../../History/history'
 import VendorProfileEditor from './VendorProfileEditor'
@@ -31,6 +31,7 @@ export default class VendorLandingPage extends React.Component<any> {
                                 </Col>
                             </Row>
                         </Container>
+                        <VendorProfileEditor></VendorProfileEditor>
                     </Route>
                     <Route path={'/vendor/signin'}>
                         <VenderSignIn></VenderSignIn>

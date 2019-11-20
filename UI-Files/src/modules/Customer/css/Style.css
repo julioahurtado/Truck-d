@@ -19,3 +19,17 @@ img{
     padding: 3%;
     width:100%;
 }
+.form{
+    width: 235%;
+    margin: 15px;
+}
+.savebutton{
+    text-align: center;
+}
+.addMenuItem{
+    text-align: center;
+    padding: 10px;
+}
+.menuName{
+    text-align: center;
+}

@@ -10,3 +10,13 @@
 .Label{
     text-align: left;
 }
+.paragraph{
+    text-align: center;
+    margin: auto;
+}
+.edit{
+    float:left;
+}
+.delete{
+    float:right;
+}
