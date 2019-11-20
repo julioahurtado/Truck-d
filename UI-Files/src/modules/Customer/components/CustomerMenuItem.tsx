@@ -5,9 +5,9 @@ import '../css/Style.css'
 import { Link } from 'react-router-dom'
 
 interface MenuListProps{
-    itemName: string
-    itemDescriptiion :string
-    itemPrice :string
+    itemName?: string;
+    itemDescriptiion?: string;
+    itemPrice?: string;
 }
 export default class MenuList extends React.Component<MenuListProps> {
 

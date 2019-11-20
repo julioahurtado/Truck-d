@@ -60,7 +60,7 @@ async function _POST(
             reject(new Error(this.status + " ERROR IN CONNECTION TO " + url));
         };
     
-        request.send(payload);
+        request.send(JSON.stringify(payload));
     });
 }
 async function _DELETE(
