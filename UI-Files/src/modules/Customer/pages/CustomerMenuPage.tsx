@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import { ListGroup, Row, Col, Button } from 'react-bootstrap'
-import CustomerMenuItem from '../components/CustomerMenuItem';
+import { CustomerMenuItem } from '../components/CustomerMenuItem';
 import { MenuItem } from '../../../Redux/InterfaceFiles/types';
 import { MenuState } from '../../../Redux/ReducerFiles/CustomerReducers/MenuReducer';
 import { RootState } from '../../../Redux/StoreFiles/store';
@@ -11,11 +11,6 @@ import { Link } from 'react-router-dom';
 interface CustomerMenuProps extends MenuState {}
 
 export class CustomerMenu extends React.Component<CustomerMenuProps> {
-   
-    componentDidMount() {
-        console.log(this.props.menu)
-    }
-
     render() {
         return (
             <div>
@@ -25,11 +20,12 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                     {this.props.menu && this.props.menu.map((item: MenuItem) => 
                         {
                             return (
-                                    <CustomerMenuItem>
-                                        itemName={item.name}
-                                        itemDescription={item.description}
-                                        itemPrice={item.price}
-                                    </CustomerMenuItem>
+                                    <CustomerMenuItem
+                                        id={item.id}
+                                        name={item.name}
+                                        description={item.description}
+                                        price={item.price}
+                                    ></CustomerMenuItem>
                             )
                         }
                     )}

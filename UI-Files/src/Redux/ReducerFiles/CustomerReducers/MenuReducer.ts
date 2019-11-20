@@ -21,12 +21,12 @@ export const initState: MenuState = {
 export const Menu = (state: MenuState = initState, action: GetMenuAction | CartActions | UpdateMenuWithVendorAction): MenuState => {
     switch(action.type) {
 
-        case CHECKOUT_ORDER:
-            return {
-                ...state,
-                menu: null,
-                cart: null
-            };
+        // case CHECKOUT_ORDER:
+        //     return {
+        //         ...state,
+        //         menu: null,
+        //         cart: null
+        //     };
 
         // Add vendor data to menu page
         case UPDATE_MENU_WITH_VENDOR:
@@ -64,16 +64,6 @@ export const Menu = (state: MenuState = initState, action: GetMenuAction | CartA
 
         // Either decrements quantity of item in cart or removes from cart entirely
         case REMOVE_ITEM_FROM_CART:
-            // const updatedCart = state.cart && state.cart.map(item => {
-            //     if (item.id == action.payload.id) {
-            //         return {
-            //             ...item,
-            //             quantity: item.quantity - 1
-            //         }
-            //     }
-            //     return { ...item }
-            // });
-
             return {
                 ...state,
                 cart: state.cart && state.cart.map(item => {
