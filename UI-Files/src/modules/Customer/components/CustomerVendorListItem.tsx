@@ -1,18 +1,25 @@
 import * as React from 'react'
-
+import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
+import '../css/Style.css'
 
 interface CustomerVendorListItemProps {
     vendorName: string;
     vendorDesription: string;
     vendorCuisine: string;
     vendorHours: string;
+    
 }
 
 
 export default class CustomerVendorListItem extends React.Component<CustomerVendorListItemProps> {
     render() {
         return (
-            <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
+            <Form>
+                <Row>
+                    <Col>
+                    <div className="listRes">
+            <ListGroup>
+            <ListGroup.Item action href="/customer/menu/:vendorName">
                 <p>
                     {this.props.vendorName}
                 </p>
@@ -25,8 +32,15 @@ export default class CustomerVendorListItem extends React.Component<CustomerVend
                 <p>
                     {this.props.vendorHours}
                 </p>
-            </div>
+            </ListGroup.Item>
+            </ListGroup>
+                </div>
+            </Col>
+            </Row>
+            </Form>
+
 
         )
     }
 }
+

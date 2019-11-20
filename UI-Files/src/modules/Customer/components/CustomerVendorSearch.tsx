@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
 import CustomerVendorListItem from './CustomerVendorListItem'
-
+import '../css/Style.css'
 interface CustomerVendorSearchProps {
     vendorList?: any[];
 }
@@ -28,12 +28,21 @@ export default class CustomerVendorSearch extends React.Component<CustomerVendor
     render() {
         return (
             <div>
-                <div style={{margin: 10}}>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Control ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search..." />
+                <div className="centered" style={{margin: 10}}>
+                    <Form.Group controlId="formBasicEmail">
+                        
+                        <Form.Row>
+                            <Col>
+                                <Form.Control style={{width: 500}} ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search Food Truck by Name, city, type" />
+                            </Col>
+                            <Col>
+                                <Button variant="primary" type="submit">Go!</Button>
+                            </Col>
+                        </Form.Row>
+                       
                     </Form.Group>
                 </div>
-                <ListGroup style={{padding: '2px'}}>
+                <ListGroup style={{padding: '2px'}} >
                     {/* {this.props.vendorList.map((vendor, key) => {
                         <CustomerVendorListItem 
                             vendorName={vendor.name}
@@ -42,7 +51,7 @@ export default class CustomerVendorSearch extends React.Component<CustomerVendor
                             vendorHours={vendor.hours}
                         ></CustomerVendorListItem>
                     })} */}
-                    <CustomerVendorListItem 
+                    <CustomerVendorListItem
                         vendorName="Vallarta"
                         vendorDesription="Amazing Burritos"
                         vendorCuisine="Mexican"

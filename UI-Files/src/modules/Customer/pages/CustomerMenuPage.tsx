@@ -1,35 +1,21 @@
 
 import * as React from 'react'
-import { Button } from 'react-bootstrap'
+import { Form, Button, Row, Col} from 'react-bootstrap'
 import MenuList from '../components/MenuList'
 import '../css/Style.css'
+import { Link } from 'react-router-dom'
 
 interface CustomerMenuProps {
-    RestaurantName: String;
     
 }
-
-
-class RestaurantName extends React.Component<CustomerMenuProps>{
-    render(){
-        return(
-            <div>
-                <h1 >{this.props.RestaurantName}</h1>
-                <h1>Menu:</h1>
-            </div>
-        )
-    }
-}
-
 
 
 export default class CustomerMenu extends React.Component<CustomerMenuProps> {
     render() {
         return (
+            <Form>
             <div>
-                <RestaurantName RestaurantName="Vallarta">
-                <h1>Menu</h1>
-                </RestaurantName>
+                <h1>Menu:</h1>
 
                 
                 <div className='text-center'>  
@@ -62,6 +48,22 @@ export default class CustomerMenu extends React.Component<CustomerMenuProps> {
                     >
                 </MenuList>
             </div>
+            <div className="centered">
+                <Row> 
+                
+                    <Col xs={6}>
+                    <Link to="/customer">
+                    <Button style={{position: 'relative', bottom: '-20px', margin: 5, left: '-20px'}} variant="secondary"  type="button">Return</Button>
+                    </Link>
+                    </Col>
+                    <Col xs={6}>
+                    <Link to="/customer/order">
+                    <Button variant="primary" style={{position: 'relative', bottom: '-20px', margin: 5, right: '-20px'}} type="button">Checkout</Button>
+                    </Link>
+                    </Col>
+                </Row>
+            </div>
+            </Form>
         )
     }
 }

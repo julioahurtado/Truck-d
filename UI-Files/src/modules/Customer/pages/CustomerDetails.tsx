@@ -33,9 +33,10 @@ export default class CustomerDetails extends React.Component<any, CustomerDetail
     
     render(){
         return (
-           // <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
-            <div>
+            <Form>
                 <h1>Details</h1>
+            <div className="centered">
+                
                 <div style={{margin: 10}}>
                     <Form.Group controlId='formName'>
                         Name:<Form.Control style={{width: 400}} type="text" ref={this.state.customerName} onChange={() => this.handleSubmit()}>
@@ -51,6 +52,8 @@ export default class CustomerDetails extends React.Component<any, CustomerDetail
                     </Form.Group>
                 </div>
            </div>
+
+        </Form>
         )
     }
 }

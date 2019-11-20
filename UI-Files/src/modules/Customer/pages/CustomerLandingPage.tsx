@@ -8,10 +8,8 @@ import CustomerVendorSearch from '../components/CustomerVendorSearch'
 
 
 
-
 export default class CustomerLandingPage extends React.Component<any> {
     render() {
-        var CustomerMenuName = 'Test Restaurant'
         return (
             <Router history={history}>
                 <Switch>
@@ -29,10 +27,10 @@ export default class CustomerLandingPage extends React.Component<any> {
                         </CustomerDetails>
                         <CustomerCart>
                         </CustomerCart>
+                        
                     </Route>
-                    <Route path={'/customer/menu/:restaurantName'}>
-                        <CustomerMenu
-                            RestaurantName={CustomerMenuName}>
+                    <Route path={'/customer/menu/:vendorName'}>
+                        <CustomerMenu> 
                         </CustomerMenu>
                     </Route>
                 </Switch>

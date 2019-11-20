@@ -4,7 +4,8 @@ import * as React from 'react'
 import '../components/CustomerVendorSearch'
 import '../components/CustomerVendorListItem'
 import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
-
+import '../css/Style.css'
+import { Link } from 'react-router-dom'
 
 
 interface CustomerCartProps{
@@ -17,24 +18,32 @@ interface CustomerCartProps{
 class ItemsInCart extends React.Component<CustomerCartProps> {
     render() {
         return (
-            <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
-                <p>
-                    {this.props.itemName}
-                </p>
-                <p>
-                    {this.props.itemDescriptiion}
-                    <p style={{ textAlign:  'right'}}>
-                        {this.props.itemPrice}
+            
+            <div className="listFood">
+
+            
+            <ListGroup>
+                <ListGroup.Item  style={{background: '#ecf0f5', borderWidth: '3px', borderColor: '#3c8dbc', borderStyle: "double solid", borderRadius: '5px', padding: '2px', }}>
+                    
+                    <p>
+                        {this.props.itemName}
                     </p>
-                </p>
-                <div className='text-right'>          
+                    <p>
+                        {this.props.itemDescriptiion}
+                        <p style={{ textAlign:  'right'}}>
+                            {this.props.itemPrice}
+                        </p>
+                    </p>
+                        <div className='text-right'>          
                         <Button variant="warning" style={{margin: .5}} type="button">-</Button>
                         <Button variant="success" style={{margin: .5}}type="button">+</Button>
                         <Button variant="danger" style={{margin: .5}}type="button">x</Button>
-                </div>
-                
+                        </div>        
+                </ListGroup.Item>
+            </ListGroup>
             </div>
 
+            
         )
     }
 }
@@ -42,6 +51,7 @@ class ItemsInCart extends React.Component<CustomerCartProps> {
 export default class CustomerCart extends React.Component<any> {
     render(){
         return (
+            <Form>
             <div>
  
                <h1>Cart</h1>
@@ -77,6 +87,22 @@ export default class CustomerCart extends React.Component<any> {
                 </ListGroup>
                     
             </div>
+            <div className="centered">
+            <Row> 
+
+                    <Col xs={6}>
+                    <Link to="/customer/menu/:vendorName'">
+                    <Button style={{position: 'relative', bottom: '-20px', margin: 5, left: '-20px'}} variant="secondary"  type="button">Return</Button>
+                    </Link>
+                    </Col>
+                    <Col xs={6}>
+                    <Link to="/customer">
+                    <Button variant="warning" style={{position: 'relative', bottom: '-20px', margin: 5, right: '-20px'}} type="button">Cancel</Button>
+                    </Link>
+                    </Col>
+            </Row>
+        </div>
+        </Form>
         )
     }
 }
