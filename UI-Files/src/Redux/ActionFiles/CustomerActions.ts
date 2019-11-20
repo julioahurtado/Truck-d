@@ -151,7 +151,6 @@ const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
 const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
     const menu_query = { id };
     const menu = await _POST('http://localhost:5000/menu', menu_query)
-    console.log(JSON.parse(menu))
     return JSON.parse(menu)
 }
 

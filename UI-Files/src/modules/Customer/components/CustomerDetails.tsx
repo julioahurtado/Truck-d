@@ -24,9 +24,6 @@ export default class CustomerDetails extends React.Component<any, CustomerDetail
     }
 
     handleSubmit() {
-        console.log(this.state.customerName.current.value);
-        console.log(this.state.customerEmail.current.value);
-        console.log(this.state.customerPhone.current.value);
         return true;
     }
     
