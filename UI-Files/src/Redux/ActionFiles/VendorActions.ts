@@ -178,7 +178,7 @@ export const addMenuItemFailure = (error: Error): AddMenuItemAction  => ({
     error: error
 });
 
-export const deleteMenuItemBegin = (item: MenuItem): DeleteMenuItemAction  => ({
+export const deleteMenuItemBegin = (): DeleteMenuItemAction  => ({
     type: DELETE_MENU_ITEM_STATUS.BEGIN
 });
 
@@ -268,6 +268,35 @@ export const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> =>
     return vendor
 }
 
+export const add_to_menu = async (item: MenuItem): Promise<MenuItem> => {
+    const resp = await _POST('http://localhost:5000/add_menu_item', item);
+    const itemID = 0;
+    return new Promise<MenuItem>((resolve, reject) => {
+        if (resp == '200') {
+            item.id = itemID
+            resolve(item)
+        } else reject(new Error("Error adding menu item"))
+    })
+}
+
+export const edit_menu_item = async (item: MenuItem): Promise<MenuItem> => {
+    const resp = await _POST('http://localhost:5000/edit_menu_item_item', item);
+    return new Promise<MenuItem>((resolve, reject) => {
+        if (resp == '200') {
+            resolve(item)
+        } else return reject(new Error("Error editing menu item"))
+    })
+}
+
+export const delete_menu_item = async (item: MenuItem): Promise<MenuItem> => {
+    const resp = await _POST('http://localhost:5000/delete_menu_item', item);
+    return new Promise<MenuItem>((resolve, reject) => {
+        if (resp == '200') {
+            resolve(item)
+        } else reject(new Error("Error editing menu item"))
+    })
+}
+
 export const vendorUpdateProfile = (vendor: VendorInfo): UpdateProfileThunkAction => {
     return (dispatch: UpdateProfileThunkDispatch) => {
         dispatch(updateProfileBegin());
@@ -275,6 +304,41 @@ export const vendorUpdateProfile = (vendor: VendorInfo): UpdateProfileThunkActio
             dispatch(updateProfileSuccess(vendor))
         }).catch((error: Error) => {
             dispatch(updateProfileFailure(error))
+        })
+    }
+}
+
+// id of menu item is vendor id
+export const vendorAddMenuItem = (item: MenuItem): AddMenuItemThunkAction => {
+    return (dispatch: AddMenuItemThunkDispatch) => {
+        dispatch(addMenuItemBegin());
+        add_to_menu(item).then((item: MenuItem) => {
+            dispatch(addMenuItemSuccess(item))
+        }).catch((error: Error) => {
+            dispatch(addMenuItemFailure(error))
+        })
+    }
+}
+
+// id of original menu item. do we also need vendor id
+export const vendorEditMenuItem = (item: MenuItem): EditMenuItemThunkAction => {
+    return (dispatch: EditMenuItemThunkDispatch) => {
+        dispatch(editMenuItemBegin());
+        edit_menu_item(item).then((item: MenuItem) => {
+            dispatch(editMenuItemSuccess(item))
+        }).catch((error: Error) => {
+            dispatch(editMenuItemFailure(error))
+        })
+    }
+}
+
+export const vendorDeleteMenuItem = (item: MenuItem): DeleteMenuItemThunkAction => {
+    return (dispatch: DeleteMenuItemThunkDispatch) => {
+        dispatch(deleteMenuItemBegin());
+        delete_menu_item(item).then((item: MenuItem) => {
+            dispatch(deleteMenuItemSuccess(item))
+        }).catch((error: Error) => {
+            dispatch(deleteMenuItemFailure(error))
         })
     }
 }

@@ -102,7 +102,7 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
                 vendor: state.vendor && {
                     ...state.vendor,
                     menu: state.vendor.menu && state.vendor.menu.filter(item => {
-                        item && action.payload && item.id != action.payload.id
+                        return item && action.payload && item.id != action.payload.id
                       }),
                 },
                 isLoading: false
