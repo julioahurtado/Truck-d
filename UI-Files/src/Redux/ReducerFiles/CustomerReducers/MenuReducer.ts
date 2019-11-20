@@ -1,31 +1,74 @@
-import { GET_MENU_STATUS, GetMenuAction, UpdateMenuWithVendorAction, UPDATE_MENU_WITH_VENDOR } from '../../ActionFiles/CustomerActions';
-import { MenuItem, VendorInfo } from '../../InterfaceFiles/types'
-import { combineReducers } from 'redux';
+import { GET_MENU_STATUS, GetMenuAction, UpdateMenuWithVendorAction, UPDATE_MENU_WITH_VENDOR, CHECKOUT_ORDER, CheckoutOrderAction, ADD_ITEM_TO_CART, AddItemToCartAction, RemoveItemFromCartAction, REMOVE_ITEM_FROM_CART } from '../../ActionFiles/CustomerActions';
+import { MenuItem, VendorInfo, OrderItem } from '../../InterfaceFiles/types'
 
-export interface MenuState extends MenuItemsState, VendorState {}
-
-interface MenuItemsState {
+export interface MenuState {
     menu?: MenuItem[] | null,
+    vendor?: VendorInfo | null,
+    cart?: OrderItem[] | null,
     isLoading?: Boolean,
     error?: Error | null
 }
 
-interface VendorState {
-    vendor?: VendorInfo | null
-};
-
-let vendorState: VendorState = {
-    vendor: null
-}
-
-let menuState: MenuItemsState = {
+export const initState: MenuState = {
     menu: null,
+    vendor: null,
+    cart: null,
     isLoading: false,
     error: null
 }
 
-export const Menu = (state = menuState, action: GetMenuAction): MenuItemsState => {
+// TODO: Handle state for add/remove actions on the menu page
+type CartActions = AddItemToCartAction | RemoveItemFromCartAction | CheckoutOrderAction
+export const Menu = (state: MenuState = initState, action: GetMenuAction | CartActions | UpdateMenuWithVendorAction): MenuState => {
     switch(action.type) {
+
+        case CHECKOUT_ORDER:
+            return {
+                ...state,
+                menu: null,
+                cart: null
+            };
+
+        // Add vendor data to menu page
+        case UPDATE_MENU_WITH_VENDOR:
+            return {
+                ...state,
+                vendor: action.payload
+            };
+
+        // Add or update item in cart
+        case ADD_ITEM_TO_CART:
+            let itemIndex = -1;
+            if (state.cart) {
+                itemIndex = state.cart.findIndex(item => item.id == action.payload.id)
+            }
+
+            // update existing cart item with incremented quantity
+            if (itemIndex != -1) {
+                const newCart = state.cart && [...state.cart]
+                newCart && (newCart[itemIndex].quantity += 1)
+
+                return {
+                    ...state,
+                    cart: newCart
+                }
+            } else return {
+                ...state,
+                cart: state.cart && [
+                    ...state.cart,
+                    {
+                        ...action.payload,
+                        quantity: 1
+                    }
+                ]
+            }
+
+        // remove a menu item from the cart
+        case REMOVE_ITEM_FROM_CART:
+            return {
+                ...state,
+                cart: state.cart && state.cart.filter(item => item.id != action.payload.id),
+            }
 
         // Begin menu fetch
         case GET_MENU_STATUS.BEGIN:
@@ -54,28 +97,3 @@ export const Menu = (state = menuState, action: GetMenuAction): MenuItemsState =
             return state
     }
 };
-
-export const Vendor = (state = vendorState, action: UpdateMenuWithVendorAction): VendorState => {
-    switch(action.type) {
-
-        // Add vendor data to menu page
-        case UPDATE_MENU_WITH_VENDOR:
-            return {
-                ...state,
-                vendor: action.payload
-            };
-        
-        default: 
-            return state
-    }
-};
-
-export interface MenuPageState {
-    menu: MenuState,
-    vendor: VendorState
-}
-
-export const MenuPage = combineReducers<MenuPageState>({
-    menu: Menu,
-    vendor: Vendor
-});

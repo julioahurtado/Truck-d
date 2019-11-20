@@ -1,4 +1,4 @@
-import { MenuItem, CustomerInfo, VendorInfo } from '../InterfaceFiles/types'
+import { MenuItem, CustomerInfo, VendorInfo, OrderItem, Order, CartInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import _GET, { _POST } from '../../REST/restapiutil';
 
@@ -21,9 +21,15 @@ export enum GET_MENU_STATUS {
 // possibly use to update menu state with selected vendor
 export const UPDATE_MENU_WITH_VENDOR = 'UPDATE_MENU_WITH_VENDOR';
 
-export const ADD_TO_CART = 'ADD_TO_CART';
-export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
-export const SEND_ORDER = 'SEND_ORDER';
+export const ADD_ITEM_TO_CART = 'ADD_ITEM_TO_CART';
+export const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
+export const CHECKOUT_ORDER = 'CHECKOUT_ORDER';
+
+export enum SEND_ORDER_STATUS {
+    BEGIN = 'SEND_ORDER_BEGIN',
+    SUCCESS = 'SEND_ORDER_SUCCESS',
+    FAILURE = 'SEND_ORDER_FAILURE'
+}
 
 /*
 * CUSTOMER ACTION INTERFACES
@@ -56,19 +62,25 @@ export interface UpdateMenuWithVendorAction {
     payload?: VendorInfo,
 }
 
-export interface AddToCartAction {
-    type: typeof ADD_TO_CART
+export interface AddItemToCartAction {
+    type: typeof ADD_ITEM_TO_CART,
     payload: MenuItem
 };
 
-export interface RemoveFromCartAction {
-    type: typeof REMOVE_FROM_CART
+export interface RemoveItemFromCartAction {
+    type: typeof REMOVE_ITEM_FROM_CART,
     payload: MenuItem
 };
+
+export interface CheckoutOrderAction {
+    type: typeof CHECKOUT_ORDER,
+    payload: CartInfo
+}
 
 export interface SendOrderAction {
-    type: typeof SEND_ORDER
-    payload: CustomerInfo
+    type: SEND_ORDER_STATUS,
+    payload?: CustomerInfo,
+    error?: Error
 };
 
 /*
@@ -108,20 +120,25 @@ export const updateMenuWithVendor = (vendor: VendorInfo): UpdateMenuWithVendorAc
     payload: vendor
 })
 
-export const addToCart = (item: MenuItem): AddToCartAction => ({
-    type: ADD_TO_CART,
+export const addItemToCart = (item: MenuItem): AddItemToCartAction => ({
+    type: ADD_ITEM_TO_CART,
     payload: item
 });
 
-export const removeFromCart = (item: MenuItem): RemoveFromCartAction => ({
-    type: REMOVE_FROM_CART,
+export const removeItemFromCart = (item: MenuItem): RemoveItemFromCartAction => ({
+    type: REMOVE_ITEM_FROM_CART,
     payload: item
 });
 
-export const sendOrder = (info: CustomerInfo): SendOrderAction => ({
-    type: SEND_ORDER,
-    payload: info
-});
+export const checkoutOrder = (cart: CartInfo): CheckoutOrderAction => ({
+    type: CHECKOUT_ORDER,
+    payload: cart
+})
+
+// export const sendOrderBegin = (info: Order): SendOrderAction => ({
+//     type: SEND_ORDER_STATUS.BEGIN,
+//     payload: info
+// });
 
 /*
 * THUNK ASYNC REQUESTS
