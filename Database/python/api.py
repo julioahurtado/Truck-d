@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 # pip3 install mysql-connector-python
-# Build minimum viable project
 import mysql.connector
 from mysql.connector import errorcode
 from flask import Flask, request, Response, json, jsonify
@@ -289,7 +288,7 @@ def vendor_add_menu_item():
     # finally close connection and return Response
     dbCursor.close()
     disconnect_from_db(connection)
-    return Response("Successfully added item", 201)
+    return Response(str(menuItemID), 201)
 
 @app.route("/editItem", methods = ['GET', 'POST'])
 @cross_origin()
@@ -311,7 +310,6 @@ def vendor_edit_menu_item():
     try:
         dbCursor.execute(sql, data)
         connection.commit()
-        results = dbCursor.fetchone()
 
     except Exception as e:
         connection.rollback()
@@ -323,6 +321,33 @@ def vendor_edit_menu_item():
         disconnect_from_db(connection)
 
     return Response("Successfully updated.", 201)
+
+@app.route("/deleteItem", methods = ['GET', 'POST'])
+@cross_origin()
+def vendor_delete_menu_item():
+    payload = request.get_json(force=True)
+    menuItemID = payload['id']
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+
+    sql = """DELETE FROM Menus
+                WHERE menuItemID = %s;"""
+    data = (menuItemID,)
+
+    try:
+        dbCursor.execute(sql, data)
+        connection.commit()
+
+    except Exception as e:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response(str(e), 500) # Cant remember the correct error code
+    finally:
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+    return Response("Successfully deleted.", 201)
 
 
 # Returns the menu of the given vendorID in JSON format
@@ -354,18 +379,22 @@ def vendor_get_menu():
 
     return jsonify(menu)
 
-@app.route('addOrder', methods = ['GET', 'POST'])
+@app.route('/addOrder', methods = ['GET', 'POST'])
 def vendor_add_order():
     payload = request.get_json(force=True)
     vendorID = payload['id']
     name = payload['name']
     email = payload['email']
     price = payload['price']
-    menuList = []
-    for i in range(len(payload['item'])):
-        menuList.appendpayload['item']
+    menuList = payload['item']
+    for menu in menuList:
+        menuList.append({
+                        "menuItemID": menu["menuItemID"],
+                        "quantity": menu["quantity"]
+                         })
+    print(menuList)
 
-
+    return Response("Sucess", 200)
 
 
 
