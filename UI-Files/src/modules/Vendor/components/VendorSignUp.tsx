@@ -6,7 +6,6 @@ import { vendorSignUp, signUpForm, LoginThunkDispatch } from '../../../Redux/Act
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 
-// TODO: add type for dispatch function
 interface VendorSignUpProps {
     isLoading?: Boolean
     signUp?: any
@@ -27,7 +26,6 @@ interface VendorSignUpProps {
     endHoursField: any; 
  }
 
-// TODO: Add description and phone inputs to form
 export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState> {
 
     constructor(props: VendorSignUpProps){

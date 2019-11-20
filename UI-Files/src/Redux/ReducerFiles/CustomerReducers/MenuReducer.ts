@@ -17,8 +17,7 @@ export const initState: MenuState = {
     error: null
 }
 
-// TODO: Handle state for add/remove actions on the menu page
-type CartActions = AddItemToCartAction | RemoveItemFromCartAction | CheckoutOrderAction
+ type CartActions = AddItemToCartAction | RemoveItemFromCartAction | CheckoutOrderAction
 export const Menu = (state: MenuState = initState, action: GetMenuAction | CartActions | UpdateMenuWithVendorAction): MenuState => {
     switch(action.type) {
 

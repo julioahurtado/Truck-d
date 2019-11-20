@@ -6,7 +6,6 @@ import { vendorSignIn, signInForm, LoginThunkDispatch } from '../../../Redux/Act
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 
-// TODO: Add type for dispatch function
 interface VendorSignInProps {
     isLoading?: Boolean
     signIn?: any

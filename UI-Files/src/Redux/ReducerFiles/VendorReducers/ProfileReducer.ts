@@ -17,7 +17,6 @@ export const initState: ProfileState = {
     error: null
 };
 
-// TODO: On profile editor load, update profile state with vendor from login
 type MenuActions = AddMenuItemAction | DeleteMenuItemAction | EditMenuItemAction;
 export const Profile = (state: ProfileState = initState, action: UpdateProfileAction | MenuActions | UpdateVendorAction): ProfileState => {
     switch(action.type) {

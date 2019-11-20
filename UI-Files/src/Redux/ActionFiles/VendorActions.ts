@@ -46,7 +46,6 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 * VENDOR ACTION INTERFACES
 */
 
-// TODO: Move types and action interfaces to /InterfaceFiles
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
 export type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
 export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction|UpdateVendorAction>
@@ -67,7 +66,6 @@ export type EditMenuItemTypes = EDIT_MENU_ITEM_STATUS.BEGIN | EDIT_MENU_ITEM_STA
 export type EditMenuItemThunkAction = ThunkAction<void, {}, {}, EditMenuItemAction>
 export type EditMenuItemThunkDispatch = ThunkDispatch<{}, {}, EditMenuItemAction>
 
-// TODO: Merge error prop with payload prop
 export interface LoginAction {
     type: LoginTypes,
     payload?: VendorInfo,

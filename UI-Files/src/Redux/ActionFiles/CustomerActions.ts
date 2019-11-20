@@ -35,7 +35,6 @@ export enum SEND_ORDER_STATUS {
 * CUSTOMER ACTION INTERFACES
 */
 
-// TODO: move types and actions to /InterfaceFiles
 export type CustomerSearchTypes = CUSTOMER_SEARCH_STATUS.BEGIN | CUSTOMER_SEARCH_STATUS.SUCCESS | CUSTOMER_SEARCH_STATUS.FAILURE;
 export type SearchThunkAction = ThunkAction<void, {}, {}, CustomerSearchAction>;
 export type SearchThunkDispatch = ThunkDispatch<{}, {}, CustomerSearchAction>;
@@ -44,7 +43,6 @@ export type GetMenuTypes = GET_MENU_STATUS.BEGIN | GET_MENU_STATUS.SUCCESS | GET
 export type GetMenuThunkAction = ThunkAction<void, {}, {}, GetMenuAction>
 export type GetMenuThunkDispatch = ThunkDispatch<{}, {}, GetMenuAction>
 
-// TODO: Merge error prop with payload prop
 export interface CustomerSearchAction {
     type: CustomerSearchTypes
     payload?: VendorInfo[]
