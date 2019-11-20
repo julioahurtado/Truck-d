@@ -5,7 +5,7 @@ import '../css/Style.css'
 import { addItemToCart, removeItemFromCart, AddItemToCartAction, RemoveItemFromCartAction } from '../../../Redux/ActionFiles/CustomerActions';
 import { MenuItem } from '../../../Redux/InterfaceFiles/types';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { Dispatch, AnyAction } from 'redux';
 
 interface MenuListProps extends MenuListDispatchProps{
     id: number,
@@ -71,5 +71,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AddItemToCartAction | RemoveItemF
 });
 
 export const CustomerMenuItem = connect(
+    null,
     mapDispatchToProps
 )(MenuItemElement)

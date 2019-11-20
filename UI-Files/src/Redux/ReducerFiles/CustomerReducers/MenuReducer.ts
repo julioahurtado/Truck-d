@@ -51,15 +51,22 @@ export const Menu = (state: MenuState = initState, action: GetMenuAction | CartA
                     ...state,
                     cart: newCart
                 }
-            } else return {
-                ...state,
-                cart: state.cart && [
-                    ...state.cart,
-                    {
-                        ...action.payload,
-                        quantity: 1
+            } else {
+                if (state.cart) {
+                    return {
+                        ...state,
+                        cart: state.cart && [
+                            ...state.cart,
+                            {
+                                ...action.payload,
+                                quantity: 1
+                            }
+                        ]
                     }
-                ]
+                } else return {
+                    ...state,
+                    cart: [{...action.payload, quantity: 1}]
+                }
             }
 
         // Either decrements quantity of item in cart or removes from cart entirely

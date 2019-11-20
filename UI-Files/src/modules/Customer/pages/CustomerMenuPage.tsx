@@ -20,12 +20,12 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                     {this.props.menu && this.props.menu.map((item: MenuItem) => 
                         {
                             return (
-                                    <CustomerMenuItem
-                                        id={item.id}
-                                        name={item.name}
-                                        description={item.description}
-                                        price={item.price}
-                                    ></CustomerMenuItem>
+                                <CustomerMenuItem
+                                    id={item.id}
+                                    name={item.name}
+                                    description={item.description}
+                                    price={item.price}
+                                ></CustomerMenuItem>
                             )
                         }
                     )}
