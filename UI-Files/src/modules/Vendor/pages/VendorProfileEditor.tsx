@@ -1,11 +1,20 @@
 
 import * as React from 'react'
 import { Row, Col, Form, Button, ListGroup, Modal } from 'react-bootstrap'
+import { ExecFileOptionsWithStringEncoding } from 'child_process';
 
+interface VendorProfileEditorProps{
+    vendorName: String;
+    vendorDescription: String;
+    vendorPhoneNumber: String;
+    vendorCity: String;
+    vendorState: String;
+    vendorCuisine: String;
 
+}
  
 
-export default class VendorProfileEditor extends React.Component<any> {
+export default class VendorProfileEditor extends React.Component<VendorProfileEditorProps> {
     render(){
         function AddMenuItem() {
             
