@@ -7,12 +7,7 @@ import { MenuItem } from '../../../Redux/InterfaceFiles/types';
 import { connect } from 'react-redux';
 import { Dispatch, AnyAction } from 'redux';
 
-interface MenuListProps extends MenuListDispatchProps{
-    id: number,
-    name: String,
-    description: String,
-    price: number,
-}
+interface MenuListProps extends MenuItem, MenuListDispatchProps{}
 
 interface MenuListDispatchProps {
     addItem: any,
