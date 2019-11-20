@@ -1,4 +1,4 @@
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -9,12 +9,13 @@ cors = CORS(app)
 def preflightBypass(query):
     return "OPTIONS RECIEVED: " + query
 
+# vendor search test data
+test_vendors = '[{"name":"Test","description":"Description","cuisine":"Cuisine","hours":"10:00 AM - 9:00 PM","phone":1234567890,"city":"City","state":"State","address":"Address","menu":[{"name":"Food","description":"Food Description","price":1}]},{"name":"Test 2","description":"Description for test vendor","cuisine":"Test Cuisine","hours":"10:00 AM - 3:00 PM","phone":4234,"city":"4sdf","state":"zxc","address":"sdf","menu":[{"name":"food","description":"food","price":134}]}]'
 @app.route("/<string:query>",  methods=['GET'])
 @cross_origin()
 def getTest(query):
     print('GET: ' + query)
-    return "GET RECIEVED: " + query
-
+    return test_vendors
     
 @app.route("/<string:query>",  methods=['DELETE'])
 @cross_origin()
@@ -37,7 +38,8 @@ vendors = {
     'c@gmail.com': 'cse115'
 }
 
-
+# vendor SignIn/SignUp test data
+vendor_auth = '{"name":"Test","description":"Description for vendor","cuisine":"Test Cuisine","hours":"10:00 AM - 9:00 PM","phone":1234567890,"city":"City","state":"State","address":"Address","menu":[{"name":"food item","description":"food description","price":1}]}'
 @app.route("/authenticatevendor",  methods=['POST'])
 @cross_origin()
 def authVendor():
@@ -45,10 +47,11 @@ def authVendor():
 
     if payload['email'] in vendors.keys() and vendors[payload['email']] == payload['password']:
         resp = Response('Authenticated', 200)
-        return resp
+        return vendor_auth
     else:
-        resp = Response('Not Authenticated', 401)
-        return resp
+        test = jsonify(vendors)
+        resp = Response(test, 401)
+        return test
 
     return Response('Server ERROR', 500)
 
@@ -60,12 +63,12 @@ def createVendor():
 
     if payload['email'] in vendors.keys():
         resp = Response('User found with same email', 409)
-        return resp
+        return vendor_auth
     else:
         vendors[payload['email']] = payload['password']
         resp = Response('User creation successful', 201)
         print(vendors)
-        return resp
+        return '{}'
 
     return Response('Server ERROR', 500)
 

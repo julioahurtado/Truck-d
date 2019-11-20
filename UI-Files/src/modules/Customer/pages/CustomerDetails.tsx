@@ -1,0 +1,56 @@
+import * as React from 'react'
+ 
+import '../components/CustomerVendorSearch'
+import '../components/CustomerVendorListItem'
+import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
+
+
+interface CustomerDetailProps{
+    customerName: any;
+    customerEmail: any;
+    customerPhone: any;
+}
+
+
+export default class CustomerDetails extends React.Component<any, CustomerDetailProps> {
+    
+    constructor(props: any){
+        super(props);
+        this.state = {
+            customerName: React.createRef(),
+            customerEmail: React.createRef(),
+            customerPhone: React.createRef(),
+        }
+    }
+
+    handleSubmit() {
+        return true;
+    }
+    
+    
+    render(){
+        return (
+            <Form>
+                <h1>Details</h1>
+            <div className="centered">
+                
+                <div style={{margin: 10}}>
+                    <Form.Group controlId='formName'>
+                        Name:<Form.Control style={{width: 400}} type="text" ref={this.state.customerName} onChange={() => this.handleSubmit()}>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId='formEmail'>
+                        Email:<Form.Control style={{width: 400}} ref={this.state.customerEmail}  onChange={() => this.handleSubmit()} type="text">
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId='formPhone'>
+                        Phone:<Form.Control style={{width: 400}} ref={this.state.customerPhone}onChange={() => this.handleSubmit()} type="text">
+                        </Form.Control>
+                    </Form.Group>
+                </div>
+           </div>
+
+        </Form>
+        )
+    }
+}

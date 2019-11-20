@@ -2,16 +2,24 @@ import * as React from 'react'
 import { Form, Container, Button } from 'react-bootstrap'
 import '../css/Style.css'
 
+import { vendorSignIn, signInForm, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
+import { RootState } from '../../../Redux/StoreFiles/store';
+import { connect } from 'react-redux';
+
+interface VendorSignInProps {
+    isLoading?: Boolean
+    signIn?: any
+}
 
  interface VendorSignInState {
-    emailField:     any; 
-    passwordField:     any; 
+    emailField: React.RefObject<any>; 
+    passwordField: React.RefObject<any>; 
  }
 
 
-export default class VendorSignIn extends React.Component<any,VendorSignInState> {
+export class SignIn extends React.Component<VendorSignInProps, VendorSignInState> {
 
-    constructor(props: any){
+    constructor(props: VendorSignInProps){
         super(props);
         this.state = {
             emailField: React.createRef(),
@@ -19,18 +27,21 @@ export default class VendorSignIn extends React.Component<any,VendorSignInState>
         }
     }
 
-    handleSubmit() {
-        console.log(this.state.emailField.current.value);
-        console.log(this.state.passwordField.current.value);
-        console.log(this.state.passwordField.current.value);
-        
+    // Initiates user sign-in on form submission
+    handleSubmit(): Boolean {
+        const form: signInForm = {
+            email: this.state.emailField.current.value,
+            password: this.state.passwordField.current.value
+        }
+
+        this.props.signIn(form);
         return true;
     }
 
     render(){
         return (
                 <Container>
-                    <Form onSubmit={() => this.handleSubmit()}>
+                    <Form>
                         <Form.Group controlId='formEmail'>
                             <Form.Label>
                                 Email
@@ -44,9 +55,25 @@ export default class VendorSignIn extends React.Component<any,VendorSignInState>
                             <Form.Control ref={this.state.passwordField} type="password">
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="submit">Sign In</Button>
+                        <Button variant="primary" type="button" onClick={() => this.handleSubmit()}>Sign In</Button>
                     </Form>
                 </Container>
         )
     }
 }
+
+const mapStateToProps = (state: RootState): VendorSignInProps => ({
+    isLoading: state.vendor.login.isLoading
+});
+
+const mapDispatchToProps = (dispatch: LoginThunkDispatch): VendorSignInProps => ({
+    signIn: (form: signInForm) => 
+        dispatch(vendorSignIn(form))
+});
+
+const VendorSignIn = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SignIn)
+
+export default VendorSignIn;

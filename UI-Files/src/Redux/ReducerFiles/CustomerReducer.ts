@@ -1,6 +1,13 @@
 import { combineReducers } from "redux";
-import { CustomerSearch } from './CustomerReducers/CustomerSearchReducer';
+import { CustomerSearch, CustomerSearchState } from './CustomerReducers/CustomerSearchReducer';
+import { Menu, MenuState } from './CustomerReducers/MenuReducer';
 
-export const Customer = combineReducers({
-    search: CustomerSearch
+export interface CustomerState {
+    search: CustomerSearchState
+    menuPage: MenuState
+}
+
+export const Customer = combineReducers<CustomerState>({
+    search: CustomerSearch,
+    menuPage: Menu
 });

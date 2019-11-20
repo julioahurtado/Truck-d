@@ -1,7 +1,7 @@
 import { LOGIN_STATUS, LoginAction } from '../../ActionFiles/VendorActions';
 import { VendorInfo } from '../../InterfaceFiles/types';
 
-interface LoginState {
+export interface LoginState {
     vendor?: VendorInfo | null,
     isLoading: Boolean,
     error?: Error | null
@@ -13,8 +13,7 @@ let initState: LoginState = {
     error: null
 };
 
-// TODO: add return type for login reducer
-export const Login = (state: LoginState = initState, action: LoginAction): LoginState => {
+ export const Login = (state: LoginState = initState, action: LoginAction): LoginState => {
     switch(action.type) {
 
         // Signals start of vendor login
