@@ -2,15 +2,29 @@
 import * as React from 'react'
 import { ListGroup, Row, Col, Button } from 'react-bootstrap'
 import { CustomerMenuItem } from '../components/CustomerMenuItem';
-import { MenuItem } from '../../../Redux/InterfaceFiles/types';
+import { MenuItem, CartInfo } from '../../../Redux/InterfaceFiles/types';
 import { MenuState } from '../../../Redux/ReducerFiles/CustomerReducers/MenuReducer';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { checkoutOrder, CheckoutOrderAction } from '../../../Redux/ActionFiles/CustomerActions';
+import { Dispatch } from 'redux';
 
-interface CustomerMenuProps extends MenuState {}
+interface CustomerMenuProps extends MenuState, CustomerMenuDispatchProps {}
+interface CustomerMenuDispatchProps {
+    checkout?: any
+}
 
 export class CustomerMenu extends React.Component<CustomerMenuProps> {
+
+    handleCheckout() {
+        // const cart: CartInfo = {
+        //     cart: this.props.cart,
+        //     vendor: this.props.vendor
+        // }
+        // this.props.checkout(cart)
+    }
+
     render() {
         return (
             <div>
@@ -20,12 +34,12 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                     {this.props.menu && this.props.menu.map((item: MenuItem) => 
                         {
                             return (
-                                    <CustomerMenuItem
-                                        id={item.id}
-                                        name={item.name}
-                                        description={item.description}
-                                        price={item.price}
-                                    ></CustomerMenuItem>
+                                <CustomerMenuItem
+                                    id={item.id}
+                                    name={item.name}
+                                    description={item.description}
+                                    price={item.price}
+                                ></CustomerMenuItem>
                             )
                         }
                     )}
@@ -39,7 +53,7 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                     </Col>
                     <Col xs={6}>
                         <Link to="/customer/order">
-                            <Button variant="primary" style={{position: 'relative', bottom: '-20px', margin: 5, right: '-20px'}} type="button">Checkout</Button>
+                            <Button variant="primary" style={{position: 'relative', bottom: '-20px', margin: 5, right: '-20px'}} onClick={() => this.handleCheckout()} type="button">Checkout</Button>
                         </Link>
                     </Col>
                 </Row>
@@ -55,8 +69,14 @@ const mapStateToProps = (state: RootState): CustomerMenuProps => ({
     isLoading: state.customer.menuPage.isLoading
 });
 
+const mapDispatchToProps = (dispatch: Dispatch<CheckoutOrderAction>): CustomerMenuDispatchProps => ({
+    checkout: (cart: CartInfo) =>
+        dispatch(checkoutOrder(cart))
+})
+
 const CustomerMenuViewer = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(CustomerMenu)
 
 export default CustomerMenuViewer;

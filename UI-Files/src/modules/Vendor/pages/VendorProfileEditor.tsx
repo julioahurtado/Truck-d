@@ -39,7 +39,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                         Name
                                     </Form.Label>
                                     <Col sm="2">
-                                        <Form.Control type="password" placeholder="Enter your Name" />
+                                        <Form.Control type="text" placeholder="Enter your Name" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -47,14 +47,14 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                         Description
                                     </Form.Label>
                                     <Col sm="2">
-                                        <Form.Control type="password" placeholder="Enter a description about the menu item" />
+                                        <Form.Control type="text" placeholder="Enter a description about the menu item" />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Row} controlId="formPlaintextPassword">
                                     <Form.Label column sm="2">
                                         Price</Form.Label>
                                     <Col sm="2">
-                                        <Form.Control type="password" placeholder="Enter the Price" />
+                                        <Form.Control type="text" placeholder="Enter the Price" />
                                     </Col>
                                 </Form.Group>
                             </Form>
@@ -81,7 +81,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Name
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="Enter your Name" />
+                                    <Form.Control type="text" placeholder="Enter your Name" />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -89,7 +89,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Description
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="Tell us about your business" />
+                                    <Form.Control type="text" placeholder="Tell us about your business" />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -97,7 +97,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Phone
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="(xxx) xxx-xxxx" />
+                                    <Form.Control type="text" placeholder="(xxx) xxx-xxxx" />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -105,7 +105,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     City
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="Enter your City" />
+                                    <Form.Control type="text" placeholder="Enter your City" />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -113,7 +113,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     State
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="Enter your State" />
+                                    <Form.Control type="text" placeholder="Enter your State" />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -121,7 +121,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Address
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="Enter your Address" />
+                                    <Form.Control type="text" placeholder="Enter your Address" />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -129,7 +129,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Cuisine
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="password" placeholder="Enter the Cuisine" />
+                                    <Form.Control type="text" placeholder="Enter the Cuisine" />
                                 </Col>
                             </Form.Group>
                         </Form>
