@@ -17,18 +17,18 @@ export default class VendorListItem extends React.Component<VendorListItemProps>
 
 
     render() {
-        function EditItem(test) {
+        function EditItem(props: { edit: React.ReactNode; header: React.ReactNode; }) {
             const [show, setShow] = React.useState(false);
             const handleClose = () => setShow(false);
             const handleShow = () => setShow(true);
             return (
                 <>
-                    <Button onClick={handleShow}>{test}
+                    <Button onClick={handleShow}>{props.edit}
                   </Button>
 
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Add Menu Item</Modal.Title>
+            <Modal.Title>{props.header}        </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form className="form">
@@ -72,7 +72,7 @@ export default class VendorListItem extends React.Component<VendorListItemProps>
         return (
             <div style={{ background: '#FFFFFF', borderWidth: '2px', borderColor: 'black', borderStyle: "solid", padding: '2px', margin: '2px', }}>
                 <p className="paragraph">
-                    <EditItem test="test"/>{this.props.menuItem}<EditItem />
+                    <EditItem edit={"edit"} header = {"Edit Menu Item"} />{this.props.menuItem}<EditItem edit={"delete"} header={"Delete Menu Item"}/>
                 </p>
             </div>
         )
