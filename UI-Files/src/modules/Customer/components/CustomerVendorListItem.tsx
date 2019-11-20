@@ -14,30 +14,22 @@ interface CustomerVendorListItemProps {
 export default class CustomerVendorListItem extends React.Component<CustomerVendorListItemProps> {
     render() {
         return (
-            <Form>
-                <Row>
-                    <Col>
                     <div className="listRes">
-            <ListGroup>
-            <ListGroup.Item action href="/customer/menu/:vendorName">
-                <p>
-                    {this.props.vendorName}
-                </p>
-                <p>
-                    {this.props.vendorDesription}
-                </p>
-                <p>
-                    {this.props.vendorCuisine}
-                </p>
-                <p>
-                    {this.props.vendorHours}
-                </p>
-            </ListGroup.Item>
-            </ListGroup>
+                            <ListGroup.Item action href="/customer/menu/:vendorName">
+                                <p>
+                                    {this.props.vendorName}
+                                </p>
+                                <p>
+                                    {this.props.vendorDesription}
+                                </p>
+                                <p>
+                                    {this.props.vendorCuisine}
+                                </p>
+                                <p>
+                                    {this.props.vendorHours}
+                                </p>
+                            </ListGroup.Item>
                 </div>
-            </Col>
-            </Row>
-            </Form>
 
 
         )

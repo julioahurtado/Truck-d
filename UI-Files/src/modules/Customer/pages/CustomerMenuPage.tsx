@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import { Form, Button, Row, Col} from 'react-bootstrap'
-import MenuList from '../components/MenuList'
+import MenuItem from '../components/CustomerMenuItem'
 import '../css/Style.css'
 import { Link } from 'react-router-dom'
 
@@ -13,40 +13,29 @@ interface CustomerMenuProps {
 export default class CustomerMenu extends React.Component<CustomerMenuProps> {
     render() {
         return (
-            <Form>
+            <div>
             <div>
                 <h1>Menu:</h1>
-
-                
-                <div className='text-center'>  
-                <Button style={{margin: .5}}variant="primary" type="button">Appetizer</Button>
-                <Button style={{margin: .5}}variant="primary" type="button">Breakfast</Button>
-                <Button style={{margin: .5}}variant="primary" type="button">Lunch</Button>
-                <Button style={{margin: .5}}variant="primary" type="button">Dinner</Button>
-                <Button style={{margin: .5}}variant="primary" type="button">Drinks</Button>
-                <Button style={{margin: .5}}variant="primary" type="button">Specials</Button>
-                <Button style={{margin: .5}}variant="primary" type="button">Desert</Button>
-                </div>  
-                <MenuList
+                <MenuItem
                     itemName="Burrito Asada"
                     itemDescriptiion="Big Burrito of Carne Asada, Puerto Vallarta Style."
                     itemPrice="  $8.99"
                     >
-                </MenuList>
+                </MenuItem>
 
-                <MenuList
+                <MenuItem
                     itemName="Al pastor Taco"
                     itemDescriptiion="One Al pastor Taco."
                     itemPrice="  $2.50"
                     >
-                </MenuList>
+                </MenuItem>
 
-                <MenuList
+                <MenuItem
                     itemName="Al pastor Taco"
                     itemDescriptiion="One Al pastor Taco."
                     itemPrice="  $2.50"
                     >
-                </MenuList>
+                </MenuItem>
             </div>
             <div className="centered">
                 <Row> 
@@ -63,7 +52,7 @@ export default class CustomerMenu extends React.Component<CustomerMenuProps> {
                     </Col>
                 </Row>
             </div>
-            </Form>
+        </div>
         )
     }
 }
