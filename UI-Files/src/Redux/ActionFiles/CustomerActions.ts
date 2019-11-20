@@ -143,7 +143,7 @@ export const checkoutOrder = (cart: CartInfo): CheckoutOrderAction => ({
 */
 
 const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
-    const search_query = { name: "", address: "", city: query, state: "" };
+    const search_query = { name: query, address: query, city: query, state: query };
     const vendors = await _POST('http://localhost:5000/search', search_query)
     return JSON.parse(vendors)
 }

@@ -23,7 +23,6 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                 {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
                     {this.props.menu && this.props.menu.map((item: MenuItem) => 
                         {
-                            console.log(item)
                             return (
                                     <CustomerMenuItem>
                                         itemName={item.name}

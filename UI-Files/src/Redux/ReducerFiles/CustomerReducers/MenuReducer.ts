@@ -62,11 +62,29 @@ export const Menu = (state: MenuState = initState, action: GetMenuAction | CartA
                 ]
             }
 
-        // remove a menu item from the cart
+        // Either decrements quantity of item in cart or removes from cart entirely
         case REMOVE_ITEM_FROM_CART:
+            // const updatedCart = state.cart && state.cart.map(item => {
+            //     if (item.id == action.payload.id) {
+            //         return {
+            //             ...item,
+            //             quantity: item.quantity - 1
+            //         }
+            //     }
+            //     return { ...item }
+            // });
+
             return {
                 ...state,
-                cart: state.cart && state.cart.filter(item => item.id != action.payload.id),
+                cart: state.cart && state.cart.map(item => {
+                    if (item.id == action.payload.id) {
+                        return {
+                            ...item,
+                            quantity: item.quantity - 1
+                        }
+                    }
+                    return { ...item }
+                }).filter(item => item.quantity > 0),
             }
 
         // Begin menu fetch

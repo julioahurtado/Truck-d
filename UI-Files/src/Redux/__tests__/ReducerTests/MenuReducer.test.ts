@@ -52,17 +52,17 @@ const menu_item_add_new: MenuItem = {
 }
 
 const menu_item_add_existing: MenuItem = {
-    id: 1,
-    name: "Big Mac",
-    description: "Burger",
-    price: 4.99
+  id: 1,
+  name: "Big Mac",
+  description: "Burger",
+  price: 4.99
 }
 
 const menu_item_delete: MenuItem = {
-    id: 2,
-    name: "Shake",
-    description: "Milk Shake",
-    price: 2.99
+  id: 1,
+  name: "Big Mac",
+  description: "Burger",
+  price: 4.99
 }
 
 const cart_base_state_new = Object.assign({}, initState, {
@@ -136,12 +136,18 @@ describe('The Menu Reducer', () => {
       ...cart_base_state_delete,
       cart: [
         {
-            id: 1,
-            name: "Big Mac",
-            description: "Burger",
-            price: 4.99,
-            quantity: 3
-        }]
+          id: 1,
+          name: "Big Mac",
+          description: "Burger",
+          price: 4.99,
+          quantity: 2
+      }, {
+          id: 2,
+          name: "Shake",
+          description: "Milk Shake",
+          price: 2.99,
+          quantity: 1
+      }]
     }))
   })
 })
