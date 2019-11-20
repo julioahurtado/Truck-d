@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { Router, Link, Switch, Route, useRouteMatch } from 'react-router-dom'
 import history from '../../History/history'
+import CustomerDetails from './CustomerDetails'
 import CustomerCart from './CustomerCart'
 import CustomerVendorSearch from '../components/CustomerVendorSearch'
 import CustomerMenuViewer from './CustomerMenuPage'
-
 
 
 
@@ -18,6 +18,13 @@ export default class CustomerLandingPage extends React.Component<any> {
                        </CustomerVendorSearch>
                     </Route>
                     <Route path={'/customer/cart'}>
+                        <CustomerCart>
+                        </CustomerCart>
+                    </Route>
+                    <Route path={'/customer/order'}>
+                        
+                        <CustomerDetails>
+                        </CustomerDetails>
                         <CustomerCart>
                         </CustomerCart>
                     </Route>

@@ -1,38 +1,45 @@
+
 import * as React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, ListGroup, Row, Col , Form} from 'react-bootstrap'
+import '../css/Style.css'
+import { Link } from 'react-router-dom'
 
-interface CustomerCartProps{
-    itemName?: String,
-    itemDescription?: String,
-    itemPrice?: Number
+interface MenuListProps{
+    itemName?: string;
+    itemDescriptiion?: string;
+    itemPrice?: string;
 }
+export default class MenuList extends React.Component<MenuListProps> {
 
- export default class CustomerMenuItem extends React.Component<CustomerCartProps> {
+    handleAdd(){
+        
+    }
 
-    handleRemoveFromCart(){
+    handleRemove(){
 
     }
 
-    handleAddtoCart(){
-
-    }
 
     render() {
         return (
-            <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
-                <p>
-                    {this.props.itemName}
-                </p>
-                <p>
-                    {this.props.itemDescription}
-                </p>
-                <p>
-                    {this.props.itemPrice}
-                </p>
-                <Button style={{margin: 10}}variant="danger" type="button" onClick={() => {this.handleRemoveFromCart()}} >-</Button>
-                <Button style={{margin: 10}}variant="success" type="button" onClick={() => {this.handleAddtoCart()}}>+</Button>
-            </div>
+            <div className="listFood">
+                        <div>
+                            {this.props.itemName}
+                        </div>
+                        <div>
 
+
+
+                            {this.props.itemDescriptiion}                 
+                            <p style={{ textAlign:  'right'}}>
+                                {this.props.itemPrice}
+                            </p>
+                        </div>
+                            <div className='text-right'>
+                                <Button variant="warning" style={{margin: .5}} onClick={() => this.handleRemove()} >-</Button>
+                                <Button variant="success" style={{margin: .5}} onClick={() => this.handleAdd()} >+</Button>
+                            </div>  
+            </div>
         )
     }
 }

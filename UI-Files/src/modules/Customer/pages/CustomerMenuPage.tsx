@@ -1,11 +1,12 @@
 
 import * as React from 'react'
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, Row, Col, Button } from 'react-bootstrap'
 import CustomerMenuItem from '../components/CustomerMenuItem';
 import { MenuItem } from '../../../Redux/InterfaceFiles/types';
 import { MenuState } from '../../../Redux/ReducerFiles/CustomerReducers/MenuReducer';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 interface CustomerMenuProps extends MenuState {}
 
@@ -33,6 +34,20 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                         }
                     )}
                 </ListGroup>}
+                <div className="centered">
+                <Row> 
+                    <Col xs={6}>
+                        <Link to="/customer">
+                            <Button style={{position: 'relative', bottom: '-20px', margin: 5, left: '-20px'}} variant="secondary"  type="button">Return</Button>
+                        </Link>
+                    </Col>
+                    <Col xs={6}>
+                        <Link to="/customer/order">
+                            <Button variant="primary" style={{position: 'relative', bottom: '-20px', margin: 5, right: '-20px'}} type="button">Checkout</Button>
+                        </Link>
+                    </Col>
+                </Row>
+            </div>	            
             </div>
         )
     }

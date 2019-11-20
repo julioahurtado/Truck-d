@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import { Form, ListGroup, Spinner } from 'react-bootstrap'
+import { Form, ListGroup, Button, Col, Spinner} from 'react-bootstrap'
 import CustomerVendorListItem, { CustomerVendorItem } from './CustomerVendorListItem'
 
 import { fetchVendors, SearchThunkDispatch } from '../../../Redux/ActionFiles/CustomerActions';
@@ -37,9 +37,18 @@ export class VendorSearch extends React.Component<CustomerVendorSearchProps,Cust
     render() {
         return (
             <div>
-                <div style={{margin: 10}}>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Control ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search..." />
+                <div className="centered" style={{margin: 10}}>
+                    <Form.Group controlId="formBasicEmail">
+                        
+                        <Form.Row>
+                            <Col>
+                                <Form.Control style={{width: 500}} ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search Food Truck by Name, city, type" />
+                            </Col>
+                            <Col>
+                                <Button variant="primary" type="submit">Go!</Button>
+                            </Col>
+                        </Form.Row>
+                       
                     </Form.Group>
                 </div>
                 {this.props.isLoading && <Spinner animation="border" role="status">
