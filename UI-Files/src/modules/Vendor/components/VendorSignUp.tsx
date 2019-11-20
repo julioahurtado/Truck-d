@@ -5,6 +5,7 @@ import '../css/Style.css'
 import { vendorSignUp, signUpForm, LoginThunkDispatch } from '../../../Redux/ActionFiles/VendorActions';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 interface VendorSignUpProps {
     isLoading?: Boolean
@@ -166,6 +167,9 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
                             </Form.Control>
                         </Form.Group>
                         <Button variant="primary" type="button" onClick={() => this.handleSubmit()}>Create Account</Button>
+                        <Link to={'/vendor/editprofile'} >
+                            <Button variant="primary" type="button">Profile Editor</Button>
+                        </Link>
                     </Form>
                 </Container>
         )
