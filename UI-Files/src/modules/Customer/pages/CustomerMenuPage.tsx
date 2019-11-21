@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 import { checkoutOrder, CheckoutOrderAction } from '../../../Redux/ActionFiles/CustomerActions';
 import { Dispatch } from 'redux';
 
-interface CustomerMenuProps extends MenuState, CustomerMenuDispatchProps {}
+interface CustomerMenuProps extends MenuState, CustomerMenuDispatchProps {
+}
 interface CustomerMenuDispatchProps {
     checkout?: any
 }
@@ -18,11 +19,11 @@ interface CustomerMenuDispatchProps {
 export class CustomerMenu extends React.Component<CustomerMenuProps> {
 
     handleCheckout() {
-        // const cart: CartInfo = {
-        //     cart: this.props.cart,
-        //     vendor: this.props.vendor
-        // }
-        // this.props.checkout(cart)
+        const cart: CartInfo = {
+            cart: this.props.cart,
+            vendor: this.props.vendor
+        }
+        this.props.checkout(cart)
     }
 
     render() {
@@ -65,6 +66,7 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
 
 const mapStateToProps = (state: RootState): CustomerMenuProps => ({
     menu: state.customer.menuPage.menu,
+    cart: state.customer.menuPage.cart,
     vendor: state.customer.menuPage.vendor,
     isLoading: state.customer.menuPage.isLoading
 });

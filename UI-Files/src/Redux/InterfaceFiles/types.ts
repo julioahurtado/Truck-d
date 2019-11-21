@@ -10,8 +10,8 @@ export interface OrderItem extends MenuItem {
 }
 
 export interface CartInfo {
-    cart: OrderItem[],
-    vendor: VendorInfo
+    cart?: OrderItem[] | null,
+    vendor?: VendorInfo | null
 }
 
 export interface VendorHours {
