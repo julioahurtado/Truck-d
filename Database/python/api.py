@@ -351,7 +351,7 @@ def vendor_delete_menu_item():
 
 
 # Returns the menu of the given vendorID in JSON format
-@app.route('/menu', methods = ['GET'])
+@app.route('/menu', methods = ['POST'])
 @cross_origin()
 def vendor_get_menu():
     connection = connect_to_db()
@@ -373,7 +373,7 @@ def vendor_get_menu():
         menu.append({
                "id": results[i][1],
                "name": results[i][2],
-               "price": results[i][3],
+               "price": float(results[i][3]),
                "description": results[i][4]
            })
 
