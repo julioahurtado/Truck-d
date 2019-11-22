@@ -387,14 +387,40 @@ def vendor_add_order():
     email = payload['email']
     price = payload['price']
     menuList = payload['item']
-    for menu in menuList:
-        menuList.append({
-                        "menuItemID": menu["menuItemID"],
-                        "quantity": menu["quantity"]
-                         })
-    print(menuList)
+    phone = payload['phone']
 
-    return Response("Sucess", 200)
+    orderID = random.randint(100000,999999)
+    # If the these IDs are already in the DB we need to create a new one
+    while check_order_id(vendorID):
+        orderID = random.randint(100000,999999)
+
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    try:
+        sql = """INSERT INTO Orders
+                    VALUES(%s, %s, %s, %s, %s, %s);"""
+        data = (orderID, vendorID, price, name, email, phone)
+        dbCursor.execute(sql, data)
+
+        sql = """INSERT INTO OrderItems
+                    VALUES(%s, %s, %s);"""
+        for menuItem in menuList:
+            itemID = menuItem["menuItemID"]
+            quantity = menuItem["quantity"]
+            data = (orderID, itemID, quantity)
+            dbCursor.execute(sql, data)
+            connection.commit()
+
+
+    except Exception as e:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response(str(e), 500)
+
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return Response(str(orderID), 200)
 
 
 
@@ -409,6 +435,23 @@ def check_vendor_id(id):
     dbCursor = connection.cursor()
     sql = ("""SELECT vendorID FROM Vendors
                 WHERE vendorID = %s;""")
+    data = (id,)
+
+    dbCursor.execute(sql, data)
+    results = dbCursor.fetchall()
+    if dbCursor.rowcount > 0:
+        dbCursor.close()
+        return True
+
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return False
+
+def check_order_id(id):
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    sql = ("""SELECT orderID FROM Orders
+                WHERE orderID = %s;""")
     data = (id,)
 
     dbCursor.execute(sql, data)
