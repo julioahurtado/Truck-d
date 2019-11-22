@@ -18,12 +18,15 @@ interface CustomerMenuDispatchProps {
 
 export class CustomerMenu extends React.Component<CustomerMenuProps> {
 
+    // send customer to the checkout screen
     handleCheckout() {
-        const cart: CartInfo = {
-            cart: this.props.cart,
-            vendor: this.props.vendor
-        }
-        this.props.checkout(cart)
+        if (this.props.cart && this.props.vendor) {
+            const cart: CartInfo = {
+                cart: this.props.cart,
+                vendor: this.props.vendor
+            }
+            this.props.checkout(cart)
+        } else console.log("No items are in your cart")   
     }
 
     render() {

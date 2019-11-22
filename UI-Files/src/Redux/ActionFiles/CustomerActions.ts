@@ -1,6 +1,6 @@
 import { MenuItem, CustomerInfo, VendorInfo, OrderItem, Order, CartInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import _GET, { _POST } from '../../REST/restapiutil';
+import { _GET, _POST } from '../../REST/restapiutil';
 
 /*
 * CUSTOMER ACTION TYPES
@@ -18,18 +18,18 @@ export enum GET_MENU_STATUS {
     FAILURE = 'GET_MENU_FAILURE'
 }
 
-// possibly use to update menu state with selected vendor
-export const UPDATE_MENU_WITH_VENDOR = 'UPDATE_MENU_WITH_VENDOR';
-
-export const ADD_ITEM_TO_CART = 'ADD_ITEM_TO_CART';
-export const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
-export const CHECKOUT_ORDER = 'CHECKOUT_ORDER';
-
 export enum SEND_ORDER_STATUS {
     BEGIN = 'SEND_ORDER_BEGIN',
     SUCCESS = 'SEND_ORDER_SUCCESS',
     FAILURE = 'SEND_ORDER_FAILURE'
 }
+
+export const UPDATE_MENU_WITH_VENDOR = 'UPDATE_MENU_WITH_VENDOR';
+export const ADD_ITEM_TO_CART = 'ADD_ITEM_TO_CART';
+export const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART';
+export const REMOVE_ITEM_TYPE_FROM_CART = 'REMOVE_ITEM_TYPE_FROM_CART';
+export const CHECKOUT_ORDER = 'CHECKOUT_ORDER';
+export const UPDATE_CART = 'UPDATE_CART';
 
 /*
 * CUSTOMER ACTION INTERFACES
@@ -42,6 +42,10 @@ export type SearchThunkDispatch = ThunkDispatch<{}, {}, CustomerSearchAction>;
 export type GetMenuTypes = GET_MENU_STATUS.BEGIN | GET_MENU_STATUS.SUCCESS | GET_MENU_STATUS.FAILURE
 export type GetMenuThunkAction = ThunkAction<void, {}, {}, GetMenuAction>
 export type GetMenuThunkDispatch = ThunkDispatch<{}, {}, GetMenuAction>
+
+export type SendOrderTypes = SEND_ORDER_STATUS.BEGIN | SEND_ORDER_STATUS.SUCCESS | SEND_ORDER_STATUS.FAILURE
+export type SendOrderThunkAction = ThunkAction<void, {}, {}, SendOrderAction>
+export type SendOrderThunkDispatch = ThunkDispatch<{}, {}, SendOrderAction>
 
 export interface CustomerSearchAction {
     type: CustomerSearchTypes
@@ -70,14 +74,24 @@ export interface RemoveItemFromCartAction {
     payload: MenuItem
 };
 
+export interface RemoveItemTypeFromCartAction {
+    type: typeof REMOVE_ITEM_TYPE_FROM_CART,
+    payload: MenuItem
+};
+
 export interface CheckoutOrderAction {
     type: typeof CHECKOUT_ORDER,
     payload: CartInfo
 }
 
+export interface UpdateCartAction {
+    type: typeof UPDATE_CART,
+    payload: OrderItem[]
+}
+
 export interface SendOrderAction {
     type: SEND_ORDER_STATUS,
-    payload?: CustomerInfo,
+    payload?: number,
     error?: Error
 };
 
@@ -128,15 +142,34 @@ export const removeItemFromCart = (item: MenuItem): RemoveItemFromCartAction => 
     payload: item
 });
 
+export const removeItemTypeFromCart = (item: MenuItem): RemoveItemTypeFromCartAction => ({
+    type: REMOVE_ITEM_TYPE_FROM_CART,
+    payload: item
+});
+
 export const checkoutOrder = (cart: CartInfo): CheckoutOrderAction => ({
     type: CHECKOUT_ORDER,
     payload: cart
-})
+});
 
-// export const sendOrderBegin = (info: Order): SendOrderAction => ({
-//     type: SEND_ORDER_STATUS.BEGIN,
-//     payload: info
-// });
+export const updateCart = (cart: OrderItem[]): UpdateCartAction => ({
+    type: UPDATE_CART,
+    payload: cart
+});
+
+export const sendOrderBegin = (): SendOrderAction => ({
+    type: SEND_ORDER_STATUS.BEGIN
+});
+
+export const sendOrderSuccess = (orderNumber: number): SendOrderAction => ({
+    type: SEND_ORDER_STATUS.SUCCESS,
+    payload: orderNumber
+});
+
+export const sendOrderFailure = (error: Error): SendOrderAction => ({
+    type: SEND_ORDER_STATUS.FAILURE,
+    error: error
+});
 
 /*
 * THUNK ASYNC REQUESTS
@@ -150,8 +183,13 @@ const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
 
 const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
     const menu_query = { id };
-    const menu = await _POST('http://localhost:5000/menu', menu_query)
+    const menu = await _POST('http://localhost:5000/menu', menu_query);
     return JSON.parse(menu)
+}
+
+const send_order = async (order: Order): Promise<number> => {
+    const orderNumber = await _POST('http://localhost:5000/addOrder', order);
+    return orderNumber
 }
 
 // retrieves vendor-list based on user search-string
@@ -174,6 +212,18 @@ export const fetchMenu = (id: Number): GetMenuThunkAction => {
             dispatch(getMenuSuccess(menu))
         }).catch((error: Error) => {
             dispatch(getMenuFailure(error))
+        })
+    }
+}
+
+// sends order to be fulfilled by vendor
+export const sendOrder = (order: Order): SendOrderThunkAction => {
+    return (dispatch: SendOrderThunkDispatch) => {
+        dispatch(sendOrderBegin())
+        send_order(order).then((orderNumber: number) => {
+            dispatch(sendOrderSuccess(orderNumber))
+        }).catch((error: Error) => {
+            dispatch(sendOrderFailure(error))
         })
     }
 }

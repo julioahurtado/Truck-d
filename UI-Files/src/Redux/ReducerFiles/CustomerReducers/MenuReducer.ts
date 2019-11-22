@@ -1,4 +1,4 @@
-import { GET_MENU_STATUS, GetMenuAction, UpdateMenuWithVendorAction, UPDATE_MENU_WITH_VENDOR, CHECKOUT_ORDER, CheckoutOrderAction, ADD_ITEM_TO_CART, AddItemToCartAction, RemoveItemFromCartAction, REMOVE_ITEM_FROM_CART } from '../../ActionFiles/CustomerActions';
+import { GET_MENU_STATUS, GetMenuAction, UpdateMenuWithVendorAction, UPDATE_MENU_WITH_VENDOR, UPDATE_CART, UpdateCartAction, CHECKOUT_ORDER, CheckoutOrderAction, ADD_ITEM_TO_CART, AddItemToCartAction, RemoveItemFromCartAction, REMOVE_ITEM_FROM_CART } from '../../ActionFiles/CustomerActions';
 import { MenuItem, VendorInfo, OrderItem } from '../../InterfaceFiles/types'
 
 export interface MenuState {
@@ -17,7 +17,7 @@ export const initState: MenuState = {
     error: null
 }
 
- type CartActions = AddItemToCartAction | RemoveItemFromCartAction | CheckoutOrderAction
+ type CartActions = AddItemToCartAction | RemoveItemFromCartAction | CheckoutOrderAction | UpdateCartAction
 export const Menu = (state: MenuState = initState, action: GetMenuAction | CartActions | UpdateMenuWithVendorAction): MenuState => {
     switch(action.type) {
 
@@ -33,6 +33,13 @@ export const Menu = (state: MenuState = initState, action: GetMenuAction | CartA
             return {
                 ...state,
                 vendor: action.payload
+            };
+
+        // Update menu screen with new version of cart
+        case UPDATE_CART:
+            return {
+                ...state,
+                cart: action.payload
             };
 
         // Add or update item in cart
