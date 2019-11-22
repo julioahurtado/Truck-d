@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 
 interface CustomerVendorSearchProps {
     vendorList?: VendorInfo[] | null
-    isLoading?: Boolean
+    isLoading?: boolean
     fetchVendors?: any
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import { fetchMenu, updateMenuWithVendor } from '../../../Redux/ActionFiles/CustomerActions';
+import { fetchMenu, updateVendor } from '../../../Redux/ActionFiles/CustomerActions';
 import { VendorInfo } from '../../../Redux/InterfaceFiles/types';
 import { connect } from 'react-redux';
 import { RootState } from '../../../Redux/StoreFiles/store';
@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch: any): CustomerVendorListItemProps => ({
     fetchMenu: (id: Number) =>
         dispatch(fetchMenu(id)),
     updateVendor: (vendor: VendorInfo) =>
-        dispatch(updateMenuWithVendor(vendor))
+        dispatch(updateVendor(vendor))
 });
 
 const CustomerVendorListItem = connect(

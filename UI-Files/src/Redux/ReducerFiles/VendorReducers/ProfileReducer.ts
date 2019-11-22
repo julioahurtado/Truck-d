@@ -7,7 +7,7 @@ import { VendorInfo } from '../../InterfaceFiles/types';
 
 export interface ProfileState {
     vendor?: VendorInfo | null,
-    isLoading?: Boolean,
+    isLoading?: boolean,
     error?: Error | null
 };
 
@@ -66,17 +66,21 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
             };
 
         case ADD_MENU_ITEM_STATUS.SUCCESS:
-            return {
-                ...state,
-                vendor: state.vendor && {
-                    ...state.vendor,
-                    menu: state.vendor.menu && [
-                        ...state.vendor.menu,
-                        action.payload
-                    ]
-                },
-                isLoading: false
-            };
+            if (action.payload) {
+                return {
+                    ...state,
+                    vendor: state.vendor && {
+                        ...state.vendor,
+                        menu: state.vendor.menu && [
+                            ...state.vendor.menu,
+                            action.payload
+                        ]
+                    },
+                    isLoading: false
+                };
+            } else return {
+                ...state
+            }
 
         case ADD_MENU_ITEM_STATUS.FAILURE:
             return {

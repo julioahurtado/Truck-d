@@ -1,18 +1,18 @@
 import { ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, REMOVE_ITEM_TYPE_FROM_CART, AddItemToCartAction, RemoveItemFromCartAction, RemoveItemTypeFromCartAction } from '../../ActionFiles/CustomerActions';
-import { OrderItem, VendorInfo } from '../../InterfaceFiles/types'
+import { OrderItem } from '../../InterfaceFiles/types'
 
 export interface CartState {
-    items?: OrderItem[] | null,
+    items?: OrderItem[],
     price?: number,
 }
 
 let cartState: CartState = {
-    items: null,
+    items: [],
     price: 0,
 }
 
 type CartActions = AddItemToCartAction | RemoveItemFromCartAction | RemoveItemTypeFromCartAction
-export const Checkout = (state = cartState, action:  CartActions): CartState => {
+export const Cart = (state: CartState = cartState, action:  CartActions): CartState => {
     switch(action.type) {
 
         // Add or update item in cart
@@ -23,6 +23,7 @@ export const Checkout = (state = cartState, action:  CartActions): CartState => 
             }
 
             // update existing cart item with incremented quantity
+            const price = (state.price) ? state.price : 0;
             if (itemIndex != -1) {
                 const newCart = state.items && [...state.items]
                 newCart && (newCart[itemIndex].quantity += 1)
@@ -30,21 +31,21 @@ export const Checkout = (state = cartState, action:  CartActions): CartState => 
                 return {
                     ...state,
                     items: newCart,
-                    price: state.price + action.payload.price
+                    price: price + action.payload.price
                 }
             } else {
                 if (state.items) {
                     // add new item to existing cart
                     return {
                         ...state,
-                        items: state.items && [
+                        items: [
                             ...state.items,
                             {
                                 ...action.payload,
                                 quantity: 1
                             }
                         ],
-                        price: state.price + action.payload.price
+                        price: price + action.payload.price
                     }
                 // add new item to empty cart
                 } else return {
@@ -54,7 +55,7 @@ export const Checkout = (state = cartState, action:  CartActions): CartState => 
                 }
             }
 
-        // Removes one of item type from cart
+        // Removes one of quantity of item from cart
         case REMOVE_ITEM_FROM_CART:
             return {
                 ...state,
@@ -67,7 +68,7 @@ export const Checkout = (state = cartState, action:  CartActions): CartState => 
                     }
                     return { ...item }
                 }).filter(item => item.quantity > 0),
-                price: state.price - action.payload.price
+                price: state.price && state.price - action.payload.price
             };
 
         // removes all items with specified type from cart
@@ -78,12 +79,12 @@ export const Checkout = (state = cartState, action:  CartActions): CartState => 
             }
 
             // update existing cart item with incremented quantity
-            if (removeIndex != -1) {
+            if (removeIndex != -1 && state.items) {
                 const removePrice = state.items[removeIndex].quantity * action.payload.price;
                 return {
                     ...state,
-                    items: state.items && state.items.filter(item => item.id != action.payload.id),
-                    price: state.price - removePrice
+                    items: state.items.filter(item => item.id != action.payload.id),
+                    price: state.price && state.price - removePrice
                 }
             } else return {
                 ...state

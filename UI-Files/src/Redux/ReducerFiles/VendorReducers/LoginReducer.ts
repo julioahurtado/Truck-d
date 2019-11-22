@@ -3,7 +3,7 @@ import { VendorInfo } from '../../InterfaceFiles/types';
 
 export interface LoginState {
     vendor?: VendorInfo | null,
-    isLoading: Boolean,
+    isLoading: boolean,
     error?: Error | null
 };
 
