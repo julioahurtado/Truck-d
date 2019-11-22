@@ -1,15 +1,15 @@
 
 import * as React from 'react'
 import { Row, Col, Form, Button, ListGroup, Modal } from 'react-bootstrap'
-import { ExecFileOptionsWithStringEncoding } from 'child_process';
 
 interface VendorProfileEditorProps{
-    vendorName: String;
-    vendorDescription: String;
-    vendorPhoneNumber: String;
-    vendorCity: String;
-    vendorState: String;
-    vendorCuisine: String;
+    vendorName?: string;
+    vendorDescription?: string;
+    vendorPhoneNumber?: string;
+    vendorCity?: string;
+    vendorState?: string;
+    vendorAddress?: string;
+    vendorCuisine?: string;
 
 }
  
@@ -81,7 +81,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Name
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="Enter your Name" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorName} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -89,7 +89,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Description
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="Tell us about your business" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorDescription} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -97,7 +97,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Phone
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="(xxx) xxx-xxxx" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorPhoneNumber} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -105,7 +105,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     City
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="Enter your City" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorCity} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -113,7 +113,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     State
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="Enter your State" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorState} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -121,7 +121,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Address
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="Enter your Address" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorAddress} />
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -129,12 +129,12 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                                     Cuisine
                         </Form.Label>
                                 <Col sm="4">
-                                    <Form.Control type="text" placeholder="Enter the Cuisine" />
+                                    <Form.Control type="text" defaultValue={this.props.vendorCuisine} />
                                 </Col>
                             </Form.Group>
                         </Form>
                         <div className="savebutton">
-                            <Button variant="primary">Save</Button>
+                            <Button variant="primary" onClick={() => this.handleSave()}>Save</Button>
                         </div>
                     </Col>
                     <Col>
