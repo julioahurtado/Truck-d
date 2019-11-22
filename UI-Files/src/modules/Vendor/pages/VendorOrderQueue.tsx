@@ -1,13 +1,7 @@
+import * as React from "react";
 
-import * as React from 'react'	
-
-
-export default class VendorOrderQueue extends React.Component<any> {	
-    render(){	
-        return (	
-            <div>	
-                VendorOrderQueue	
-            </div>	
-        )	
-    }	
-} 
+export default class VendorOrderQueue extends React.Component<any> {
+  render() {
+    return <div>VendorOrderQueue</div>;
+  }
+}
