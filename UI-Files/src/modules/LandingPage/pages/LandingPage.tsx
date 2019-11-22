@@ -22,6 +22,9 @@ export default class LandingPage extends React.Component<any> {
   }
 
   render() {
+    var huskyTest = "will this be pretied?";
+    var h2 = "will this be pretied  ?";
+    var hfdsuskyTest = "will this be pretied?";
     return (
       <Router history={history}>
         <Switch>
