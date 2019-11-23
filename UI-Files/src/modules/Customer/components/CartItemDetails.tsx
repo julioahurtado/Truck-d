@@ -19,12 +19,6 @@ interface MenuListDispatchProps {
 
 class CartMenuItemElement extends  React.Component<MenuListProps> {
     
-    constructor(props: Readonly<MenuListProps>){
-        super(props);
-        this.state= {
-          count:0
-        };
-      }
       
 
 
