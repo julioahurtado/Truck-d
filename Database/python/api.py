@@ -71,21 +71,20 @@ def vendor_create_user():
     # Success and sends logged_in message
     dbCursor.close()
     disconnect_from_db(connection)
-    vendorInfo = []
-    vendorInfo.append({
-               "id": results[0],
-               "name": results[1],
-               "description": results[2],
-               "cuisine": results[3],
-               "hours": {
-                   "open": results[4],
-                   "close": results[5],
-               },
-               "phone": results[6],
-               "address": results[7],
-               "city": results[8],
-               "state": results[9]
-           })
+    vendorInfo = {
+                "id": results[0],
+                "name": results[1],
+                "description": results[2],
+                "cuisine": results[3],
+                "hours": {
+                    "open": results[4],
+                    "close": results[5],
+                },
+                "phone": results[6],
+                "address": results[7],
+                "city": results[8],
+                "state": results[9]
+            }
     return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
@@ -121,21 +120,22 @@ def vendor_login():
         else:
             dbCursor.close()
             disconnect_from_db(connection)
-            vendorInfo = []
-            vendorInfo.append({
-                       "id": results[0],
-                       "name": results[1],
-                       "description": results[2],
-                       "cuisine": results[3],
-                       "hours": {
-                           "open": results[4],
-                           "close": results[5],
-                       },
-                       "phone": results[6],
-                       "address": results[7],
-                       "city": results[8],
-                       "state": results[9]
-                   })
+            
+            vendorInfo = {
+                "id": results[0],
+                "name": results[1],
+                "description": results[2],
+                "cuisine": results[3],
+                "hours": {
+                    "open": results[4],
+                    "close": results[5],
+                },
+                "phone": results[6],
+                "address": results[7],
+                "city": results[8],
+                "state": results[9]
+            }
+
             return jsonify(vendorInfo)
 
     except:
