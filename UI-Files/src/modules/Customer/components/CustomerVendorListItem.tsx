@@ -4,6 +4,7 @@ import { fetchMenu, updateMenuWithVendor } from '../../../Redux/ActionFiles/Cust
 import { VendorInfo } from '../../../Redux/InterfaceFiles/types';
 import { connect } from 'react-redux';
 import { RootState } from '../../../Redux/StoreFiles/store';
+import '../css/Style.css'
 
 interface CustomerVendorListItemProps {
     vendor?: VendorInfo | null,
@@ -25,7 +26,7 @@ export class CustomerVendorItem extends React.Component<CustomerVendorListItemPr
 
     render() {
         return (
-            <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
+            <div className="listRes">
                 <Link to={'/customer/menu/'} onClick={() => this.handleCick()}>
                     <h1>
                         {this.props.vendor && this.props.vendor.name}
