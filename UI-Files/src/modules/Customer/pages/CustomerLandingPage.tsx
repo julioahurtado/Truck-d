@@ -18,7 +18,7 @@ export default class CustomerLandingPage extends React.Component<any> {
                        </CustomerVendorSearch>
                     </Route>
                     <Route path={'/customer/cart'}>
-                        <CustomerCart>
+                    <CustomerCart>
                         </CustomerCart>
                     </Route>
                     <Route path={'/customer/order'}>

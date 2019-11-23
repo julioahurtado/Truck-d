@@ -28,12 +28,12 @@ export class CustomerVendorItem extends React.Component<CustomerVendorListItemPr
         return (
             <div className="listRes">
                 <Link to={'/customer/menu/'} onClick={() => this.handleCick()}>
-                    <h1>
+                    <h1 > 
                         {this.props.vendor && this.props.vendor.name}
                     </h1>
 
                 </Link>
-                <p>
+                <p style={{font: 'roboto'}}>
                     {this.props.vendor && this.props.vendor.description}
                 </p>
                 <p>

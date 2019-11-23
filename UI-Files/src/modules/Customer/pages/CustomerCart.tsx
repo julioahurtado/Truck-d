@@ -1,32 +1,45 @@
 
 import * as React from 'react'
  
-import '../components/CustomerVendorSearch'
-import '../components/CustomerVendorListItem'
-import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
-import CustomerVendorListItem from '../components/CustomerVendorListItem'
-import { Link } from 'react-router-dom'
 
-export default class CustomerCart extends React.Component<any> {
+import { Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
+import {CartItemDetails} from '../components/CartItemDetails'
+import { Link } from 'react-router-dom'
+import { CustomerMenuItem } from '../components/CustomerMenuItem';
+import { MenuItem, CartInfo } from '../../../Redux/InterfaceFiles/types';
+import { MenuState } from '../../../Redux/ReducerFiles/CustomerReducers/MenuReducer';
+import { RootState } from '../../../Redux/StoreFiles/store';
+import { connect } from 'react-redux';
+import { checkoutOrder, CheckoutOrderAction } from '../../../Redux/ActionFiles/CustomerActions';
+import { Dispatch } from 'redux';
+
+
+
+interface CustomerMenuProps extends MenuState, CustomerMenuDispatchProps {}
+interface CustomerMenuDispatchProps {
+    checkout?: any
+}
+export default class CustomerCart extends React.Component<CustomerMenuProps, any> {
     render(){
         return (
-            <Form>
             <div>
- 
                <h1>Cart</h1>
-
-                <ListGroup style={{padding: '2px'}}>
-                    {/* {this.props.vendorList.map((vendor, key) => {
-                        <CustomerVendorListItem 
-                            vendorName={vendor.name}
-                            vendorDesription={vendor.desription}
-                            vendorCuisine={vendor.cuisine}
-                            vendorHours={vendor.hours}
-                        ></CustomerVendorListItem>
-                    })} */}
-                </ListGroup>
+               <br/>
+               {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
+                    {this.props.menu && this.props.menu.map((item: MenuItem) => 
+                        {
+                            return (
+                                <CartItemDetails
+                                    id={1}
+                                    name="name"
+                                    description="food"
+                                    price={10}
+                                ></CartItemDetails>
+                            )
+                        }
+                    )}
+                </ListGroup>}
                     
-            </div>
             <div className="centered">
             <Row> 
 
@@ -42,7 +55,7 @@ export default class CustomerCart extends React.Component<any> {
                     </Col>
             </Row>
         </div>
-        </Form>
+        </div>
         )
     }
 }
