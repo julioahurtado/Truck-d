@@ -55,21 +55,22 @@ export const Cart = (state: CartState = cartState, action:  CartActions): CartSt
                 }
             }
 
-        // Removes one of quantity of item from cart
         case REMOVE_ITEM_FROM_CART:
-            return {
-                ...state,
-                items: state.items && state.items.map(item => {
-                    if (item.id == action.payload.id) {
-                        return {
-                            ...item,
-                            quantity: item.quantity - 1
-                        }
-                    }
-                    return { ...item }
-                }).filter(item => item.quantity > 0),
-                price: state.price && state.price - action.payload.price
-            };
+            if (state.items && state.items.findIndex(item => item.id == action.payload.id) != -1) {
+                return {
+                    ...state,
+                    items: state.items && state.items.map(item => {
+                        if (item.id == action.payload.id) {
+                            console.log("item found:" + item.name)
+                            return {
+                                ...item,
+                                quantity: item.quantity - 1
+                            }
+                        } else return { ...item }
+                    }).filter(item => item.quantity > 0),
+                    price: state.price && state.price - action.payload.price
+                };
+            } else return { ...state }
 
         // removes all items with specified type from cart
         case REMOVE_ITEM_TYPE_FROM_CART:

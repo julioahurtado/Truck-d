@@ -37,8 +37,6 @@ export enum EDIT_MENU_ITEM_STATUS {
     FAILURE = 'EDIT_MENU_ITEM_FAILURE'
 }
 
-export const UPDATE_VENDOR = 'UPDATE_VENDOR';
-
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 export const FINISH_ORDER = 'FINISH_ORDER';
 
@@ -48,7 +46,7 @@ export const FINISH_ORDER = 'FINISH_ORDER';
 
 export type LoginTypes = LOGIN_STATUS.BEGIN | LOGIN_STATUS.SUCCESS | LOGIN_STATUS.FAILURE
 export type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>
-export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction|UpdateVendorAction>
+export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction>
 
 export type UpdateProfileTypes = UPDATE_PROFILE_STATUS.BEGIN | UPDATE_PROFILE_STATUS.SUCCESS | UPDATE_PROFILE_STATUS.FAILURE
 export type UpdateProfileThunkAction = ThunkAction<void, {}, {}, UpdateProfileAction>
@@ -96,11 +94,6 @@ export interface EditMenuItemAction {
     error?: Error
 }
 
-export interface UpdateVendorAction {
-    type: typeof UPDATE_VENDOR,
-    payload: VendorInfo
-}
-
 export interface CancelOrderAction {
     type: typeof CANCEL_ORDER,
     payload: Order
@@ -142,11 +135,6 @@ export const signUpFailure = (error: Error): LoginAction => ({
     type: LOGIN_STATUS.FAILURE,
     error: error
 });
-
-export const updateVendor = (vendor: VendorInfo): UpdateVendorAction => ({
-    type: UPDATE_VENDOR,
-    payload: vendor
-})
 
 export const updateProfileBegin = (): UpdateProfileAction  => ({
     type: UPDATE_PROFILE_STATUS.BEGIN
@@ -237,7 +225,6 @@ export const vendorSignIn = (form: signInForm): LoginThunkAction => {
         dispatch(signInBegin());
         signIn(form).then((vendor: VendorInfo) => {
             dispatch(signInSuccess(vendor))
-            dispatch(updateVendor(vendor))
         }).catch((error: Error) => {
             dispatch(signInFailure(error))
         })
@@ -250,7 +237,6 @@ export const vendorSignUp = (form: signUpForm): LoginThunkAction => {
         dispatch(signUpBegin());
         signUp(form).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))
-            dispatch(updateVendor(vendor))
         }).catch((error: Error) => {
             dispatch(signUpFailure(error))
         })
