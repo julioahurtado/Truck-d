@@ -39,7 +39,8 @@ export interface CustomerInfo {
 }
 
 export interface Order {
-    customerInfo: CustomerInfo
-    orderItems: OrderItem[]
+    id: number,
+    customer: CustomerInfo
+    items: OrderItem[]
     price: number
 }

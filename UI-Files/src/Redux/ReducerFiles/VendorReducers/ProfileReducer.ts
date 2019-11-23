@@ -51,7 +51,7 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
                     cuisine: action.payload.cuisine,
                     hours: {
                         open: action.payload.hours.open,
-                        close: action.payload.hours.close
+                        close: action.payload.hours.close,
                     },
                     phone: action.payload.phone,
                     city: action.payload.city,

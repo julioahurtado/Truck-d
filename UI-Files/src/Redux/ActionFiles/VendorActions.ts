@@ -2,6 +2,7 @@ import { MenuItem, Order, VendorInfo } from '../InterfaceFiles/types'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { _POST } from '../../REST/restapiutil';
 import { reject } from 'q';
+import { fetchVendors } from './CustomerActions';
 
 /*
 * VENDOR ACTION TYPES
@@ -37,8 +38,23 @@ export enum EDIT_MENU_ITEM_STATUS {
     FAILURE = 'EDIT_MENU_ITEM_FAILURE'
 }
 
-export const CANCEL_ORDER = 'CANCEL_ORDER';
-export const FINISH_ORDER = 'FINISH_ORDER';
+export enum CANCEL_ORDER_STATUS {
+    BEGIN = 'CANCEL_ORDER_BEGIN',
+    SUCCESS = 'CANCEL_ORDER_SUCCESS',
+    FAILURE = 'CANCEL_ORDER_FAILURE'
+}
+
+export enum FINISH_ORDER_STATUS {
+    BEGIN = 'FINISH_ORDER_BEGIN',
+    SUCCESS = 'FINISH_ORDER_SUCCESS',
+    FAILURE = 'FINISH_ORDER_FAILURE'
+}
+
+export enum FETCH_ORDERS_STATUS {
+    BEGIN = 'FETCH_ORDERS_BEGIN',
+    SUCCESS = 'FETCH_ORDERS_SUCCESS',
+    FAILURE = 'FETCH_ORDERS_FAILURE'
+}
 
 /*
 * VENDOR ACTION INTERFACES
@@ -64,44 +80,64 @@ export type EditMenuItemTypes = EDIT_MENU_ITEM_STATUS.BEGIN | EDIT_MENU_ITEM_STA
 export type EditMenuItemThunkAction = ThunkAction<void, {}, {}, EditMenuItemAction>
 export type EditMenuItemThunkDispatch = ThunkDispatch<{}, {}, EditMenuItemAction>
 
+export type CancelOrderTypes = CANCEL_ORDER_STATUS.BEGIN | CANCEL_ORDER_STATUS.SUCCESS | CANCEL_ORDER_STATUS.FAILURE
+export type CancelOrderThunkAction = ThunkAction<void, {}, {}, CancelOrderAction>
+export type CancelOrderThunkDispatch = ThunkDispatch<{}, {}, CancelOrderAction>
+
+export type FinishOrderTypes = FINISH_ORDER_STATUS.BEGIN | FINISH_ORDER_STATUS.SUCCESS | FINISH_ORDER_STATUS.FAILURE
+export type FinishOrderThunkAction = ThunkAction<void, {}, {}, FinishOrderAction>
+export type FinishOrderThunkDispatch = ThunkDispatch<{}, {}, FinishOrderAction>
+
+export type FetchOrdersTypes = FETCH_ORDERS_STATUS.BEGIN | FETCH_ORDERS_STATUS.SUCCESS | FETCH_ORDERS_STATUS.FAILURE
+export type FetchOrdersThunkAction = ThunkAction<void, {}, {}, FetchOrdersAction>
+export type FetchOrdersThunkDispatch = ThunkDispatch<{}, {}, FetchOrdersAction>
+
 export interface LoginAction {
-    type: LoginTypes,
-    payload?: VendorInfo,
+    type: LoginTypes
+    payload?: VendorInfo
     error?: Error
 }
 
 export interface UpdateProfileAction {
-    type: UPDATE_PROFILE_STATUS,
-    payload?: VendorInfo,
+    type: UPDATE_PROFILE_STATUS
+    payload?: VendorInfo
     error?: Error
 }
 
 export interface AddMenuItemAction {
-    type: ADD_MENU_ITEM_STATUS,
-    payload?: MenuItem,
+    type: ADD_MENU_ITEM_STATUS
+    payload?: MenuItem
     error?: Error
 }
 
 export interface DeleteMenuItemAction {
-    type: DELETE_MENU_ITEM_STATUS,
-    payload?: MenuItem,
+    type: DELETE_MENU_ITEM_STATUS
+    payload?: MenuItem
     error?: Error
 }
 
 export interface EditMenuItemAction {
-    type: EDIT_MENU_ITEM_STATUS,
-    payload?: MenuItem,
+    type: EDIT_MENU_ITEM_STATUS
+    payload?: MenuItem
     error?: Error
 }
 
 export interface CancelOrderAction {
-    type: typeof CANCEL_ORDER,
-    payload: Order
+    type: CANCEL_ORDER_STATUS
+    payload?: Order
+    error?: Error
 }
 
 export interface FinishOrderAction {
-    type: typeof FINISH_ORDER,
-    payload: Order
+    type: FINISH_ORDER_STATUS
+    payload?: Order
+    error?: Error
+}
+
+export interface FetchOrdersAction {
+    type: FETCH_ORDERS_STATUS
+    payload?: Order[]
+    error?: Error
 }
 
 /*
@@ -192,32 +228,51 @@ export const editMenuItemFailure = (error: Error): EditMenuItemAction  => ({
     error: error
 });
 
-export const cancelOrder = (order: Order): CancelOrderAction => ({
-    type: CANCEL_ORDER,
+export const cancelOrderBegin = (): CancelOrderAction => ({
+    type: CANCEL_ORDER_STATUS.BEGIN
+});
+
+export const cancelOrderSuccess = (order: Order): CancelOrderAction => ({
+    type: CANCEL_ORDER_STATUS.SUCCESS,
     payload: order
 });
 
-export const finishOrder = (order: Order): FinishOrderAction => ({
-    type: FINISH_ORDER,
+export const cancelOrderFailure = (error: Error): CancelOrderAction => ({
+    type: CANCEL_ORDER_STATUS.FAILURE,
+    error: error
+});
+
+export const finishOrderBegin = (): FinishOrderAction => ({
+    type: FINISH_ORDER_STATUS.BEGIN
+});
+
+export const finishOrderSucccess = (order: Order): FinishOrderAction => ({
+    type: FINISH_ORDER_STATUS.SUCCESS,
     payload: order
+});
+
+export const finishOrderFailure = (error: Error): FinishOrderAction => ({
+    type: FINISH_ORDER_STATUS.FAILURE,
+    error: error
+});
+
+export const fetchOrdersBegin = (): FetchOrdersAction => ({
+    type: FETCH_ORDERS_STATUS.BEGIN
+});
+
+export const fetchOrdersSucccess = (orders: Order[]): FetchOrdersAction => ({
+    type: FETCH_ORDERS_STATUS.SUCCESS,
+    payload: orders
+});
+
+export const fetchOrdersFailure = (error: Error): FetchOrdersAction => ({
+    type: FETCH_ORDERS_STATUS.FAILURE,
+    error: error
 });
 
 /*
 * THUNK ASYNC REQUESTS
 */
-
-export interface signUpForm { email: String, password: String, name: String, description: String, cuisine: String, phone: String, address: String, city: String, state: String, open: Number, close: Number }
-export interface signInForm { email: String, password: String }
-
-const signIn = async (data: signInForm): Promise<VendorInfo> => {
-    const vendor = await _POST('http://localhost:5000/login', data)
-    return JSON.parse(vendor)
-};
-
-const signUp = async (data: signUpForm): Promise<VendorInfo> => {
-    const vendor = await _POST('http://localhost:5000/createVendorAccount', data)
-    return JSON.parse(vendor)
-};
 
 // attempt vendor sign-in
 export const vendorSignIn = (form: signInForm): LoginThunkAction => {
@@ -225,6 +280,7 @@ export const vendorSignIn = (form: signInForm): LoginThunkAction => {
         dispatch(signInBegin());
         signIn(form).then((vendor: VendorInfo) => {
             dispatch(signInSuccess(vendor))
+            // dispatch(fetchOrders(vendor.id))
         }).catch((error: Error) => {
             dispatch(signInFailure(error))
         })
@@ -237,48 +293,11 @@ export const vendorSignUp = (form: signUpForm): LoginThunkAction => {
         dispatch(signUpBegin());
         signUp(form).then((vendor: VendorInfo) => {
             dispatch(signUpSuccess(vendor))
+            // dispatch(fetchOrders(vendor.id))
         }).catch((error: Error) => {
             dispatch(signUpFailure(error))
         })
     }
-}
-
-// profile editor
-export const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
-    const resp = await _POST('http://localhost:5000/vendorUpdate', vendor);
-    if (resp != '200') {
-        reject(new Error('Error updating profile'))
-    }
-    return vendor
-}
-
-export const add_to_menu = async (item: MenuItem): Promise<MenuItem> => {
-    const resp = await _POST('http://localhost:5000/add_menu_item', item);
-    const itemID = 0;
-    return new Promise<MenuItem>((resolve, reject) => {
-        if (resp == '200') {
-            item.id = itemID
-            resolve(item)
-        } else reject(new Error("Error adding menu item"))
-    })
-}
-
-export const edit_menu_item = async (item: MenuItem): Promise<MenuItem> => {
-    const resp = await _POST('http://localhost:5000/edit_menu_item_item', item);
-    return new Promise<MenuItem>((resolve, reject) => {
-        if (resp == '200') {
-            resolve(item)
-        } else return reject(new Error("Error editing menu item"))
-    })
-}
-
-export const delete_menu_item = async (item: MenuItem): Promise<MenuItem> => {
-    const resp = await _POST('http://localhost:5000/delete_menu_item', item);
-    return new Promise<MenuItem>((resolve, reject) => {
-        if (resp == '200') {
-            resolve(item)
-        } else reject(new Error("Error editing menu item"))
-    })
 }
 
 export const vendorUpdateProfile = (vendor: VendorInfo): UpdateProfileThunkAction => {
@@ -304,7 +323,6 @@ export const vendorAddMenuItem = (item: MenuItem): AddMenuItemThunkAction => {
     }
 }
 
-// id of original menu item. do we also need vendor id
 export const vendorEditMenuItem = (item: MenuItem): EditMenuItemThunkAction => {
     return (dispatch: EditMenuItemThunkDispatch) => {
         dispatch(editMenuItemBegin());
@@ -325,4 +343,132 @@ export const vendorDeleteMenuItem = (item: MenuItem): DeleteMenuItemThunkAction 
             dispatch(deleteMenuItemFailure(error))
         })
     }
+}
+
+export const cancelOrder = (order: Order): CancelOrderThunkAction => {
+    return (dispatch: CancelOrderThunkDispatch) => {
+        dispatch(cancelOrderBegin());
+        cancel_order(order).then((order: Order) => {
+            dispatch(cancelOrderSuccess(order))
+        }).catch((error: Error) => {
+            dispatch(cancelOrderFailure(error))
+        })
+    }
+}
+
+export const finishOrder = (order: Order): FinishOrderThunkAction => {
+    return (dispatch: FinishOrderThunkDispatch) => {
+        dispatch(finishOrderBegin());
+        finish_order(order).then((order: Order) => {
+            dispatch(finishOrderSucccess(order))
+        }).catch((error: Error) => {
+            dispatch(finishOrderFailure(error))
+        })
+    }
+}
+
+// fetch orders for a vendor on timeout
+export const fetchOrders = (id: number): FetchOrdersThunkAction => {
+    const fetch_timeout: number = 10;
+    while (true) {
+        setTimeout(() => {
+            return (dispatch: FetchOrdersThunkDispatch) => {
+                dispatch(fetchOrdersBegin());
+                fetch_orders(id).then((orders: Order[]) => {
+                    dispatch(fetchOrdersSucccess(orders))
+                }).catch((error: Error) => {
+                    dispatch(fetchOrdersFailure(error))
+                })
+            }
+        }, fetch_timeout * 1000);
+    }
+}
+
+export interface signUpForm { email: String, password: String, name: String, description: String, cuisine: String, phone: String, address: String, city: String, state: String, open: Number, close: Number }
+export interface signInForm { email: String, password: String }
+
+const signIn = async (data: signInForm): Promise<VendorInfo> => {
+    const vendor = await _POST('http://localhost:5000/login', data)
+    return new Promise<VendorInfo>((resolve, reject) => {
+        if (vendor) {
+            resolve(JSON.parse(vendor))
+        } else {
+            reject(new Error("Unable to login"))
+        }
+    });
+};
+
+const signUp = async (data: signUpForm): Promise<VendorInfo> => {
+    const vendor = await _POST('http://localhost:5000/createVendorAccount', data)
+    return new Promise<VendorInfo>((resolve, reject) => {
+        if (vendor) {
+            resolve(JSON.parse(vendor))
+        } else {
+            reject(new Error("Unable to create user"))
+        }
+    });
+};
+
+// profile editor
+const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
+    const resp = await _POST('http://localhost:5000/vendorUpdate', vendor);
+    return new Promise<VendorInfo>((resolve, reject) => {
+        if (resp != '200') {
+            resolve(vendor)
+        } else {
+            reject(new Error("Unable to update profile"))
+        }
+    });
+}
+
+const add_to_menu = async (item: MenuItem): Promise<MenuItem> => {
+    const resp = await _POST('http://localhost:5000/add_menu_item', item);
+    const itemID = 0;
+    return new Promise<MenuItem>((resolve, reject) => {
+        if (resp == '200') {
+            item.id = itemID
+            resolve(item)
+        } else reject(new Error("Error adding menu item"))
+    })
+}
+
+const edit_menu_item = async (item: MenuItem): Promise<MenuItem> => {
+    const resp = await _POST('http://localhost:5000/edit_menu_item_item', item);
+    return new Promise<MenuItem>((resolve, reject) => {
+        if (resp == '200') {
+            resolve(item)
+        } else return reject(new Error("Error editing menu item"))
+    })
+}
+
+const delete_menu_item = async (item: MenuItem): Promise<MenuItem> => {
+    const resp = await _POST('http://localhost:5000/delete_menu_item', item);
+    return new Promise<MenuItem>((resolve, reject) => {
+        if (resp == '200') {
+            resolve(item)
+        } else reject(new Error("Error editing menu item"))
+    })
+}
+
+const cancel_order = async (order: Order): Promise<Order> => {
+    const resp = await _POST('http://localhost:5000/cancelOrder', order);
+    return new Promise<Order>((resolve, reject) => {
+        if (resp == '200') {
+            resolve(order)
+        } else reject(new Error("Error canceling order"))
+    })
+}
+
+const finish_order = async (order: Order): Promise<Order> => {
+    const resp = await _POST('http://localhost:5000/finishOrder', order);
+    return new Promise<Order>((resolve, reject) => {
+        if (resp == '200') {
+            resolve(order)
+        } else reject(new Error("Error finishing order"))
+    })
+}
+
+const fetch_orders = async (id: number): Promise<Order[]> => {
+    const orders = await _POST('http://localhost:5000/fetchOrders', id);
+    return orders
 }
