@@ -143,7 +143,7 @@ export default class VendorProfileEditorFields extends React.Component<VendorPro
                             <Form.Control ref={this.state.AddressField} type="text" defaultValue={'replacewithredux'}>
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="submit">Create Account</Button>
+                        <Button variant="primary" type="submit" onClick={() => this.handleSubmit()}>Create Account</Button>
                     </Form>
                 </Container>
         )

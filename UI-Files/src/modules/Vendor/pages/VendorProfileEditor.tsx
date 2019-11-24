@@ -134,7 +134,7 @@ export default class VendorProfileEditor extends React.Component<VendorProfileEd
                             </Form.Group>
                         </Form>
                         <div className="savebutton">
-                            <Button variant="primary" onClick={() => this.handleSave()}>Save</Button>
+                            <Button variant="primary" >Save</Button>
                         </div>
                     </Col>
                     <Col>
