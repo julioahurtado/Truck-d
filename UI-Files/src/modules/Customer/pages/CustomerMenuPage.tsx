@@ -2,27 +2,26 @@
 import * as React from 'react'
 import { ListGroup, Row, Col, Button } from 'react-bootstrap'
 import { CustomerMenuItem } from '../components/CustomerMenuItem';
-import { MenuItem, CartInfo } from '../../../Redux/InterfaceFiles/types';
-import { MenuState } from '../../../Redux/ReducerFiles/CustomerReducers/MenuReducer';
+import { MenuItem, CartInfo, OrderItem, VendorInfo } from '../../../Redux/InterfaceFiles/types';
 import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { checkoutOrder, CheckoutOrderAction } from '../../../Redux/ActionFiles/CustomerActions';
 import { Dispatch } from 'redux';
 
-interface CustomerMenuProps extends MenuState, CustomerMenuDispatchProps {}
-interface CustomerMenuDispatchProps {
-    checkout?: any
+interface CustomerMenuProps {
+    cart?: OrderItem[]
+    menu?: MenuItem[]
+    vendor?: VendorInfo
+    isLoading?: boolean
 }
 
 export class CustomerMenu extends React.Component<CustomerMenuProps> {
 
+    // send customer to the checkout screen
     handleCheckout() {
-        // const cart: CartInfo = {
-        //     cart: this.props.cart,
-        //     vendor: this.props.vendor
-        // }
-        // this.props.checkout(cart)
+        if (this.props.cart && this.props.vendor) {
+            console.log("Cart contains items")
+        } else console.log("No items are in your cart")   
     }
 
     render() {
@@ -31,7 +30,7 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                 <h1>{this.props.vendor && this.props.vendor.name}</h1>
                 <br/>
                 {!this.props.isLoading && <ListGroup style={{padding: '2px'}}>
-                    {this.props.menu && this.props.menu.map((item: MenuItem) => 
+                    {this.props.vendor && this.props.vendor.menu.map((item: MenuItem) => 
                         {
                             return (
                                 <CustomerMenuItem
@@ -64,19 +63,13 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
 }
 
 const mapStateToProps = (state: RootState): CustomerMenuProps => ({
-    menu: state.customer.menuPage.menu,
-    vendor: state.customer.menuPage.vendor,
-    isLoading: state.customer.menuPage.isLoading
+    cart: state.customer.cart.items,
+    vendor: state.customer.vendor,
+    isLoading: state.customer.menu.isLoading
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<CheckoutOrderAction>): CustomerMenuDispatchProps => ({
-    checkout: (cart: CartInfo) =>
-        dispatch(checkoutOrder(cart))
-})
-
 const CustomerMenuViewer = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(CustomerMenu)
 
 export default CustomerMenuViewer;

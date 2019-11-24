@@ -71,21 +71,20 @@ def vendor_create_user():
     # Success and sends logged_in message
     dbCursor.close()
     disconnect_from_db(connection)
-    vendorInfo = []
-    vendorInfo.append({
-               "id": results[0],
-               "name": results[1],
-               "description": results[2],
-               "cuisine": results[3],
-               "hours": {
-                   "open": results[4],
-                   "close": results[5],
-               },
-               "phone": results[6],
-               "address": results[7],
-               "city": results[8],
-               "state": results[9]
-           })
+    vendorInfo = {
+                "id": results[0],
+                "name": results[1],
+                "description": results[2],
+                "cuisine": results[3],
+                "hours": {
+                    "open": results[4],
+                    "close": results[5],
+                },
+                "phone": results[6],
+                "address": results[7],
+                "city": results[8],
+                "state": results[9]
+            }
     return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
@@ -109,7 +108,7 @@ def vendor_login():
         data = (email, password)
 
         dbCursor.execute(sql, data)
-        vendorInfo = dbCursor.fetchone()
+        results = dbCursor.fetchone()
         dbCursor.close()
         disconnect_from_db(connection)
         # If the query is empty return error 500
@@ -121,23 +120,23 @@ def vendor_login():
         else:
             dbCursor.close()
             disconnect_from_db(connection)
-
-            vendor = {
-                "id": vendorInfo[0],
-                "name": vendorInfo[1],
-                "description": vendorInfo[2],
-                "cuisine": vendorInfo[3],
+            
+            vendorInfo = {
+                "id": results[0],
+                "name": results[1],
+                "description": results[2],
+                "cuisine": results[3],
                 "hours": {
-                    "open": vendorInfo[4],
-                    "close": vendorInfo[5],
+                    "open": results[4],
+                    "close": results[5],
                 },
-                "phone": vendorInfo[6],
-                "address": vendorInfo[7],
-                "city": vendorInfo[8],
-                "state": vendorInfo[9]
+                "phone": results[6],
+                "address": results[7],
+                "city": results[8],
+                "state": results[9]
             }
 
-            return jsonify(vendor)
+            return jsonify(vendorInfo)
 
     except:
         dbCursor.close()
@@ -229,27 +228,6 @@ def vendor_search():
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchall()
-        dbCursor.close()
-        disconnect_from_db(connection)
-
-        vendors = []
-        for i in range(len(results)):
-            vendors.append({
-                "id": results[i][0],
-                "name": results[i][1],
-                "description": results[i][2],
-                "cuisine": results[i][3],
-                "hours": {
-                    "open": results[i][4],
-                    "close": results[i][5],
-                },
-                "phone": results[i][6],
-                "address": results[i][7],
-                "city": results[i][8],
-                "state": results[i][9]
-            })
-
-        return jsonify(vendors)
 
     except Exception as e:
         return Response(str(e), 500)
@@ -389,7 +367,6 @@ def vendor_get_menu():
     results = dbCursor.fetchall()
     dbCursor.close()
     disconnect_from_db(connection)
-    print(results)
 
     menu = []
     for i in range(len(results)):

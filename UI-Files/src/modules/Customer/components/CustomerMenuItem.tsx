@@ -10,8 +10,8 @@ import { Dispatch, AnyAction } from 'redux';
 interface MenuListProps extends MenuItem, MenuListDispatchProps{}
 
 interface MenuListDispatchProps {
-    addItem: any,
-    removeItem: any
+    addToCart: any,
+    removeFromCart: any
 }
 
 class MenuItemElement extends React.Component<MenuListProps> {
@@ -23,7 +23,7 @@ class MenuItemElement extends React.Component<MenuListProps> {
             description: this.props.description,
             price: this.props.price
         }
-        this.props.addItem(item)
+        this.props.addToCart(item)
     }
 
     handleRemove() {
@@ -33,7 +33,7 @@ class MenuItemElement extends React.Component<MenuListProps> {
             description: this.props.description,
             price: this.props.price
         }
-        this.props.removeItem(item)
+        this.props.removeFromCart(item)
     }
 
 
@@ -59,9 +59,9 @@ class MenuItemElement extends React.Component<MenuListProps> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<AddItemToCartAction | RemoveItemFromCartAction>): MenuListDispatchProps => ({
-    addItem: (item: MenuItem) =>
+    addToCart: (item: MenuItem) =>
         dispatch(addItemToCart(item)),
-    removeItem: (item: MenuItem) =>
+    removeFromCart: (item: MenuItem) =>
         dispatch(removeItemFromCart(item))
 });
 

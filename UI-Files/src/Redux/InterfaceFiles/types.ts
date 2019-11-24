@@ -1,5 +1,5 @@
 export interface MenuItem {
-    id: number,
+    id: number
     name: String
     description: String
     price: number
@@ -10,12 +10,12 @@ export interface OrderItem extends MenuItem {
 }
 
 export interface CartInfo {
-    cart: OrderItem[],
+    cart: OrderItem[]
     vendor: VendorInfo
 }
 
 export interface VendorHours {
-    open: number,
+    open: number
     close: number
 }
 
@@ -29,7 +29,7 @@ export interface VendorInfo {
     city: String
     state: String
     address: String
-    menu: (MenuItem | undefined)[]
+    menu: MenuItem[]
 }
 
 export interface CustomerInfo {
@@ -39,7 +39,8 @@ export interface CustomerInfo {
 }
 
 export interface Order {
-    customerInfo: CustomerInfo
-    orderNumber: Number
-    orderItems: OrderItem[]
+    id: number,
+    customer: CustomerInfo
+    items: OrderItem[]
+    price: number
 }

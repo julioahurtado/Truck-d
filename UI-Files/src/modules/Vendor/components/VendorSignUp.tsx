@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 interface VendorSignUpProps {
-    isLoading?: Boolean
+    isLoading?: boolean
     signUp?: any
 }
 
@@ -55,7 +55,7 @@ export class SignUp extends React.Component<VendorSignUpProps, VendorSignUpState
     }
 
     // Initiates user sign-up on form submission
-    handleSubmit(): Boolean {
+    handleSubmit(): boolean {
         const form: signUpForm = {
             email: this.state.emailField.current.value,
             password: this.state.passwordField.current.value,

@@ -3,8 +3,7 @@ import * as React from 'react'
  
 import '../components/CustomerVendorSearch'
 import '../components/CustomerVendorListItem'
-import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
-import CustomerVendorListItem from '../components/CustomerVendorListItem'
+import { Form, Row, Col, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 export default class CustomerCart extends React.Component<any> {

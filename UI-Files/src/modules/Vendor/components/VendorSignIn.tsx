@@ -7,7 +7,7 @@ import { RootState } from '../../../Redux/StoreFiles/store';
 import { connect } from 'react-redux';
 
 interface VendorSignInProps {
-    isLoading?: Boolean
+    isLoading?: boolean
     signIn?: any
 }
 
@@ -28,7 +28,7 @@ export class SignIn extends React.Component<VendorSignInProps, VendorSignInState
     }
 
     // Initiates user sign-in on form submission
-    handleSubmit(): Boolean {
+    handleSubmit(): boolean {
         const form: signInForm = {
             email: this.state.emailField.current.value,
             password: this.state.passwordField.current.value

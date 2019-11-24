@@ -1,35 +1,38 @@
-import { UpdateProfileAction, UPDATE_PROFILE_STATUS } from '../../ActionFiles/VendorActions';
+import { UpdateProfileAction, LoginAction, UPDATE_PROFILE_STATUS, LOGIN_STATUS } from '../../ActionFiles/VendorActions';
 import { AddMenuItemAction, ADD_MENU_ITEM_STATUS } from '../../ActionFiles/VendorActions';
 import { DeleteMenuItemAction, DELETE_MENU_ITEM_STATUS } from '../../ActionFiles/VendorActions';
 import { EditMenuItemAction, EDIT_MENU_ITEM_STATUS } from '../../ActionFiles/VendorActions';
-import { UpdateVendorAction, UPDATE_VENDOR } from '../../ActionFiles/VendorActions';
 import { VendorInfo } from '../../InterfaceFiles/types';
 
-export interface ProfileState {
-    vendor?: VendorInfo | null,
-    isLoading?: Boolean,
+export interface ProfileState extends VendorInfo {
+    isLoading?: boolean,
     error?: Error | null
 };
 
 export const initState: ProfileState = {
-    vendor: null,
+    id: -1,
+    name: "",
+    description: "",
+    cuisine: "",
+    hours: {
+        open: -1,
+        close: -1
+    },
+    phone: -1,
+    city: "",
+    state: "",
+    address: "",
+    menu: [],
     isLoading: false,
     error: null
 };
 
 type MenuActions = AddMenuItemAction | DeleteMenuItemAction | EditMenuItemAction;
-export const Profile = (state: ProfileState = initState, action: UpdateProfileAction | MenuActions | UpdateVendorAction): ProfileState => {
+export const Profile = (state: ProfileState = initState, action: UpdateProfileAction | LoginAction | MenuActions): ProfileState => {
     switch(action.type) {
 
-        // Fetch state from SignIn/SignUp
-        case UPDATE_VENDOR:
-            return {
-                ...state,
-                vendor: action.payload
-            }
-
         /*
-        * HANDLE PROFILE UPDATING
+        * PROFILE UPDATE
         */
 
         case UPDATE_PROFILE_STATUS.BEGIN:
@@ -38,25 +41,39 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
                 isLoading: true
             };
 
-        // Signals successfull vendor login
+        case LOGIN_STATUS.SUCCESS:
         case UPDATE_PROFILE_STATUS.SUCCESS:
-            return {
+            if (action.payload) {
+                return {
+                    id: action.payload.id,
+                    name: action.payload.name,
+                    description: action.payload.description,
+                    cuisine: action.payload.cuisine,
+                    hours: {
+                        open: action.payload.hours.open,
+                        close: action.payload.hours.close,
+                    },
+                    phone: action.payload.phone,
+                    city: action.payload.city,
+                    state: action.payload.state,
+                    address: action.payload.address,
+                    menu: state.menu,
+                    isLoading: false
+                };
+            } else return {
                 ...state,
-                vendor: action.payload,
                 isLoading: false
             };
 
-        // Signals failed vendor login
         case UPDATE_PROFILE_STATUS.FAILURE:
             return {
                 ...state,
-                vendor: null,
                 isLoading: false,
                 error: action.error
             };
 
         /*
-        * HANDLE MENU ITEM CREATION
+        * MENU ITEM CREATION
         */
 
         case ADD_MENU_ITEM_STATUS.BEGIN:
@@ -66,17 +83,18 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
             };
 
         case ADD_MENU_ITEM_STATUS.SUCCESS:
-            return {
-                ...state,
-                vendor: state.vendor && {
-                    ...state.vendor,
-                    menu: state.vendor.menu && [
-                        ...state.vendor.menu,
+            if (action.payload) {
+                return {
+                    ...state,
+                    menu: state.menu && [
+                        ...state.menu,
                         action.payload
-                    ]
-                },
-                isLoading: false
-            };
+                    ],
+                    isLoading: false
+                };
+            } else return {
+                ...state
+            }
 
         case ADD_MENU_ITEM_STATUS.FAILURE:
             return {
@@ -86,7 +104,7 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
             };
         
         /*
-        * HANDLE MENU ITEM DELETION
+        * MENU ITEM DELETION
         */
 
          case DELETE_MENU_ITEM_STATUS.BEGIN:
@@ -98,10 +116,7 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
         case DELETE_MENU_ITEM_STATUS.SUCCESS:
             return {
                 ...state,
-                vendor: state.vendor && {
-                    ...state.vendor,
-                    menu: state.vendor.menu && state.vendor.menu.filter(item => item && action.payload && item.id != action.payload.id),
-                },
+                menu: state.menu.filter(item => item && action.payload && item.id != action.payload.id),
                 isLoading: false
             };
 
@@ -113,7 +128,7 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
             };
 
         /*
-        * HANDLE MENU ITEM EDITING
+        * MENU ITEM UPDATE
         */
 
          case EDIT_MENU_ITEM_STATUS.BEGIN:
@@ -125,23 +140,19 @@ export const Profile = (state: ProfileState = initState, action: UpdateProfileAc
         case EDIT_MENU_ITEM_STATUS.SUCCESS:
             return {
                 ...state,
-                vendor: state.vendor && {
-                    ...state.vendor,
-                    menu: state.vendor.menu && state.vendor.menu.map(item => {
-                        if (action.payload && item && action.payload.id == item.id) {
-                            return action.payload
-                        } else {
-                            return item
-                        }
-                    }),
-                },
+                menu: state.menu.map(item => {
+                    if (action.payload && item && action.payload.id == item.id) {
+                        return action.payload
+                    } else {
+                        return item
+                    }
+                }),
                 isLoading: false
             };
 
         case EDIT_MENU_ITEM_STATUS.FAILURE:
             return {
                 ...state,
-                vendor: null,
                 isLoading: false,
                 error: action.error
             };
