@@ -6,11 +6,11 @@ import { Orders, OrdersState } from './VendorReducers/OrdersReducer';
 export interface VendorState {
     login: LoginState
     profile: ProfileState
-    orders: OrdersState
+    queue: OrdersState
 }
 
 export const Vendor = combineReducers<VendorState>({
     login: Login,
     profile: Profile,
-    orders: Orders
+    queue: Orders
 })

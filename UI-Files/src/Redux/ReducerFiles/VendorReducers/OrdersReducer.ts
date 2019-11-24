@@ -2,14 +2,14 @@ import { FETCH_ORDERS_STATUS, CANCEL_ORDER_STATUS, FINISH_ORDER_STATUS, FetchOrd
 import { Order } from '../../InterfaceFiles/types';
 
 export interface OrdersState {
-    items?: Order[]
+    orders?: Order[]
     isFetching?: boolean
     isLoading?: boolean
     error?: Error | null
 };
 
 let ordersState: OrdersState = {
-    items: [],
+    orders: [],
     isFetching: false,
     isLoading: false,
     error: null
@@ -28,7 +28,7 @@ export const Orders = (state: OrdersState = ordersState, action: OrderActions): 
         case FETCH_ORDERS_STATUS.SUCCESS:
             return {
                 ...state,
-                items: action.payload,
+                orders: action.payload,
                 isFetching: false
             };
 
@@ -48,10 +48,10 @@ export const Orders = (state: OrdersState = ordersState, action: OrderActions): 
 
         case FINISH_ORDER_STATUS.SUCCESS:
         case CANCEL_ORDER_STATUS.SUCCESS:
-            if (state.items) {
+            if (state.orders) {
                 return {
                     ...state,
-                    items: state.items.filter(item => action.payload && item.id != action.payload.id),
+                    orders: state.orders.filter(item => action.payload && item.id != action.payload.id),
                     isLoading: false
                 };
             } else return { ...state };

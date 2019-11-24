@@ -369,18 +369,13 @@ export const finishOrder = (order: Order): FinishOrderThunkAction => {
 
 // fetch orders for a vendor on timeout
 export const fetchOrders = (id: number): FetchOrdersThunkAction => {
-    const fetch_timeout: number = 10;
-    while (true) {
-        setTimeout(() => {
-            return (dispatch: FetchOrdersThunkDispatch) => {
-                dispatch(fetchOrdersBegin());
-                fetch_orders(id).then((orders: Order[]) => {
-                    dispatch(fetchOrdersSucccess(orders))
-                }).catch((error: Error) => {
-                    dispatch(fetchOrdersFailure(error))
-                })
-            }
-        }, fetch_timeout * 1000);
+    return (dispatch: FetchOrdersThunkDispatch) => {
+        dispatch(fetchOrdersBegin());
+        fetch_orders(id).then((orders: Order[]) => {
+            dispatch(fetchOrdersSucccess(orders))
+        }).catch((error: Error) => {
+            dispatch(fetchOrdersFailure(error))
+        })
     }
 }
 
