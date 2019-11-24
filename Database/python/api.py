@@ -422,6 +422,74 @@ def vendor_add_order():
     disconnect_from_db(connection)
     return Response(str(orderID), 200)
 
+# Get list of orders from vendor ID
+# get all orderIDs with a vendor ID
+# get all order items with a order ID
+@app.route('/getOrder', methods = ['GET', 'POST'])
+def vendor_get_order():
+    payload = request.get_json(force=True)
+    vendorID = payload['id']
+    orders = []
+
+    sql = """SELECT orderID, price, customer_name, customer_email, customer_phone
+            FROM Orders
+            WHERE vendorID = %s;"""
+    data = (vendorID,)
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    dbCursor.execute(sql, data)
+
+    listOfOrderIDs = dbCursor.fetchall()
+    sql = """SELECT menuItemID, quantity FROM OrderItems
+            WHERE orderID = %s;"""
+
+    # example results ((id, price, name, email, phone), (id, price, name, email, phone))
+    # for each orderID
+    for orderID, price, name, email, phone in listOfOrderIDs:
+        items = []
+        data = (orderID,)
+        customerInfo = {
+            "name": name,
+            "email": email,
+            "phone": phone
+        }
+
+        dbCursor.execute(sql, data)
+
+        # List of all menu items with an order ID
+        orderItemQuery = dbCursor.fetchall()
+        for id, quantity in orderItemQuery:
+            menuItem = get_menu_item(id)
+            menuItem["quantity"] = quantity
+            items.append(menuItem)
+
+        orders.append({
+            "id": orderID,
+            "customer": customerInfo,
+            "items": items,
+            "price": price
+        })
+    return jsonify(orders)
+
+# sample return
+# {
+#     id: number,
+#     customer: {
+#         name: string,
+#         email: string,
+#         phone: string
+#     },
+#     items: [{
+#         id: number,
+#         name: string,
+#         description: string,
+#         price: number,
+#        quantity: number
+#     }],
+#     price: number
+# }
+
+
 
 
 # --------- Helper Functions --------- #
@@ -484,6 +552,26 @@ def check_menu_id(id):
     dbCursor.close()
     disconnect_from_db(connection)
     return False
+
+
+# Returns a json of the given menuItemID
+def get_menu_item(id):
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    sql = ("""SELECT menuItemID, name, price, description FROM Menus
+                WHERE menuItemID = %s;""")
+    data = (id,)
+    dbCursor.execute(sql, data)
+
+    item = dbCursor.fetchone()
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return {
+        "id": item[0],
+        "name": item[1],
+        "price": item[2],
+        "description": item[3]
+    }
 
 
 # Check to make sure email is not already in database
