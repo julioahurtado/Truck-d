@@ -10,3 +10,8 @@
 .Label{
     text-align: left;
 }
+.finish{
+    display: flex;
+    justify-content: space-between;
+    width:323%;
+}

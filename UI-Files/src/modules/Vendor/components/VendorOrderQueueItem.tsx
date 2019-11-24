@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Table } from 'react-bootstrap'
 import { cancelOrder, finishOrder } from '../../../Redux/ActionFiles/VendorActions';
 import { Order, OrderItem } from '../../../Redux/InterfaceFiles/types';
 import { connect } from 'react-redux';
@@ -15,37 +15,38 @@ interface VendorOrderQueueItemDispatchProps {
 
 export class VendorOrderItem extends React.Component<VendorOrderQueueItemProps> {
 
-    handleCancel(){
+    handleCancel() {
         cancelOrder(this.props.order)
     }
 
-    handleFinish(){
+    handleFinish() {
         finishOrder(this.props.order)
     }
 
     render() {
         return (
-            <div style={{background: '#FFFFFF', borderWidth: '3px', borderColor: 'black', borderStyle: "solid", padding: '2px', }}>
-                <p>
-                    Order ID: {this.props.order.id}
-                </p>
-                <p>
-                    Customer: {this.props.order.customer.name}
-                </p>
-                <ul>
-                    {this.props.order.items && this.props.order.items.map((order: OrderItem) => 
-                            {
-                                return (
+            <>
+                <tr>
+                    <td>{this.props.order.id}</td>
+                    <td>{this.props.order.customer.name}</td>
+                    <td> <ul>
+                        {this.props.order.items && this.props.order.items.map((order: OrderItem) => {
+                            return (
                                 <li>{order.quantity} x: {order.name}</li>
-                                )
-                            }
-                    )}
-                </ul>
-                <p>Price: {this.props.order.price}</p>
-                <Button variant="success" onClick={() => this.handleCancel()}>Cancel</Button>
-                <Button variant="success" onClick={() => this.handleFinish()}>Finish</Button>
-            </div>
+                            )
+                        }
+                        )}
+                    </ul></td>
+                    <td>
+                        {this.props.order.price}
+                    </td>
+                </tr>
+                <div className="finish" >
+                    <Button variant="success" onClick={() => this.handleFinish()}>Finish</Button>
+                    <Button variant="success" onClick={() => this.handleCancel()}>Cancel</Button>
+                </div>
 
+            </>
         )
     }
 }
