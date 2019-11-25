@@ -1,6 +1,7 @@
 import {
   OPEN_MODAL,
   CLOSE_MODAL,
+  GET_VENDOR_MENU_STATUS,
   UPDATE_PROFILE_STATUS,
   LOGIN_STATUS,
   DELETE_MENU_ITEM_STATUS,
@@ -11,6 +12,7 @@ import {
   OpenModalAction,
   CloseModalAction,
   LoginAction,
+  GetVendorMenuAction,
   UpdateProfileAction,
   AddMenuItemAction,
   DeleteMenuItemAction,
@@ -44,6 +46,7 @@ export const initState: ProfileState = {
 };
 
 type MenuActions =
+  | GetVendorMenuAction
   | AddMenuItemAction
   | DeleteMenuItemAction
   | EditMenuItemAction;
@@ -67,6 +70,32 @@ export const Profile = (
       return {
         ...state,
         showModal: false
+      };
+
+    /*
+     * GET VENDOR'S MENU
+     */
+
+    case GET_VENDOR_MENU_STATUS.BEGIN:
+      return {
+        ...state,
+        isLoading: true
+      };
+
+    case GET_VENDOR_MENU_STATUS.SUCCESS:
+      if (action.payload) {
+        return {
+          ...state,
+          menu: action.payload,
+          isLoading: false
+        };
+      } else return { ...state };
+
+    case GET_VENDOR_MENU_STATUS.FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error
       };
 
     /*

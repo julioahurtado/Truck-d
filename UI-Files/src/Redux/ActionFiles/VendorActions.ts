@@ -20,6 +20,12 @@ export enum UPDATE_PROFILE_STATUS {
   FAILURE = "UPDATE_PROFILE_FAILURE"
 }
 
+export enum GET_VENDOR_MENU_STATUS {
+  BEGIN = "GET_VENDOR_MENU_BEGIN",
+  SUCCESS = "GET_VENDOR_MENU_SUCCESS",
+  FAILURE = "GET_VENDOR_MENU_FAILURE"
+}
+
 export enum ADD_MENU_ITEM_STATUS {
   BEGIN = "ADD_MENU_ITEM_BEGIN",
   SUCCESS = "ADD_MENU_ITEM_SUCCESS",
@@ -69,6 +75,22 @@ export type LoginTypes =
   | LOGIN_STATUS.FAILURE;
 export type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>;
 export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction>;
+
+export type GetVendorMenuTypes =
+  | GET_VENDOR_MENU_STATUS.BEGIN
+  | GET_VENDOR_MENU_STATUS.SUCCESS
+  | GET_VENDOR_MENU_STATUS.FAILURE;
+export type GetVendorMenuThunkAction = ThunkAction<
+  void,
+  {},
+  {},
+  GetVendorMenuAction
+>;
+export type GetVendorMenuThunkDispatch = ThunkDispatch<
+  {},
+  {},
+  GetVendorMenuAction
+>;
 
 export type UpdateProfileTypes =
   | UPDATE_PROFILE_STATUS.BEGIN
@@ -180,6 +202,12 @@ export interface CloseModalAction {
   type: typeof CLOSE_MODAL;
 }
 
+export interface GetVendorMenuAction {
+  type: GET_VENDOR_MENU_STATUS;
+  payload?: MenuItem[];
+  error?: Error;
+}
+
 export interface UpdateProfileAction {
   type: UPDATE_PROFILE_STATUS;
   payload?: VendorInfo;
@@ -260,6 +288,22 @@ export const openModal = (): OpenModalAction => ({
 
 export const closeModal = (): CloseModalAction => ({
   type: CLOSE_MODAL
+});
+
+export const getVendorMenuBegin = (): GetVendorMenuAction => ({
+  type: GET_VENDOR_MENU_STATUS.BEGIN
+});
+
+export const getVendorMenuSuccess = (
+  menu: MenuItem[]
+): GetVendorMenuAction => ({
+  type: GET_VENDOR_MENU_STATUS.SUCCESS,
+  payload: menu
+});
+
+export const getVendorMenuFailure = (error: Error): GetVendorMenuAction => ({
+  type: GET_VENDOR_MENU_STATUS.FAILURE,
+  error: error
 });
 
 export const updateProfileBegin = (): UpdateProfileAction => ({
@@ -375,7 +419,6 @@ export const vendorSignIn = (form: signInForm): LoginThunkAction => {
     signIn(form)
       .then((vendor: VendorInfo) => {
         dispatch(signInSuccess(vendor));
-        // dispatch(fetchOrders(vendor.id))
       })
       .catch((error: Error) => {
         dispatch(signInFailure(error));
@@ -390,10 +433,23 @@ export const vendorSignUp = (form: signUpForm): LoginThunkAction => {
     signUp(form)
       .then((vendor: VendorInfo) => {
         dispatch(signUpSuccess(vendor));
-        // dispatch(fetchOrders(vendor.id))
       })
       .catch((error: Error) => {
         dispatch(signUpFailure(error));
+      });
+  };
+};
+
+// retrieves menu for specified vendor
+export const vendorGetMenu = (id: Number): GetVendorMenuThunkAction => {
+  return (dispatch: GetVendorMenuThunkDispatch) => {
+    dispatch(getVendorMenuBegin());
+    fetch_menu(id)
+      .then((menu: MenuItem[]) => {
+        dispatch(getVendorMenuSuccess(menu));
+      })
+      .catch((error: Error) => {
+        dispatch(getVendorMenuFailure(error));
       });
   };
 };
@@ -536,6 +592,12 @@ const signUp = async (data: signUpForm): Promise<VendorInfo> => {
 };
 
 // profile editor
+const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
+  const menu_query = { id };
+  const menu = await _POST("http://localhost:5000/menu", menu_query);
+  return JSON.parse(menu);
+};
+
 const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
   const resp = await _POST("http://localhost:5000/vendorUpdate", vendor);
   return new Promise<VendorInfo>((resolve, reject) => {
