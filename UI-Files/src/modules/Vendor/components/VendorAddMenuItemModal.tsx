@@ -2,27 +2,55 @@ import * as React from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import "../css/Style.css";
 import { MenuItem } from "../../../Redux/InterfaceFiles/types";
+import { RootState } from "../../../Redux/StoreFiles/store";
+import { connect } from "react-redux";
+import {
+  vendorAddMenuItem,
+  closeModal
+} from "../../../Redux/ActionFiles/VendorActions";
 
-interface VendorAddMenuItemModalPropValues {
+interface VendorAddMenuItemModalProps
+  extends VendorAddMenuItemModalDispatchProps {
   show?: boolean;
 }
 
-interface VendorAddMenuItemModalActions {
-  handleHide?: any;
+interface VendorAddMenuItemModalDispatchProps {
+  addMenuItem?: any;
+  closeModal?: any;
 }
 
-interface VendorAddMenuItemModalProps
-  extends VendorAddMenuItemModalPropValues,
-    VendorAddMenuItemModalActions {}
+interface VendorAddMenuItemModalState {
+  nameField: any;
+  descriptionField: any;
+  priceField: any;
+}
 
-export default class VendorAddMenuItemModal extends React.Component<
-  VendorAddMenuItemModalProps
+class AddMenuItemModal extends React.Component<
+  VendorAddMenuItemModalProps,
+  VendorAddMenuItemModalState
 > {
-  handleSave() {}
+  constructor(props: VendorAddMenuItemModalProps) {
+    super(props);
+    this.state = {
+      nameField: React.createRef(),
+      descriptionField: React.createRef(),
+      priceField: React.createRef()
+    };
+  }
+
+  handleAdd() {
+    const item: MenuItem = {
+      id: -1,
+      name: this.state.nameField.current.value,
+      description: this.state.descriptionField.current.value,
+      price: this.state.priceField.current.value
+    };
+    this.props.addMenuItem(item);
+  }
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={() => this.props.handleHide()}>
+      <Modal show={this.props.show} onHide={() => this.props.closeModal()}>
         <Modal.Header closeButton>
           <Modal.Title>Add Menu Item</Modal.Title>
         </Modal.Header>
@@ -33,7 +61,11 @@ export default class VendorAddMenuItemModal extends React.Component<
                 Name
               </Form.Label>
               <Col sm="2">
-                <Form.Control type="password" placeholder="Enter your Name" />
+                <Form.Control
+                  type="password"
+                  placeholder="Enter your Name"
+                  ref={this.state.nameField}
+                />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formPlaintextPassword">
@@ -44,6 +76,7 @@ export default class VendorAddMenuItemModal extends React.Component<
                 <Form.Control
                   type="password"
                   placeholder="Enter a description about the menu item"
+                  ref={this.state.descriptionField}
                 />
               </Col>
             </Form.Group>
@@ -52,16 +85,20 @@ export default class VendorAddMenuItemModal extends React.Component<
                 Price
               </Form.Label>
               <Col sm="2">
-                <Form.Control type="password" placeholder="Enter the Price" />
+                <Form.Control
+                  type="password"
+                  placeholder="Enter the Price"
+                  ref={this.state.priceField}
+                />
               </Col>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => this.props.handleHide()}>
+          <Button variant="secondary" onClick={() => this.props.closeModal()}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => this.handleSave()}>
+          <Button variant="primary" onClick={() => this.handleAdd()}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -69,3 +106,21 @@ export default class VendorAddMenuItemModal extends React.Component<
     );
   }
 }
+
+const mapStateToProps = (state: RootState): VendorAddMenuItemModalProps => ({
+  show: state.vendor.profile.showModal
+});
+
+const mapDispatchToProps = (
+  dispatch: any
+): VendorAddMenuItemModalDispatchProps => ({
+  addMenuItem: (item: MenuItem) => dispatch(vendorAddMenuItem(item)),
+  closeModal: () => dispatch(closeModal())
+});
+
+const VendorAddMenuItemModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddMenuItemModal);
+
+export default VendorAddMenuItemModal;
