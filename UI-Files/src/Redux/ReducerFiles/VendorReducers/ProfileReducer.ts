@@ -1,6 +1,8 @@
 import {
-  OPEN_MODAL,
-  CLOSE_MODAL,
+  OPEN_ADD_MODAL,
+  CLOSE_ADD_MODAL,
+  OPEN_EDIT_MODAL,
+  CLOSE_EDIT_MODAL,
   GET_VENDOR_MENU_STATUS,
   UPDATE_PROFILE_STATUS,
   LOGIN_STATUS,
@@ -21,7 +23,8 @@ import {
 import { VendorInfo } from "../../InterfaceFiles/types";
 
 export interface ProfileState extends VendorInfo {
-  showModal?: boolean;
+  showAddModal?: boolean;
+  showEditModal?: boolean;
   isLoading?: boolean;
   error?: Error | null;
 }
@@ -40,7 +43,8 @@ export const initState: ProfileState = {
   state: "",
   address: "",
   menu: [],
-  showModal: false,
+  showAddModal: false,
+  showEditModal: false,
   isLoading: false,
   error: null
 };
@@ -60,16 +64,28 @@ export const Profile = (
      * MODAL ACTIONS
      */
 
-    case OPEN_MODAL:
+    case OPEN_ADD_MODAL:
       return {
         ...state,
-        showModal: true
+        showAddModal: true
       };
 
-    case CLOSE_MODAL:
+    case CLOSE_ADD_MODAL:
       return {
         ...state,
-        showModal: false
+        showAddModal: false
+      };
+
+    case OPEN_EDIT_MODAL:
+      return {
+        ...state,
+        showEditModal: true
+      };
+
+    case CLOSE_EDIT_MODAL:
+      return {
+        ...state,
+        showEditModal: false
       };
 
     /*

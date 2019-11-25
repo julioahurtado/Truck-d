@@ -1,8 +1,6 @@
 import { MenuItem, Order, VendorInfo } from "../InterfaceFiles/types";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { _POST } from "../../REST/restapiutil";
-import { reject } from "q";
-import { fetchVendors } from "./CustomerActions";
 
 /*
  * VENDOR ACTION TYPES
@@ -62,8 +60,11 @@ export enum FETCH_ORDERS_STATUS {
   FAILURE = "FETCH_ORDERS_FAILURE"
 }
 
-export const OPEN_MODAL = "OPEN_MODAL";
-export const CLOSE_MODAL = "CLOSE_MODAL";
+export const OPEN_ADD_MODAL = "OPEN_ADD_MODAL";
+export const CLOSE_ADD_MODAL = "CLOSE_ADD_MODAL";
+
+export const OPEN_EDIT_MODAL = "OPEN_EDIT_MODAL";
+export const CLOSE_EDIT_MODAL = "CLOSE_EDIT_MODAL";
 
 /*
  * VENDOR ACTION INTERFACES
@@ -195,11 +196,11 @@ export interface LoginAction {
 }
 
 export interface OpenModalAction {
-  type: typeof OPEN_MODAL;
+  type: typeof OPEN_ADD_MODAL | typeof OPEN_EDIT_MODAL;
 }
 
 export interface CloseModalAction {
-  type: typeof CLOSE_MODAL;
+  type: typeof CLOSE_ADD_MODAL | typeof CLOSE_EDIT_MODAL;
 }
 
 export interface GetVendorMenuAction {
@@ -282,12 +283,20 @@ export const signUpFailure = (error: Error): LoginAction => ({
   error: error
 });
 
-export const openModal = (): OpenModalAction => ({
-  type: OPEN_MODAL
+export const openAddModal = (): OpenModalAction => ({
+  type: OPEN_ADD_MODAL
 });
 
-export const closeModal = (): CloseModalAction => ({
-  type: CLOSE_MODAL
+export const closeAddModal = (): CloseModalAction => ({
+  type: CLOSE_ADD_MODAL
+});
+
+export const openEditModal = (): OpenModalAction => ({
+  type: OPEN_EDIT_MODAL
+});
+
+export const closeEditModal = (): CloseModalAction => ({
+  type: CLOSE_EDIT_MODAL
 });
 
 export const getVendorMenuBegin = (): GetVendorMenuAction => ({
