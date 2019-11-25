@@ -4,18 +4,18 @@ import "../css/Style.css";
 import { MenuItem } from "../../../Redux/InterfaceFiles/types";
 
 interface VendorAddMenuItemModalPropValues {
-  show: boolean;
+  show?: boolean;
 }
 
 interface VendorAddMenuItemModalActions {
-  handleHide: any;
+  handleHide?: any;
 }
 
 interface VendorAddMenuItemModalProps
   extends VendorAddMenuItemModalPropValues,
     VendorAddMenuItemModalActions {}
 
-export class VendorAddMenuItemModal extends React.Component<
+export default class VendorAddMenuItemModal extends React.Component<
   VendorAddMenuItemModalProps
 > {
   handleSave() {}
