@@ -11,7 +11,7 @@ let cartState: CartState = {
     price: 0,
 }
 
-type CartActions = AddItemToCartAction | RemoveItemFromCartAction | RemoveItemTypeFromCartAction
+export type CartActions = AddItemToCartAction | RemoveItemFromCartAction | RemoveItemTypeFromCartAction
 export const Cart = (state: CartState = cartState, action:  CartActions): CartState => {
     switch(action.type) {
 
