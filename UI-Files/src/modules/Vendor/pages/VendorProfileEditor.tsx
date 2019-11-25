@@ -6,7 +6,7 @@ import VendorProfileEditorMenu from "../components/VendorProfileEditorMenu";
 export default class VendorProfileEditor extends React.Component<any> {
   render() {
     return (
-      <div>
+      <div style={{ display: "flex" }}>
         <VendorProfileEditorFields />
         <VendorProfileEditorMenu />
       </div>
