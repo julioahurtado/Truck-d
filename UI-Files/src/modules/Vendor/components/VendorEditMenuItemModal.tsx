@@ -11,13 +11,29 @@ interface VendorAddMenuItemModalActions {
   handleHide?: any;
 }
 
+interface VendorAddMenuItemModalState {
+  nameField: any;
+  descriptionField: any;
+  priceField: any;
+}
+
 interface VendorAddMenuItemModalProps
   extends VendorAddMenuItemModalPropValues,
     VendorAddMenuItemModalActions {}
 
 export default class VendorAddMenuItemModal extends React.Component<
-  VendorAddMenuItemModalProps
+  VendorAddMenuItemModalProps,
+  VendorAddMenuItemModalState
 > {
+  constructor(props: VendorAddMenuItemModalProps) {
+    super(props);
+    this.state = {
+      nameField: React.createRef(),
+      descriptionField: React.createRef(),
+      priceField: React.createRef()
+    };
+  }
+
   handleSave() {}
 
   render() {
@@ -33,7 +49,11 @@ export default class VendorAddMenuItemModal extends React.Component<
                 Name
               </Form.Label>
               <Col sm="2">
-                <Form.Control type="text" placeholder="Enter your Name" />
+                <Form.Control
+                  type="text"
+                  placeholder="Enter your Name"
+                  ref={this.state.nameField}
+                />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formDescription">
@@ -44,6 +64,7 @@ export default class VendorAddMenuItemModal extends React.Component<
                 <Form.Control
                   type="text"
                   placeholder="Enter a description about the menu item"
+                  ref={this.state.descriptionField}
                 />
               </Col>
             </Form.Group>
@@ -52,7 +73,11 @@ export default class VendorAddMenuItemModal extends React.Component<
                 Price
               </Form.Label>
               <Col sm="2">
-                <Form.Control type="number" placeholder="Enter the Price" />
+                <Form.Control
+                  type="number"
+                  placeholder="Enter the Price"
+                  ref={this.state.priceField}
+                />
               </Col>
             </Form.Group>
           </Form>
