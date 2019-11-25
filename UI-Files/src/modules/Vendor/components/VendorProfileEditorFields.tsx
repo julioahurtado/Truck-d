@@ -14,14 +14,14 @@ interface VendorProfileEditorFieldsState {
 }
 
 interface VendorProfileEditorFieldsPropValues {
-  name: String;
-  description: String;
-  cuisine: String;
-  hours: any;
-  phone: String;
-  city: String;
-  state: String;
-  Address: String;
+  name?: String;
+  description?: String;
+  cuisine?: String;
+  hours?: any;
+  phone?: String;
+  city?: String;
+  state?: String;
+  Address?: String;
 }
 
 interface VendorProfileEditorFieldsActions {}
@@ -70,7 +70,7 @@ export default class VendorProfileEditorFields extends React.Component<
   render() {
     return (
       <Container>
-        <Form onSubmit={() => this.handleSubmit()}>
+        <Form>
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>
             <Form.Control type="text" ref={this.state.nameField}></Form.Control>
