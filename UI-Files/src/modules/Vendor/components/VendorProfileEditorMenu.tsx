@@ -5,7 +5,7 @@ import { MenuItem } from "../../../Redux/InterfaceFiles/types";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
 import {
-  openModal,
+  openAddModal,
   OpenModalAction
 } from "../../../Redux/ActionFiles/VendorActions";
 import { Dispatch } from "redux";
@@ -16,7 +16,7 @@ interface VendorProfileEditorMenuProps
 }
 
 interface VendorProfileEditorMenuDispatchProps {
-  openModal?: any;
+  openAddModal?: any;
 }
 
 class ProfileEditorMenu extends React.Component<VendorProfileEditorMenuProps> {
@@ -24,7 +24,7 @@ class ProfileEditorMenu extends React.Component<VendorProfileEditorMenuProps> {
     return (
       <Container>
         <div>
-          <Button variant="primary" onClick={() => this.props.openModal()}>
+          <Button variant="primary" onClick={() => this.props.openAddModal()}>
             Add an Item
           </Button>
         </div>
@@ -48,7 +48,7 @@ const mapStateToProps = (state: RootState): VendorProfileEditorMenuProps => ({
 const mapDispatchToProps = (
   dispatch: Dispatch<OpenModalAction>
 ): VendorProfileEditorMenuDispatchProps => ({
-  openModal: () => dispatch(openModal())
+  openAddModal: () => dispatch(openAddModal())
 });
 
 const VendorProfileEditorMenu = connect(

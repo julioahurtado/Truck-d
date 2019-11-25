@@ -5,9 +5,11 @@ import VendorAddMenuItemModal from "../components/VendorAddMenuItemModal";
 import { vendorGetMenu } from "../../../Redux/ActionFiles/VendorActions";
 import { connect } from "react-redux";
 import { RootState } from "../../../Redux/StoreFiles/store";
+import { Spinner } from "react-bootstrap";
 
 interface VendorProfileEditorProps extends VendorProfileEditorDispatchProps {
   id?: number;
+  isLoading?: boolean;
 }
 
 interface VendorProfileEditorDispatchProps {
@@ -22,16 +24,22 @@ class ProfileEditor extends React.Component<VendorProfileEditorProps> {
   render() {
     return (
       <div style={{ display: "flex" }}>
-        <VendorAddMenuItemModal />
-        <VendorProfileEditorFields />
-        <VendorProfileEditorMenu />
+        {this.props.isLoading && (
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        )}
+        {!this.props.isLoading && <VendorProfileEditorFields />}
+        {!this.props.isLoading && <VendorProfileEditorMenu />}
+        {!this.props.isLoading && <VendorAddMenuItemModal />}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: RootState): VendorProfileEditorProps => ({
-  id: state.vendor.profile.id
+  id: state.vendor.profile.id,
+  isLoading: state.vendor.profile.isLoading
 });
 
 const mapDispatchToProps = (

@@ -6,7 +6,7 @@ import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
 import {
   vendorAddMenuItem,
-  closeModal
+  closeAddModal
 } from "../../../Redux/ActionFiles/VendorActions";
 
 interface VendorAddMenuItemModalProps
@@ -108,14 +108,14 @@ class AddMenuItemModal extends React.Component<
 }
 
 const mapStateToProps = (state: RootState): VendorAddMenuItemModalProps => ({
-  show: state.vendor.profile.showModal
+  show: state.vendor.profile.showAddModal
 });
 
 const mapDispatchToProps = (
   dispatch: any
 ): VendorAddMenuItemModalDispatchProps => ({
   addMenuItem: (item: MenuItem) => dispatch(vendorAddMenuItem(item)),
-  closeModal: () => dispatch(closeModal())
+  closeModal: () => dispatch(closeAddModal())
 });
 
 const VendorAddMenuItemModal = connect(
