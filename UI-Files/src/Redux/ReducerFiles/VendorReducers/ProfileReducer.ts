@@ -23,6 +23,7 @@ import {
 import { VendorInfo } from "../../InterfaceFiles/types";
 
 export interface ProfileState extends VendorInfo {
+  currItemId?: number;
   showAddModal?: boolean;
   showEditModal?: boolean;
   isLoading?: boolean;
@@ -43,6 +44,7 @@ export const initState: ProfileState = {
   state: "",
   address: "",
   menu: [],
+  currItemId: -1,
   showAddModal: false,
   showEditModal: false,
   isLoading: false,
@@ -79,12 +81,14 @@ export const Profile = (
     case OPEN_EDIT_MODAL:
       return {
         ...state,
+        currItemId: action.payload,
         showEditModal: true
       };
 
     case CLOSE_EDIT_MODAL:
       return {
         ...state,
+        currItemId: -1,
         showEditModal: false
       };
 

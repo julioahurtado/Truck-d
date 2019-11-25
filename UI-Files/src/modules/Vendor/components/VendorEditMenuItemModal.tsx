@@ -2,13 +2,22 @@ import * as React from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import "../css/Style.css";
 import { MenuItem } from "../../../Redux/InterfaceFiles/types";
+import { RootState } from "../../../Redux/StoreFiles/store";
+import {
+  vendorEditMenuItem,
+  closeEditModal
+} from "../../../Redux/ActionFiles/VendorActions";
+import { connect } from "react-redux";
 
-interface VendorEditMenuItemModalPropValues {
+interface VendorEditMenuItemModalProps
+  extends VendorEditMenuItemModalDispatchProps {
+  id?: number;
   show?: boolean;
 }
 
-interface VendorEditMenuItemModalActions {
-  handleHide?: any;
+interface VendorEditMenuItemModalDispatchProps {
+  editMenuItem?: any;
+  closeModal?: any;
 }
 
 interface VendorEditMenuItemModalState {
@@ -17,11 +26,7 @@ interface VendorEditMenuItemModalState {
   priceField: any;
 }
 
-interface VendorEditMenuItemModalProps
-  extends VendorEditMenuItemModalPropValues,
-    VendorEditMenuItemModalActions {}
-
-export default class VendorEditMenuItemModal extends React.Component<
+class EditMenuItemModal extends React.Component<
   VendorEditMenuItemModalProps,
   VendorEditMenuItemModalState
 > {
@@ -34,11 +39,21 @@ export default class VendorEditMenuItemModal extends React.Component<
     };
   }
 
-  handleSave() {}
+  handleEdit() {
+    if (this.props.id) {
+      const item: MenuItem = {
+        id: this.props.id,
+        name: this.state.nameField.current.value,
+        description: this.state.descriptionField.current.value,
+        price: this.state.priceField.current.value
+      };
+      this.props.editMenuItem(item);
+    } else console.log("No menu item ID given to edit item");
+  }
 
   render() {
     return (
-      <Modal show={this.props.show} onHide={() => this.props.handleHide()}>
+      <Modal show={this.props.show} onHide={() => this.props.closeModal()}>
         <Modal.Header closeButton>
           <Modal.Title>Add Menu Item</Modal.Title>
         </Modal.Header>
@@ -83,10 +98,10 @@ export default class VendorEditMenuItemModal extends React.Component<
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => this.props.handleHide()}>
+          <Button variant="secondary" onClick={() => this.props.closeModal()}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => this.handleSave()}>
+          <Button variant="primary" onClick={() => this.handleEdit()}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -94,3 +109,22 @@ export default class VendorEditMenuItemModal extends React.Component<
     );
   }
 }
+
+const mapStateToProps = (state: RootState): VendorEditMenuItemModalProps => ({
+  id: state.vendor.profile.currItemId,
+  show: state.vendor.profile.showEditModal
+});
+
+const mapDispatchToProps = (
+  dispatch: any
+): VendorEditMenuItemModalDispatchProps => ({
+  editMenuItem: (item: MenuItem) => dispatch(vendorEditMenuItem(item)),
+  closeModal: () => dispatch(closeEditModal())
+});
+
+const VendorEditMenuItemModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditMenuItemModal);
+
+export default VendorEditMenuItemModal;

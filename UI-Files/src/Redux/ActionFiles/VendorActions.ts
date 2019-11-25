@@ -197,6 +197,7 @@ export interface LoginAction {
 
 export interface OpenModalAction {
   type: typeof OPEN_ADD_MODAL | typeof OPEN_EDIT_MODAL;
+  payload?: number;
 }
 
 export interface CloseModalAction {
@@ -291,8 +292,9 @@ export const closeAddModal = (): CloseModalAction => ({
   type: CLOSE_ADD_MODAL
 });
 
-export const openEditModal = (): OpenModalAction => ({
-  type: OPEN_EDIT_MODAL
+export const openEditModal = (id: number): OpenModalAction => ({
+  type: OPEN_EDIT_MODAL,
+  payload: id
 });
 
 export const closeEditModal = (): CloseModalAction => ({
