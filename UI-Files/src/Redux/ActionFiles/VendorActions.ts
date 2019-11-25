@@ -1,8 +1,6 @@
 import { MenuItem, Order, VendorInfo } from "../InterfaceFiles/types";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { _POST } from "../../REST/restapiutil";
-import { reject } from "q";
-import { fetchVendors } from "./CustomerActions";
 
 /*
  * VENDOR ACTION TYPES
@@ -18,6 +16,12 @@ export enum UPDATE_PROFILE_STATUS {
   BEGIN = "UPDATE_PROFILE_BEGIN",
   SUCCESS = "UPDATE_PROFILE_SUCCESS",
   FAILURE = "UPDATE_PROFILE_FAILURE"
+}
+
+export enum GET_VENDOR_MENU_STATUS {
+  BEGIN = "GET_VENDOR_MENU_BEGIN",
+  SUCCESS = "GET_VENDOR_MENU_SUCCESS",
+  FAILURE = "GET_VENDOR_MENU_FAILURE"
 }
 
 export enum ADD_MENU_ITEM_STATUS {
@@ -56,8 +60,11 @@ export enum FETCH_ORDERS_STATUS {
   FAILURE = "FETCH_ORDERS_FAILURE"
 }
 
-export const OPEN_MODAL = "OPEN_MODAL";
-export const CLOSE_MODAL = "CLOSE_MODAL";
+export const OPEN_ADD_MODAL = "OPEN_ADD_MODAL";
+export const CLOSE_ADD_MODAL = "CLOSE_ADD_MODAL";
+
+export const OPEN_EDIT_MODAL = "OPEN_EDIT_MODAL";
+export const CLOSE_EDIT_MODAL = "CLOSE_EDIT_MODAL";
 
 /*
  * VENDOR ACTION INTERFACES
@@ -69,6 +76,22 @@ export type LoginTypes =
   | LOGIN_STATUS.FAILURE;
 export type LoginThunkAction = ThunkAction<void, {}, {}, LoginAction>;
 export type LoginThunkDispatch = ThunkDispatch<{}, {}, LoginAction>;
+
+export type GetVendorMenuTypes =
+  | GET_VENDOR_MENU_STATUS.BEGIN
+  | GET_VENDOR_MENU_STATUS.SUCCESS
+  | GET_VENDOR_MENU_STATUS.FAILURE;
+export type GetVendorMenuThunkAction = ThunkAction<
+  void,
+  {},
+  {},
+  GetVendorMenuAction
+>;
+export type GetVendorMenuThunkDispatch = ThunkDispatch<
+  {},
+  {},
+  GetVendorMenuAction
+>;
 
 export type UpdateProfileTypes =
   | UPDATE_PROFILE_STATUS.BEGIN
@@ -173,11 +196,17 @@ export interface LoginAction {
 }
 
 export interface OpenModalAction {
-  type: typeof OPEN_MODAL;
+  type: typeof OPEN_ADD_MODAL | typeof OPEN_EDIT_MODAL;
 }
 
 export interface CloseModalAction {
-  type: typeof CLOSE_MODAL;
+  type: typeof CLOSE_ADD_MODAL | typeof CLOSE_EDIT_MODAL;
+}
+
+export interface GetVendorMenuAction {
+  type: GET_VENDOR_MENU_STATUS;
+  payload?: MenuItem[];
+  error?: Error;
 }
 
 export interface UpdateProfileAction {
@@ -254,12 +283,36 @@ export const signUpFailure = (error: Error): LoginAction => ({
   error: error
 });
 
-export const openModal = (): OpenModalAction => ({
-  type: OPEN_MODAL
+export const openAddModal = (): OpenModalAction => ({
+  type: OPEN_ADD_MODAL
 });
 
-export const closeModal = (): CloseModalAction => ({
-  type: CLOSE_MODAL
+export const closeAddModal = (): CloseModalAction => ({
+  type: CLOSE_ADD_MODAL
+});
+
+export const openEditModal = (): OpenModalAction => ({
+  type: OPEN_EDIT_MODAL
+});
+
+export const closeEditModal = (): CloseModalAction => ({
+  type: CLOSE_EDIT_MODAL
+});
+
+export const getVendorMenuBegin = (): GetVendorMenuAction => ({
+  type: GET_VENDOR_MENU_STATUS.BEGIN
+});
+
+export const getVendorMenuSuccess = (
+  menu: MenuItem[]
+): GetVendorMenuAction => ({
+  type: GET_VENDOR_MENU_STATUS.SUCCESS,
+  payload: menu
+});
+
+export const getVendorMenuFailure = (error: Error): GetVendorMenuAction => ({
+  type: GET_VENDOR_MENU_STATUS.FAILURE,
+  error: error
 });
 
 export const updateProfileBegin = (): UpdateProfileAction => ({
@@ -375,7 +428,6 @@ export const vendorSignIn = (form: signInForm): LoginThunkAction => {
     signIn(form)
       .then((vendor: VendorInfo) => {
         dispatch(signInSuccess(vendor));
-        // dispatch(fetchOrders(vendor.id))
       })
       .catch((error: Error) => {
         dispatch(signInFailure(error));
@@ -390,10 +442,23 @@ export const vendorSignUp = (form: signUpForm): LoginThunkAction => {
     signUp(form)
       .then((vendor: VendorInfo) => {
         dispatch(signUpSuccess(vendor));
-        // dispatch(fetchOrders(vendor.id))
       })
       .catch((error: Error) => {
         dispatch(signUpFailure(error));
+      });
+  };
+};
+
+// retrieves menu for specified vendor
+export const vendorGetMenu = (id: Number): GetVendorMenuThunkAction => {
+  return (dispatch: GetVendorMenuThunkDispatch) => {
+    dispatch(getVendorMenuBegin());
+    fetch_menu(id)
+      .then((menu: MenuItem[]) => {
+        dispatch(getVendorMenuSuccess(menu));
+      })
+      .catch((error: Error) => {
+        dispatch(getVendorMenuFailure(error));
       });
   };
 };
@@ -536,6 +601,12 @@ const signUp = async (data: signUpForm): Promise<VendorInfo> => {
 };
 
 // profile editor
+const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
+  const menu_query = { id };
+  const menu = await _POST("http://localhost:5000/menu", menu_query);
+  return JSON.parse(menu);
+};
+
 const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
   const resp = await _POST("http://localhost:5000/vendorUpdate", vendor);
   return new Promise<VendorInfo>((resolve, reject) => {

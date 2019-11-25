@@ -3,29 +3,29 @@ import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import "../css/Style.css";
 import { MenuItem } from "../../../Redux/InterfaceFiles/types";
 
-interface VendorAddMenuItemModalPropValues {
+interface VendorEditMenuItemModalPropValues {
   show?: boolean;
 }
 
-interface VendorAddMenuItemModalActions {
+interface VendorEditMenuItemModalActions {
   handleHide?: any;
 }
 
-interface VendorAddMenuItemModalState {
+interface VendorEditMenuItemModalState {
   nameField: any;
   descriptionField: any;
   priceField: any;
 }
 
-interface VendorAddMenuItemModalProps
-  extends VendorAddMenuItemModalPropValues,
-    VendorAddMenuItemModalActions {}
+interface VendorEditMenuItemModalProps
+  extends VendorEditMenuItemModalPropValues,
+    VendorEditMenuItemModalActions {}
 
-export default class VendorAddMenuItemModal extends React.Component<
-  VendorAddMenuItemModalProps,
-  VendorAddMenuItemModalState
+export default class VendorEditMenuItemModal extends React.Component<
+  VendorEditMenuItemModalProps,
+  VendorEditMenuItemModalState
 > {
-  constructor(props: VendorAddMenuItemModalProps) {
+  constructor(props: VendorEditMenuItemModalProps) {
     super(props);
     this.state = {
       nameField: React.createRef(),

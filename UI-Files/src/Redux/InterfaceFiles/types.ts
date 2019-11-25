@@ -1,7 +1,7 @@
 export interface MenuItem {
   id: number;
-  name: String;
-  description: String;
+  name: string;
+  description: string;
   price: number;
 }
 
@@ -21,20 +21,20 @@ export interface VendorHours {
 
 export interface VendorInfo {
   id: number;
-  name: String;
-  description: String;
-  cuisine: String;
+  name: string;
+  description: string;
+  cuisine: string;
   hours: VendorHours;
   phone: number;
-  city: String;
-  state: String;
-  address: String;
+  city: string;
+  state: string;
+  address: string;
   menu: MenuItem[];
 }
 
 export interface CustomerInfo {
-  name: String;
-  email: String;
+  name: string;
+  email: string;
   phone: number;
 }
 

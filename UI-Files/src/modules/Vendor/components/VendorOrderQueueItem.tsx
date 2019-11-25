@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import {
   cancelOrder,
   finishOrder
@@ -19,12 +19,12 @@ interface VendorOrderQueueItemDispatchProps {
 export class VendorOrderItem extends React.Component<
   VendorOrderQueueItemProps
 > {
-  handleCancel() {
-    cancelOrder(this.props.order);
+  handleFinish() {
+    this.props.finishOrder(this.props.order);
   }
 
-  handleFinish() {
-    finishOrder(this.props.order);
+  handleCancel() {
+    this.props.cancelOrder(this.props.order);
   }
 
   render() {

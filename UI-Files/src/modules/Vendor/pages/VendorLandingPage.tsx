@@ -23,6 +23,9 @@ export default class VendorLandingPage extends React.Component<any> {
                   <Link to={"/vendor/signup"}>
                     <Button variant="primary">Sign Up</Button>
                   </Link>
+                  <Link to={"/vendor/editprofile"}>
+                    <Button variant="primary">Profile Editor</Button>
+                  </Link>
                 </Col>
               </Row>
             </Container>
