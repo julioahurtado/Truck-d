@@ -18,7 +18,7 @@ let cartState: CartState = {
   price: 0
 };
 
-type CartActions =
+export type CartActions =
   | AddItemToCartAction
   | RemoveItemFromCartAction
   | RemoveItemTypeFromCartAction;

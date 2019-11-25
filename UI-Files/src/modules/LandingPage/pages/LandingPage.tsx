@@ -5,8 +5,8 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 import history from "../../History/history";
 import VendorLandingPage from "../../Vendor/pages/VendorLandingPage";
 import CustomerLandingPage from "../../Customer/pages/CustomerLandingPage";
+import VendorOrderQueue from "../../Vendor/pages/VendorOrderQueue";
 import "../css/Style.css";
-
 export default class LandingPage extends React.Component<any> {
   render() {
     return (
@@ -30,6 +30,11 @@ export default class LandingPage extends React.Component<any> {
                     <Button variant="primary">Vendor</Button>
                   </Link>
                 </Col>
+                <Col className="Test">
+                  <Link to={"/Test"}>
+                    <Button variant="primary">Test</Button>
+                  </Link>
+                </Col>
               </Row>
             </Container>
           </Route>
@@ -38,6 +43,9 @@ export default class LandingPage extends React.Component<any> {
           </Route>
           <Route path="/vendor">
             <VendorLandingPage></VendorLandingPage>
+          </Route>
+          <Route path="/test">
+            <VendorOrderQueue></VendorOrderQueue>
           </Route>
         </Switch>
       </Router>

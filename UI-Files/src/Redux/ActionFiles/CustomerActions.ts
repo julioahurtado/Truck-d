@@ -29,6 +29,10 @@ export const ADD_ITEM_TO_CART = "ADD_ITEM_TO_CART";
 export const REMOVE_ITEM_FROM_CART = "REMOVE_ITEM_FROM_CART";
 export const REMOVE_ITEM_TYPE_FROM_CART = "REMOVE_ITEM_TYPE_FROM_CART";
 
+export const UPDATE_CUSTOMER_NAME = "UPDATE_CUSTOMER_NAME";
+export const UPDATE_CUSTOMER_EMAIL = "UPDATE_CUSTOMER_EMAIL";
+export const UPDATE_CUSTOMER_PHONE = "UPDATE_CUSTOMER_PHONE";
+
 /*
  * CUSTOMER ACTION INTERFACES
  */
@@ -90,6 +94,14 @@ export interface SendOrderAction {
   type: SEND_ORDER_STATUS;
   payload?: number;
   error?: Error;
+}
+
+export interface UpdateCustomerDetailAction {
+  type:
+    | typeof UPDATE_CUSTOMER_NAME
+    | typeof UPDATE_CUSTOMER_EMAIL
+    | typeof UPDATE_CUSTOMER_PHONE;
+  payload: string;
 }
 
 /*
@@ -160,6 +172,27 @@ export const sendOrderSuccess = (orderNumber: number): SendOrderAction => ({
 export const sendOrderFailure = (error: Error): SendOrderAction => ({
   type: SEND_ORDER_STATUS.FAILURE,
   error: error
+});
+
+export const updateCustomerName = (
+  name: string
+): UpdateCustomerDetailAction => ({
+  type: UPDATE_CUSTOMER_NAME,
+  payload: name
+});
+
+export const updateCustomerEmail = (
+  email: string
+): UpdateCustomerDetailAction => ({
+  type: UPDATE_CUSTOMER_EMAIL,
+  payload: email
+});
+
+export const updateCustomerPhone = (
+  phone: string
+): UpdateCustomerDetailAction => ({
+  type: UPDATE_CUSTOMER_PHONE,
+  payload: phone
 });
 
 /*
