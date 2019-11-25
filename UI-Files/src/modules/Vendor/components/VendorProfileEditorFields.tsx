@@ -76,7 +76,7 @@ export default class VendorProfileEditorFields extends React.Component<VendorPro
     render(){
         return (
             <Container>
-                    <Form onSubmit={() => this.handleSubmit()}>
+                    <Form>
                         <Form.Group controlId='formName'>
                             <Form.Label>
                                 Name
