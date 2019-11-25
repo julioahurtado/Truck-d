@@ -1,71 +1,66 @@
+import * as React from "react";
+import { RootState } from "../../../Redux/StoreFiles/store";
+import { connect } from "react-redux";
 
-import * as React from 'react'
-import { RootState } from '../../../Redux/StoreFiles/store';
-import { connect } from 'react-redux';
+import { OrdersState } from "../../../Redux/ReducerFiles/VendorReducers/OrdersReducer";
+import { fetchOrders } from "../../../Redux/ActionFiles/VendorActions";
+import VendorOrderQueueItem from "../components/VendorOrderQueueItem";
+import { Order } from "../../../Redux/InterfaceFiles/types";
 
-import { OrdersState } from '../../../Redux/ReducerFiles/VendorReducers/OrdersReducer';
-import { fetchOrders } from '../../../Redux/ActionFiles/VendorActions';
-import VendorOrderQueueItem from '../components/VendorOrderQueueItem';
-import { Order } from '../../../Redux/InterfaceFiles/types';
-
-interface VendorOrderQueueProps extends OrdersState, VendorOrderQueueDispatchProps{
-    id: number
+interface VendorOrderQueueProps
+  extends OrdersState,
+    VendorOrderQueueDispatchProps {
+  id: number;
 }
 
 interface VendorOrderQueueDispatchProps {
-    fetchOrders?: any
-};
+  fetchOrders?: any;
+}
 
 class OrderQueue extends React.Component<VendorOrderQueueProps> {
-    timer: any;
+  timer: any;
 
-    fetch_orders() {
-        this.props.fetchOrders(this.props.id);
-        this.timer = setTimeout(this.fetch_orders.bind(this), 10000);
-    } 
+  fetch_orders() {
+    this.props.fetchOrders(this.props.id);
+    this.timer = setTimeout(this.fetch_orders.bind(this), 10000);
+  }
 
-    componentDidMount() {
-        this.fetch_orders()
-    }
+  componentDidMount() {
+    this.fetch_orders();
+  }
 
-    componentWillUnmount() {
-        clearTimeout(this.timer)
-    }
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
 
-    render(){	
-        return (
-            <div>
-                <h1>Orders</h1>
-                {this.props.orders && this.props.orders.map((order: Order) => 
-                    {
-                        return (
-                            <VendorOrderQueueItem
-                                order={order}
-                            ></VendorOrderQueueItem>
-                        )
-                    }
-                )}
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <h1>Orders</h1>
+        {this.props.orders &&
+          this.props.orders.map((order: Order) => {
+            return <VendorOrderQueueItem order={order}></VendorOrderQueueItem>;
+          })}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state: RootState): VendorOrderQueueProps => ({
-    id: state.vendor.profile.id,
-    orders: state.vendor.queue.orders,
-    isFetching: state.vendor.queue.isFetching,
-    isLoading: state.vendor.queue.isLoading,
-    error: state.vendor.queue.error
+  id: state.vendor.profile.id,
+  orders: state.vendor.queue.orders,
+  isFetching: state.vendor.queue.isFetching,
+  isLoading: state.vendor.queue.isLoading,
+  error: state.vendor.queue.error
 });
 
 const mapDispatchToProps = (dispatch: any): VendorOrderQueueDispatchProps => ({
-    fetchOrders: (id: number) =>
-        dispatch(fetchOrders(id))
+  fetchOrders: (id: number) => dispatch(fetchOrders(id))
 });
 
 const VendorOrderQueue = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OrderQueue)
+  mapStateToProps,
+  mapDispatchToProps
+)(OrderQueue);
 
 export default VendorOrderQueue;
