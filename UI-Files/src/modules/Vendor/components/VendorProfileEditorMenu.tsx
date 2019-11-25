@@ -5,7 +5,6 @@ import { MenuItem } from "../../../Redux/InterfaceFiles/types";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
 import {
-  CloseModalAction,
   openModal,
   OpenModalAction
 } from "../../../Redux/ActionFiles/VendorActions";

@@ -6,14 +6,17 @@ import { fetchOrders } from "../../../Redux/ActionFiles/VendorActions";
 import VendorOrderQueueItem from "../components/VendorOrderQueueItem";
 import { Order } from "../../../Redux/InterfaceFiles/types";
 import { Table } from "react-bootstrap";
+
 interface VendorOrderQueueProps
   extends OrdersState,
     VendorOrderQueueDispatchProps {
   id: number;
 }
+
 interface VendorOrderQueueDispatchProps {
   fetchOrders?: any;
 }
+
 const orders_test: Order[] = [
   {
     id: 1,
@@ -73,6 +76,7 @@ const orders_test: Order[] = [
     price: 23.89
   }
 ];
+
 class OrderQueue extends React.Component<VendorOrderQueueProps> {
   timer: any;
   fetch_orders() {
@@ -99,17 +103,19 @@ class OrderQueue extends React.Component<VendorOrderQueueProps> {
             </tr>
           </thead>
           <tbody>
-            {orders_test.map((order: Order) => {
-              return (
-                <VendorOrderQueueItem order={order}></VendorOrderQueueItem>
-              );
-            })}
+            {this.props.orders &&
+              this.props.orders.map((order: Order) => {
+                return (
+                  <VendorOrderQueueItem order={order}></VendorOrderQueueItem>
+                );
+              })}
           </tbody>
         </Table>
       </div>
     );
   }
 }
+
 const mapStateToProps = (state: RootState): VendorOrderQueueProps => ({
   id: state.vendor.profile.id,
   orders: state.vendor.queue.orders,
@@ -117,11 +123,14 @@ const mapStateToProps = (state: RootState): VendorOrderQueueProps => ({
   isLoading: state.vendor.queue.isLoading,
   error: state.vendor.queue.error
 });
+
 const mapDispatchToProps = (dispatch: any): VendorOrderQueueDispatchProps => ({
   fetchOrders: (id: number) => dispatch(fetchOrders(id))
 });
+
 const VendorOrderQueue = connect(
   mapStateToProps,
   mapDispatchToProps
 )(OrderQueue);
+
 export default VendorOrderQueue;
