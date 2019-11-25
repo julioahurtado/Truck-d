@@ -10,10 +10,7 @@ import {
 import { CartState } from "../../../Redux/ReducerFiles/CustomerReducers/CartReducer";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
-import {
-  SendOrderThunkAction,
-  sendOrder
-} from "../../../Redux/ActionFiles/CustomerActions";
+import { sendOrder } from "../../../Redux/ActionFiles/CustomerActions";
 
 interface CustomerCartProps extends CartState, CustomerCartDispatchProps {
   customer?: CustomerInfo;

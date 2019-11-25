@@ -63,7 +63,7 @@ class CartItem extends React.Component<CartItemProps> {
           <Button
             variant="danger"
             style={{ margin: 0.5 }}
-            onClick={() => this.handleAdd()}
+            onClick={() => this.handleRemoveType()}
           >
             x
           </Button>
