@@ -14,14 +14,14 @@ interface VendorProfileEditorFieldsState {
 }
 
 interface VendorProfileEditorFieldsPropValues {
-  name: String;
-  description: String;
-  cuisine: String;
-  hours: any;
-  phone: String;
-  city: String;
-  state: String;
-  Address: String;
+  name?: String;
+  description?: String;
+  cuisine?: String;
+  hours?: any;
+  phone?: String;
+  city?: String;
+  state?: String;
+  Address?: String;
 }
 
 interface VendorProfileEditorFieldsActions {}
