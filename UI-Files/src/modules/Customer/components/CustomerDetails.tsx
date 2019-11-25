@@ -31,7 +31,6 @@ class Details extends React.Component<
     this.state = {
       customerName: React.createRef(),
       customerEmail: React.createRef(),
-
       customerPhone: React.createRef()
     };
   }

@@ -56,6 +56,9 @@ export enum FETCH_ORDERS_STATUS {
   FAILURE = "FETCH_ORDERS_FAILURE"
 }
 
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
+
 /*
  * VENDOR ACTION INTERFACES
  */
@@ -169,6 +172,14 @@ export interface LoginAction {
   error?: Error;
 }
 
+export interface OpenModalAction {
+  type: typeof OPEN_MODAL;
+}
+
+export interface CloseModalAction {
+  type: typeof CLOSE_MODAL;
+}
+
 export interface UpdateProfileAction {
   type: UPDATE_PROFILE_STATUS;
   payload?: VendorInfo;
@@ -241,6 +252,14 @@ export const signUpSuccess = (vendor: VendorInfo): LoginAction => ({
 export const signUpFailure = (error: Error): LoginAction => ({
   type: LOGIN_STATUS.FAILURE,
   error: error
+});
+
+export const openModal = (): OpenModalAction => ({
+  type: OPEN_MODAL
+});
+
+export const closeModal = (): CloseModalAction => ({
+  type: CLOSE_MODAL
 });
 
 export const updateProfileBegin = (): UpdateProfileAction => ({

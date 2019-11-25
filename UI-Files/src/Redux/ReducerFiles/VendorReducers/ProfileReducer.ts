@@ -1,24 +1,25 @@
 import {
-  UpdateProfileAction,
-  LoginAction,
+  OPEN_MODAL,
+  CLOSE_MODAL,
   UPDATE_PROFILE_STATUS,
-  LOGIN_STATUS
-} from "../../ActionFiles/VendorActions";
-import {
-  AddMenuItemAction,
-  ADD_MENU_ITEM_STATUS
-} from "../../ActionFiles/VendorActions";
-import {
-  DeleteMenuItemAction,
-  DELETE_MENU_ITEM_STATUS
-} from "../../ActionFiles/VendorActions";
-import {
-  EditMenuItemAction,
+  LOGIN_STATUS,
+  DELETE_MENU_ITEM_STATUS,
+  ADD_MENU_ITEM_STATUS,
   EDIT_MENU_ITEM_STATUS
+} from "../../ActionFiles/VendorActions";
+import {
+  OpenModalAction,
+  CloseModalAction,
+  LoginAction,
+  UpdateProfileAction,
+  AddMenuItemAction,
+  DeleteMenuItemAction,
+  EditMenuItemAction
 } from "../../ActionFiles/VendorActions";
 import { VendorInfo } from "../../InterfaceFiles/types";
 
 export interface ProfileState extends VendorInfo {
+  showModal?: boolean;
   isLoading?: boolean;
   error?: Error | null;
 }
@@ -37,6 +38,7 @@ export const initState: ProfileState = {
   state: "",
   address: "",
   menu: [],
+  showModal: false,
   isLoading: false,
   error: null
 };
@@ -45,11 +47,28 @@ type MenuActions =
   | AddMenuItemAction
   | DeleteMenuItemAction
   | EditMenuItemAction;
+type ModalActions = OpenModalAction | CloseModalAction;
 export const Profile = (
   state: ProfileState = initState,
-  action: UpdateProfileAction | LoginAction | MenuActions
+  action: ModalActions | UpdateProfileAction | LoginAction | MenuActions
 ): ProfileState => {
   switch (action.type) {
+    /*
+     * MODAL ACTIONS
+     */
+
+    case OPEN_MODAL:
+      return {
+        ...state,
+        showModal: true
+      };
+
+    case CLOSE_MODAL:
+      return {
+        ...state,
+        showModal: false
+      };
+
     /*
      * PROFILE UPDATE
      */
