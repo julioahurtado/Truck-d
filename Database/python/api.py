@@ -174,6 +174,9 @@ def vendor_edit_profile():
 
     try:
         dbCursor.execute(sql, data)
+        result = dbCursor.rowcount
+        if result == 0:
+            return Response("No Account Found", 500)
         connection.commit()
     except Exception as e:
         connection.rollback()
@@ -309,6 +312,9 @@ def vendor_edit_menu_item():
 
     try:
         dbCursor.execute(sql, data)
+        result = dbCursor.rowcount
+        if result == 0:
+            return Response("No Menu Item Found", 500)
         connection.commit()
 
     except Exception as e:
@@ -336,6 +342,9 @@ def vendor_delete_menu_item():
 
     try:
         dbCursor.execute(sql, data)
+        result = dbCursor.rowcount
+        if result == 0:
+            return Response("No Menu Item Found", 500)
         connection.commit()
 
     except Exception as e:
@@ -365,8 +374,8 @@ def vendor_get_menu():
 
     dbCursor.execute(sql, data)
     results = dbCursor.fetchall()
-    dbCursor.close()
-    disconnect_from_db(connection)
+    if len(results) == 0:
+        return Response("No Menu Found", 500)
 
     menu = []
     for i in range(len(results)):
@@ -377,6 +386,8 @@ def vendor_get_menu():
                "description": results[i][4]
            })
 
+    dbCursor.close()
+    disconnect_from_db(connection)
     return jsonify(menu)
 
 @app.route('/addOrder', methods = ['GET', 'POST'])
@@ -442,8 +453,9 @@ def vendor_get_order():
     dbCursor.execute(sql, data)
 
     listOfOrderIDs = dbCursor.fetchall()
-    if len(listOfOrderIDs) == 0:
+    if len(listOfOrderIDs) == 0 or listOfOrderIDs == None:
         return Response("No Orders Found", 500)
+
     sql = """SELECT menuItemID, quantity FROM OrderItems
             WHERE orderID = %s;"""
 
@@ -472,7 +484,7 @@ def vendor_get_order():
             "items": items,
             "price": price
         })
-        
+
     dbCursor.close()
     disconnect_from_db(connection)
     return jsonify(orders)
@@ -497,6 +509,12 @@ def order_remove():
 
     try:
         dbCursor.execute(deleteFromOrdersSQL, data)
+        orderDeleteCount = dbCursor.rowcount
+        if orderDeleteCount == 0:
+            dbCursor.close()
+            disconnect_from_db(connection)
+            return Response("Order Not Found")
+
         dbCursor.execute(deleteFromOrderItemsSQL, data)
 
     except:
