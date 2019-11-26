@@ -9,6 +9,8 @@ import {
 } from "../../../Redux/ActionFiles/VendorActions";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
+import { Redirect } from "react-router";
+import { timeout } from "q";
 
 interface VendorSignInProps {
   isLoading?: boolean;
@@ -18,6 +20,7 @@ interface VendorSignInProps {
 interface VendorSignInState {
   emailField: React.RefObject<any>;
   passwordField: React.RefObject<any>;
+  redirect: Boolean;
 }
 
 export class SignIn extends React.Component<
@@ -28,7 +31,8 @@ export class SignIn extends React.Component<
     super(props);
     this.state = {
       emailField: React.createRef(),
-      passwordField: React.createRef()
+      passwordField: React.createRef(),
+      redirect: false
     };
   }
 
@@ -40,10 +44,15 @@ export class SignIn extends React.Component<
     };
 
     this.props.signIn(form);
+    this.setState({ redirect: true });
     return true;
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={"/vendor/actions"} />;
+    }
+
     return (
       <Container>
         <Form>

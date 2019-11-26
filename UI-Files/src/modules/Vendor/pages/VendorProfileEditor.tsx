@@ -18,7 +18,7 @@ interface VendorProfileEditorDispatchProps {
 }
 
 class ProfileEditor extends React.Component<VendorProfileEditorProps> {
-  componentDidMount() {
+  UNSAFE_componentWillMount() {
     this.props.getMenu(this.props.id);
   }
 
