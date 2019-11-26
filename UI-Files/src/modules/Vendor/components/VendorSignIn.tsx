@@ -13,6 +13,7 @@ import { Redirect } from "react-router";
 import { timeout } from "q";
 
 interface VendorSignInProps {
+  id?: number;
   isLoading?: boolean;
   signIn?: any;
 }
@@ -49,7 +50,7 @@ export class SignIn extends React.Component<
   }
 
   render() {
-    if (this.state.redirect) {
+    if (this.props.id != -1) {
       return <Redirect to={"/vendor/actions"} />;
     }
 
@@ -84,6 +85,7 @@ export class SignIn extends React.Component<
 }
 
 const mapStateToProps = (state: RootState): VendorSignInProps => ({
+  id: state.vendor.profile.id,
   isLoading: state.vendor.login.isLoading
 });
 

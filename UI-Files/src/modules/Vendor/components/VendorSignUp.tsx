@@ -9,9 +9,10 @@ import {
 } from "../../../Redux/ActionFiles/VendorActions";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 interface VendorSignUpProps {
+  id?: number;
   isLoading?: boolean;
   signUp?: any;
 }
@@ -87,6 +88,10 @@ export class SignUp extends React.Component<
   }
 
   render() {
+    if (this.props.id != -1) {
+      return <Redirect to={"/vendor/actions"} />;
+    }
+
     return (
       <Container>
         <Form>
@@ -160,7 +165,7 @@ export class SignUp extends React.Component<
             <Form.Label>City</Form.Label>
             <Form.Control ref={this.state.cityField} type="text"></Form.Control>
           </Form.Group>
-          <Form.Group controlId="formStatey">
+          <Form.Group controlId="formState">
             <Form.Label>State</Form.Label>
             <Form.Control
               ref={this.state.stateField}
@@ -174,11 +179,6 @@ export class SignUp extends React.Component<
           >
             Create Account
           </Button>
-          <Link to={"/vendor/editprofile"}>
-            <Button variant="primary" type="button">
-              Profile Editor
-            </Button>
-          </Link>
         </Form>
       </Container>
     );
@@ -186,6 +186,7 @@ export class SignUp extends React.Component<
 }
 
 const mapStateToProps = (state: RootState): VendorSignUpProps => ({
+  id: state.vendor.profile.id,
   isLoading: state.vendor.login.isLoading
 });
 
