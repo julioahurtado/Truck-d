@@ -11,6 +11,7 @@ import {
 
 interface VendorAddMenuItemModalProps
   extends VendorAddMenuItemModalDispatchProps {
+  id?: number;
   show?: boolean;
 }
 
@@ -39,13 +40,15 @@ class AddMenuItemModal extends React.Component<
   }
 
   handleAdd() {
-    const item: MenuItem = {
-      id: -1,
-      name: this.state.nameField.current.value,
-      description: this.state.descriptionField.current.value,
-      price: this.state.priceField.current.value
-    };
-    this.props.addMenuItem(item);
+    if (this.props.id) {
+      const item: MenuItem = {
+        id: this.props.id,
+        name: this.state.nameField.current.value,
+        description: this.state.descriptionField.current.value,
+        price: this.state.priceField.current.value
+      };
+      this.props.addMenuItem(item);
+    } else console.log("No vendor ID given to add item");
   }
 
   render() {
@@ -108,6 +111,7 @@ class AddMenuItemModal extends React.Component<
 }
 
 const mapStateToProps = (state: RootState): VendorAddMenuItemModalProps => ({
+  id: state.vendor.profile.id,
   show: state.vendor.profile.showAddModal
 });
 

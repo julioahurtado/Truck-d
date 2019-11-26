@@ -3,8 +3,7 @@ import { Button } from "react-bootstrap";
 import "../css/Style.css";
 import {
   vendorDeleteMenuItem,
-  openEditModal,
-  OpenModalAction
+  openEditModal
 } from "../../../Redux/ActionFiles/VendorActions";
 import { MenuItem } from "../../../Redux/InterfaceFiles/types";
 import { connect } from "react-redux";
@@ -35,7 +34,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
           <Button
             variant="danger"
             style={{ margin: 0.5 }}
-            onClick={() => this.props.openEditModal()}
+            onClick={() => this.props.openEditModal(this.props.item.id)}
           >
             Edit
           </Button>
@@ -53,7 +52,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
 }
 
 const mapDispatchToProps = (dispatch: any): VendorMenuItemDispatchProps => ({
-  openEditModal: () => dispatch(openEditModal()),
+  openEditModal: (id: number) => dispatch(openEditModal(id)),
   deleteMenuItem: (item: MenuItem) => dispatch(vendorDeleteMenuItem(item))
 });
 
