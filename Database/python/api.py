@@ -381,7 +381,7 @@ def vendor_get_menu():
         menu.append({
                "id": results[i][1],
                "name": results[i][2],
-               "price": results[i][3],
+               "price": float(results[i][3]),
                "description": results[i][4]
            })
 
