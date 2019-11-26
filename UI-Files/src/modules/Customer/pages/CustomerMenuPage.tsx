@@ -10,11 +10,9 @@ import {
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Dispatch } from "redux";
 
 interface CustomerMenuProps {
   cart?: OrderItem[];
-  menu?: MenuItem[];
   vendor?: VendorInfo;
   isLoading?: boolean;
 }
@@ -35,6 +33,7 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
         {!this.props.isLoading && (
           <ListGroup style={{ padding: "2px" }}>
             {this.props.vendor &&
+              this.props.vendor.menu &&
               this.props.vendor.menu.map((item: MenuItem) => {
                 return (
                   <CustomerMenuItem
