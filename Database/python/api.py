@@ -442,11 +442,12 @@ def vendor_get_order():
     dbCursor.execute(sql, data)
 
     listOfOrderIDs = dbCursor.fetchall()
+    if len(listOfOrderIDs) == 0:
+        return Response("No Orders Found", 500)
     sql = """SELECT menuItemID, quantity FROM OrderItems
             WHERE orderID = %s;"""
 
-    # example results ((id, price, name, email, phone), (id, price, name, email, phone))
-    # for each orderID
+
     for orderID, price, name, email, phone in listOfOrderIDs:
         items = []
         data = (orderID,)
@@ -471,6 +472,7 @@ def vendor_get_order():
             "items": items,
             "price": price
         })
+        
     dbCursor.close()
     disconnect_from_db(connection)
     return jsonify(orders)
