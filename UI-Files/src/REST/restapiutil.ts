@@ -12,8 +12,8 @@ export default async function _GET(url: string): Promise<any> {
 
     request.onload = function() {
       if (this.status >= 200 && this.status < 400) {
-        var resp = this.response;
-        resolve(this.response);
+        var resp = { response: this.response, status: this.status };
+        resolve(resp);
       } else if (this.status === 401) {
         reject(new Error("AUTHENTICATION ERROR: " + url));
       } else {
@@ -40,7 +40,7 @@ async function _POST(url: string, payload: any): Promise<any> {
 
     request.onload = function() {
       if (this.status >= 200 && this.status < 400) {
-        var resp = this.response;
+        var resp = { response: this.response, status: this.status };
         resolve(resp);
       } else if (this.status === 401) {
         reject(new Error("AUTHENTICATION ERROR: " + url));
@@ -66,7 +66,7 @@ async function _DELETE(url: string): Promise<any> {
 
     request.onload = function() {
       if (this.status >= 200 && this.status < 400) {
-        var resp = this.response;
+        var resp = { response: this.response, status: this.status };
         resolve(resp);
       } else if (this.status === 401) {
         reject(new Error("AUTHENTICATION ERROR: " + url));
