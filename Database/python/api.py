@@ -380,6 +380,7 @@ def vendor_get_menu():
     return jsonify(menu)
 
 @app.route('/addOrder', methods = ['GET', 'POST'])
+@cross_origin()
 def vendor_add_order():
     payload = request.get_json(force=True)
     vendorID = payload['id']
@@ -426,6 +427,7 @@ def vendor_add_order():
 # get all orderIDs with a vendor ID
 # get all order items with a order ID
 @app.route('/getOrder', methods = ['GET', 'POST'])
+@cross_origin()
 def vendor_get_order():
     payload = request.get_json(force=True)
     vendorID = payload['id']
@@ -469,27 +471,44 @@ def vendor_get_order():
             "items": items,
             "price": price
         })
+    dbCursor.close()
+    disconnect_from_db(connection)
     return jsonify(orders)
 
-# sample return
-# {
-#     id: number,
-#     customer: {
-#         name: string,
-#         email: string,
-#         phone: string
-#     },
-#     items: [{
-#         id: number,
-#         name: string,
-#         description: string,
-#         price: number,
-#        quantity: number
-#     }],
-#     price: number
-# }
+# Removes the order from the Orders table and the OrderItems table
+@app.route('/removeOrder', methods = ['GET', 'POST'])
+@cross_origin()
+def order_remove():
+    payload = request.get_json(force=True)
+    orderID = payload['id']
 
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
 
+    deleteFromOrdersSQL = """DELETE FROM Orders
+                            WHERE orderID = %s;"""
+
+    deleteFromOrderItemsSQL = """DELETE FROM OrderItems
+                                WHERE orderID = %s;"""
+
+    data = (orderID,)
+
+    try:
+        dbCursor.execute(deleteFromOrdersSQL, data)
+        dbCursor.execute(deleteFromOrderItemsSQL, data)
+
+    except:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response("Error Deleting Order", 500)
+
+    finally:
+        connection.commit()
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+    return Response("Successfully deleted Order", 500)
 
 
 # --------- Helper Functions --------- #
