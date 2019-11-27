@@ -55,7 +55,7 @@ export class VendorSearch extends React.Component<
                 />
               </Col>
               <Col>
-                <Button variant="primary" type="submit">
+                <Button variant="success" type="submit">
                   Go!
                 </Button>
               </Col>
