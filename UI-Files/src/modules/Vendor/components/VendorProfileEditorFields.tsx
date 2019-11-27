@@ -56,7 +56,7 @@ class ProfileEditorFields extends React.Component<
   handleSubmit() {
     if (this.props.id) {
       const vendor: VendorInfo = {
-        id: this.state.nameField.current.value,
+        id: this.props.id,
         name: this.state.nameField.current.value,
         description: this.state.descriptionField.current.value,
         cuisine: this.state.cuisineField.current.value,
@@ -74,14 +74,14 @@ class ProfileEditorFields extends React.Component<
     } else console.log("You must sign in before using the profile editor");
   }
 
-  StringtoNumberTime(timeStr: String): Number {
+  StringtoNumberTime(timeStr: string): number {
     let hours = parseInt(timeStr.substring(0, 2)) * 100;
     let mins = parseInt(timeStr.substring(3));
     let time = hours + mins;
     return time;
   }
 
-  NumbertoStringTime(timeNum: Number): String {
+  NumbertoStringTime(timeNum: number): string {
     let time = timeNum.toString();
 
     if (timeNum < 1000) {
@@ -125,7 +125,7 @@ class ProfileEditorFields extends React.Component<
               <Form.Control
                 ref={this.state.beginHoursField}
                 type="time"
-                defaultValue={this.props.hours && this.props.hours.open}
+                defaultValue={this.props.hours && this.NumbertoStringTime(this.props.hours.open)}
               ></Form.Control>
             </div>
             <div style={{ display: "flex" }}>
@@ -133,7 +133,7 @@ class ProfileEditorFields extends React.Component<
               <Form.Control
                 ref={this.state.endHoursField}
                 type="time"
-                defaultValue={this.props.hours && this.props.hours.close}
+                defaultValue={this.props.hours && this.NumbertoStringTime(this.props.hours.close)}
               ></Form.Control>
             </div>
           </Form.Group>

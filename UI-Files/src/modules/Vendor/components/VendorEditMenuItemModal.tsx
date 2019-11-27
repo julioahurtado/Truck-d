@@ -55,7 +55,7 @@ class EditMenuItemModal extends React.Component<
     return (
       <Modal show={this.props.show} onHide={() => this.props.closeModal()}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Menu Item</Modal.Title>
+          <Modal.Title>Edit Menu Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form className="form">
@@ -63,7 +63,7 @@ class EditMenuItemModal extends React.Component<
               <Form.Label column sm="2">
                 Name
               </Form.Label>
-              <Col sm="2">
+              <Col sm="10">
                 <Form.Control
                   type="text"
                   placeholder="Enter your Name"
@@ -75,7 +75,7 @@ class EditMenuItemModal extends React.Component<
               <Form.Label column sm="2">
                 Description
               </Form.Label>
-              <Col sm="2">
+              <Col sm="10">
                 <Form.Control
                   type="text"
                   placeholder="Enter a description about the menu item"
@@ -87,7 +87,7 @@ class EditMenuItemModal extends React.Component<
               <Form.Label column sm="2">
                 Price
               </Form.Label>
-              <Col sm="2">
+              <Col sm="10">
                 <Form.Control
                   type="number"
                   placeholder="Enter the Price"

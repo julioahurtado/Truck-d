@@ -618,7 +618,7 @@ const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
 const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
   const resp = await _POST("http://localhost:5000/editProfile", vendor);
   return new Promise<VendorInfo>((resolve, reject) => {
-    if (resp.status != 201) {
+    if (resp.status == 201) {
       resolve(vendor);
     } else {
       reject(new Error("Unable to update profile"));
