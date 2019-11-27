@@ -11,9 +11,9 @@ import {
 import { connect } from "react-redux";
 
 interface CustomerDetailsDispatchProps {
-  name: any;
-  email: any;
-  phone: any;
+  name?: any;
+  email?: any;
+  phone?: any;
 }
 
 class CustomerConfirmationDetails extends React.Component<
