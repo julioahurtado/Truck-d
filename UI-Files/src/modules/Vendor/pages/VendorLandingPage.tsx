@@ -16,13 +16,14 @@ export default class VendorLandingPage extends React.Component<any> {
         <Switch>
           <Route path={"/vendor"} exact={true}>
             <Container>
+              <Row><Col><h1>Truck'd</h1></Col></Row>
               <Row>
                 <Col>
                   <Link to={"/vendor/signin"}>
-                    <Button variant="primary">Sign In</Button>
+                    <Button variant="warning">Sign In</Button>
                   </Link>{" "}
                   <Link to={"/vendor/signup"}>
-                    <Button variant="primary">Sign Up</Button>
+                    <Button variant="danger">Sign Up</Button>
                   </Link>
                 </Col>
               </Row>

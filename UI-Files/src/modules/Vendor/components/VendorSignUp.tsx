@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Container, Button } from "react-bootstrap";
+import { Form, Container, Button, Row, Col } from "react-bootstrap";
 import "../css/Style.css";
 
 import {
@@ -35,7 +35,7 @@ interface VendorSignUpState {
 export class SignUp extends React.Component<
   VendorSignUpProps,
   VendorSignUpState
-> {
+  > {
   constructor(props: VendorSignUpProps) {
     super(props);
     this.state = {
@@ -95,6 +95,119 @@ export class SignUp extends React.Component<
     return (
       <Container>
         <Form>
+<<<<<<< HEAD
+          <Row>
+
+            <Col>
+              <Form.Group controlId="formEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={this.state.emailField}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  ref={this.state.passwordField}
+                  type="password"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formConfirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  ref={this.state.passwordConfirmField}
+                  type="password"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formRestaurantName">
+                <Form.Label>Restaurant Name</Form.Label>
+                <Form.Control
+                  ref={this.state.restaurantField}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formCuisineType">
+                <Form.Label>Cuisine type</Form.Label>
+                <Form.Control
+                  ref={this.state.cuisineField}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  ref={this.state.descriptionField}
+                  type="textarea"
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+
+            <Col>
+              <Form.Group controlId="formBeginHours">
+                <Row>
+                  <Col>
+                    <Form.Label>Opening hours</Form.Label>
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      ref={this.state.beginHoursField}
+                      type="time"
+                    ></Form.Control>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Label>Closing hours</Form.Label>
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      ref={this.state.endHoursField}
+                      type="time"
+                    ></Form.Control>
+                  </Col>
+                </Row>
+              </Form.Group>
+              <Form.Group controlId="formAddress">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  ref={this.state.addressField}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formCity">
+                <Form.Label>City</Form.Label>
+                <Form.Control ref={this.state.cityField} type="text"></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formStatey">
+                <Form.Label>State</Form.Label>
+                <Form.Control
+                  ref={this.state.stateField}
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className="buttonContainer">
+              <Button
+                variant="warning"
+                onClick={() => this.handleSubmit()}
+              >
+                Create Account
+          </Button>
+            </Col>
+            <Col>
+              <Link to={"/vendor/editprofile"}>
+                <Button variant="danger">
+                  Profile Editor
+            </Button>
+              </Link>
+            </Col>
+          </Row>
+=======
           <Form.Group controlId="formEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -179,8 +292,9 @@ export class SignUp extends React.Component<
           >
             Create Account
           </Button>
+>>>>>>> e9f8d63c239b908fd6c1518fb0c55e2c05c39c94
         </Form>
-      </Container>
+      </Container >
     );
   }
 }
