@@ -45,7 +45,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^16.9.5"
+    "@types/react": "^16.9.5",
+    "file-loader": "^5.0.2"
   },
   "husky": {
     "hooks": {

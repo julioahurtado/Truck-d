@@ -67,7 +67,7 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
             <Col xs={6}>
               <Link to="/customer/order">
                 <Button
-                  variant="primary"
+                  variant="success"
                   style={{
                     position: "relative",
                     bottom: "-20px",

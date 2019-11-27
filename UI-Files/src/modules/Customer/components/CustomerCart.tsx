@@ -52,13 +52,13 @@ class Cart extends React.Component<CustomerCartProps> {
         <div className="centered">
           <Row>
             <Col xs={6}>
-              <Link to="/customer/menu/:vendorName'">
+              <Link to="/customer/menu/">
                 <Button
                   style={{
                     position: "relative",
                     bottom: "-20px",
                     margin: 5,
-                    left: "-20px"
+                    left: "-25%"
                   }}
                   variant="secondary"
                   type="button"
@@ -70,12 +70,12 @@ class Cart extends React.Component<CustomerCartProps> {
             <Col xs={6}>
               <Link to="/customer">
                 <Button
-                  variant="warning"
+                  variant="danger"
                   style={{
                     position: "relative",
                     bottom: "-20px",
                     margin: 5,
-                    right: "-20px"
+                    right: "-35%"
                   }}
                   type="button"
                 >
@@ -89,9 +89,10 @@ class Cart extends React.Component<CustomerCartProps> {
                 onClick={() => this.handleCheckout()}
                 style={{
                   position: "relative",
-                  bottom: "-20px",
-                  margin: 5,
-                  right: "-20px"
+                  display: "block",
+                  margin: "auto",
+                  bottom: "-40px",
+                  right: "-50%"
                 }}
                 type="button"
               >
