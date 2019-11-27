@@ -416,7 +416,7 @@ def vendor_add_order():
         sql = """INSERT INTO OrderItems
                     VALUES(%s, %s, %s);"""
         for menuItem in menuList:
-            itemID = menuItem["menuItemID"]
+            itemID = menuItem["id"]
             quantity = menuItem["quantity"]
             data = (orderID, itemID, quantity)
             dbCursor.execute(sql, data)
@@ -465,7 +465,7 @@ def vendor_get_order():
         customerInfo = {
             "name": name,
             "email": email,
-            "phone": phone
+            "phone": int(phone)
         }
 
         dbCursor.execute(sql, data)
@@ -474,6 +474,7 @@ def vendor_get_order():
         orderItemQuery = dbCursor.fetchall()
         for id, quantity in orderItemQuery:
             menuItem = get_menu_item(id)
+            menuItem["price"] = float(menuItem["price"])
             menuItem["quantity"] = quantity
             items.append(menuItem)
 
@@ -481,7 +482,7 @@ def vendor_get_order():
             "id": orderID,
             "customer": customerInfo,
             "items": items,
-            "price": price
+            "price": float(price)
         })
 
     dbCursor.close()
