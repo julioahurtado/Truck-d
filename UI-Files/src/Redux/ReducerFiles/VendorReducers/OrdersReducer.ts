@@ -15,7 +15,7 @@ export interface OrdersState {
   error?: Error | null;
 }
 
-let ordersState: OrdersState = {
+export const ordersState: OrdersState = {
   orders: [],
   isFetching: false,
   isLoading: false,

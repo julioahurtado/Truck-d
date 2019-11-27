@@ -206,19 +206,31 @@ const fetch_vendors = async (query: String): Promise<VendorInfo[]> => {
     city: query,
     state: query
   };
-  const vendors = await _POST("http://localhost:5000/search", search_query);
-  return JSON.parse(vendors);
+  const resp = await _POST("http://localhost:5000/search", search_query);
+  return new Promise<VendorInfo[]>((resolve, reject) => {
+    if (resp.status == 200) {
+      resolve(JSON.parse(resp.response));
+    } else reject(new Error("Error sending order"));
+  });
 };
 
 const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
   const menu_query = { id };
-  const menu = await _POST("http://localhost:5000/menu", menu_query);
-  return JSON.parse(menu);
+  const resp = await _POST("http://localhost:5000/menu", menu_query);
+  return new Promise<MenuItem[]>((resolve, reject) => {
+    if (resp.status == 200) {
+      resolve(JSON.parse(resp.response));
+    } else reject(new Error("Error fetching menu"));
+  });
 };
 
 const send_order = async (order: Order): Promise<number> => {
-  const orderNumber = await _POST("http://localhost:5000/addOrder", order);
-  return orderNumber;
+  const resp = await _POST("http://localhost:5000/addOrder", order);
+  return new Promise<number>((resolve, reject) => {
+    if (resp.status == 200) {
+      resolve(resp.response);
+    } else reject(new Error("Error sending order"));
+  });
 };
 
 // retrieves vendor-list based on user search-string

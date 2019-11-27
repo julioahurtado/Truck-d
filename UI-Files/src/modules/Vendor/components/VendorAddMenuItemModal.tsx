@@ -65,7 +65,7 @@ class AddMenuItemModal extends React.Component<
               </Form.Label>
               <Col sm="2">
                 <Form.Control
-                  type="password"
+                  type="text"
                   placeholder="Enter your Name"
                   ref={this.state.nameField}
                 />
@@ -89,7 +89,7 @@ class AddMenuItemModal extends React.Component<
               </Form.Label>
               <Col sm="2">
                 <Form.Control
-                  type="password"
+                  type="text"
                   placeholder="Enter the Price"
                   ref={this.state.priceField}
                 />

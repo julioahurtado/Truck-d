@@ -9,9 +9,10 @@ import {
 } from "../../../Redux/ActionFiles/VendorActions";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 interface VendorSignUpProps {
+  id?: number;
   isLoading?: boolean;
   signUp?: any;
 }
@@ -87,9 +88,14 @@ export class SignUp extends React.Component<
   }
 
   render() {
+    if (this.props.id != -1) {
+      return <Redirect to={"/vendor/actions"} />;
+    }
+
     return (
       <Container>
         <Form>
+<<<<<<< HEAD
           <Row>
 
             <Col>
@@ -201,6 +207,92 @@ export class SignUp extends React.Component<
               </Link>
             </Col>
           </Row>
+=======
+          <Form.Group controlId="formEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="text"
+              ref={this.state.emailField}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              ref={this.state.passwordField}
+              type="password"
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formConfirmPassword">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              ref={this.state.passwordConfirmField}
+              type="password"
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formRestaurantName">
+            <Form.Label>Restaurant Name</Form.Label>
+            <Form.Control
+              ref={this.state.restaurantField}
+              type="text"
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formCuisineType">
+            <Form.Label>Cuisine type</Form.Label>
+            <Form.Control
+              ref={this.state.cuisineField}
+              type="text"
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formDescription">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              ref={this.state.descriptionField}
+              type="textarea"
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formBeginHours">
+            <Form.Label>Hours</Form.Label>
+            <div style={{ display: "flex" }}>
+              <Form.Label>Opening</Form.Label>
+              <Form.Control
+                ref={this.state.beginHoursField}
+                type="time"
+              ></Form.Control>
+            </div>
+            <div style={{ display: "flex" }}>
+              <Form.Label>Closing</Form.Label>
+              <Form.Control
+                ref={this.state.endHoursField}
+                type="time"
+              ></Form.Control>
+            </div>
+          </Form.Group>
+          <Form.Group controlId="formAddress">
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              ref={this.state.addressField}
+              type="text"
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formCity">
+            <Form.Label>City</Form.Label>
+            <Form.Control ref={this.state.cityField} type="text"></Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formState">
+            <Form.Label>State</Form.Label>
+            <Form.Control
+              ref={this.state.stateField}
+              type="text"
+            ></Form.Control>
+          </Form.Group>
+          <Button
+            variant="primary"
+            type="button"
+            onClick={() => this.handleSubmit()}
+          >
+            Create Account
+          </Button>
+>>>>>>> e9f8d63c239b908fd6c1518fb0c55e2c05c39c94
         </Form>
       </Container >
     );
@@ -208,6 +300,7 @@ export class SignUp extends React.Component<
 }
 
 const mapStateToProps = (state: RootState): VendorSignUpProps => ({
+  id: state.vendor.profile.id,
   isLoading: state.vendor.login.isLoading
 });
 

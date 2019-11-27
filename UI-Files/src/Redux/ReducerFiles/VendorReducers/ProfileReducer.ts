@@ -132,6 +132,7 @@ export const Profile = (
     case UPDATE_PROFILE_STATUS.SUCCESS:
       if (action.payload) {
         return {
+          ...state,
           id: action.payload.id,
           name: action.payload.name,
           description: action.payload.description,
@@ -144,7 +145,6 @@ export const Profile = (
           city: action.payload.city,
           state: action.payload.state,
           address: action.payload.address,
-          menu: state.menu,
           isLoading: false
         };
       } else

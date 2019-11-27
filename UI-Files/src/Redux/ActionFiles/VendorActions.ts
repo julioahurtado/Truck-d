@@ -1,6 +1,7 @@
 import { MenuItem, Order, VendorInfo } from "../InterfaceFiles/types";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { _POST } from "../../REST/restapiutil";
+import { reject } from "q";
 
 /*
  * VENDOR ACTION TYPES
@@ -581,10 +582,10 @@ export interface signInForm {
 }
 
 const signIn = async (data: signInForm): Promise<VendorInfo> => {
-  const vendor = await _POST("http://localhost:5000/login", data);
+  const resp = await _POST("http://localhost:5000/login", data);
   return new Promise<VendorInfo>((resolve, reject) => {
-    if (vendor) {
-      resolve(JSON.parse(vendor));
+    if (resp.status == 200) {
+      resolve(JSON.parse(resp.response));
     } else {
       reject(new Error("Unable to login"));
     }
@@ -592,27 +593,32 @@ const signIn = async (data: signInForm): Promise<VendorInfo> => {
 };
 
 const signUp = async (data: signUpForm): Promise<VendorInfo> => {
-  const vendor = await _POST("http://localhost:5000/createVendorAccount", data);
+  const resp = await _POST("http://localhost:5000/createVendorAccount", data);
   return new Promise<VendorInfo>((resolve, reject) => {
-    if (vendor) {
-      resolve(JSON.parse(vendor));
+    if (resp.status == 200) {
+      resolve(JSON.parse(resp.response));
     } else {
       reject(new Error("Unable to create user"));
     }
   });
 };
 
-// profile editor
 const fetch_menu = async (id: Number): Promise<MenuItem[]> => {
   const menu_query = { id };
-  const menu = await _POST("http://localhost:5000/menu", menu_query);
-  return JSON.parse(menu);
+  const resp = await _POST("http://localhost:5000/menu", menu_query);
+  return new Promise<MenuItem[]>((resolve, reject) => {
+    if (resp.status == 200) {
+      resolve(JSON.parse(resp.response));
+    } else {
+      reject(new Error("Unable to fetch menu"));
+    }
+  });
 };
 
 const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
-  const resp = await _POST("http://localhost:5000/vendorUpdate", vendor);
+  const resp = await _POST("http://localhost:5000/editProfile", vendor);
   return new Promise<VendorInfo>((resolve, reject) => {
-    if (resp != "200") {
+    if (resp.status != 201) {
       resolve(vendor);
     } else {
       reject(new Error("Unable to update profile"));
@@ -621,53 +627,56 @@ const update_profile = async (vendor: VendorInfo): Promise<VendorInfo> => {
 };
 
 const add_to_menu = async (item: MenuItem): Promise<MenuItem> => {
-  const resp = await _POST("http://localhost:5000/add_menu_item", item);
-  const itemID = 0;
+  const resp = await _POST("http://localhost:5000/addItem", item);
   return new Promise<MenuItem>((resolve, reject) => {
-    if (resp == "200") {
-      item.id = itemID;
+    if (resp.status == 201) {
+      item.id = resp.response;
       resolve(item);
     } else reject(new Error("Error adding menu item"));
   });
 };
 
 const edit_menu_item = async (item: MenuItem): Promise<MenuItem> => {
-  const resp = await _POST("http://localhost:5000/edit_menu_item_item", item);
+  const resp = await _POST("http://localhost:5000/editItem", item);
   return new Promise<MenuItem>((resolve, reject) => {
-    if (resp == "200") {
+    if (resp.status == 201) {
       resolve(item);
     } else return reject(new Error("Error editing menu item"));
   });
 };
 
 const delete_menu_item = async (item: MenuItem): Promise<MenuItem> => {
-  const resp = await _POST("http://localhost:5000/delete_menu_item", item);
+  const resp = await _POST("http://localhost:5000/deleteItem", item);
   return new Promise<MenuItem>((resolve, reject) => {
-    if (resp == "200") {
+    if (resp.status == 201) {
       resolve(item);
     } else reject(new Error("Error editing menu item"));
   });
 };
 
 const cancel_order = async (order: Order): Promise<Order> => {
-  const resp = await _POST("http://localhost:5000/cancelOrder", order);
+  const resp = await _POST("http://localhost:5000/removeOrder", order);
   return new Promise<Order>((resolve, reject) => {
-    if (resp == "200") {
+    if (resp.status == 200) {
       resolve(order);
     } else reject(new Error("Error canceling order"));
   });
 };
 
 const finish_order = async (order: Order): Promise<Order> => {
-  const resp = await _POST("http://localhost:5000/finishOrder", order);
+  const resp = await _POST("http://localhost:5000/removeOrder", order);
   return new Promise<Order>((resolve, reject) => {
-    if (resp == "200") {
+    if (resp.status == 200) {
       resolve(order);
     } else reject(new Error("Error finishing order"));
   });
 };
 
 const fetch_orders = async (id: number): Promise<Order[]> => {
-  const orders = await _POST("http://localhost:5000/fetchOrders", id);
-  return orders;
+  const resp = await _POST("http://localhost:5000/getOrder", id);
+  return new Promise<Order[]>(resolve => {
+    if (resp.status == 200) {
+      resolve(JSON.parse(resp.response));
+    } else reject(new Error("Unable to fetch orders"));
+  });
 };

@@ -72,19 +72,19 @@ def vendor_create_user():
     dbCursor.close()
     disconnect_from_db(connection)
     vendorInfo = {
-                "id": results[0],
-                "name": results[1],
-                "description": results[2],
-                "cuisine": results[3],
-                "hours": {
-                    "open": results[4],
-                    "close": results[5],
-                },
-                "phone": results[6],
-                "address": results[7],
-                "city": results[8],
-                "state": results[9]
-            }
+        "id": results[0],
+        "name": results[1],
+        "description": results[2],
+        "cuisine": results[3],
+        "hours": {
+            "open": results[4],
+            "close": results[5],
+        },
+        "phone": results[6],
+        "address": results[7],
+        "city": results[8],
+        "state": results[9]
+    }
     return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
@@ -120,7 +120,6 @@ def vendor_login():
         else:
             dbCursor.close()
             disconnect_from_db(connection)
-            
             vendorInfo = {
                 "id": results[0],
                 "name": results[1],
@@ -135,7 +134,6 @@ def vendor_login():
                 "city": results[8],
                 "state": results[9]
             }
-
             return jsonify(vendorInfo)
 
     except:
@@ -174,6 +172,9 @@ def vendor_edit_profile():
 
     try:
         dbCursor.execute(sql, data)
+        result = dbCursor.rowcount
+        if result == 0:
+            return Response("No Account Found", 500)
         connection.commit()
     except Exception as e:
         connection.rollback()
@@ -288,6 +289,7 @@ def vendor_add_menu_item():
     # finally close connection and return Response
     dbCursor.close()
     disconnect_from_db(connection)
+    print(menuItemID)
     return Response(str(menuItemID), 201)
 
 @app.route("/editItem", methods = ['GET', 'POST'])
@@ -309,6 +311,9 @@ def vendor_edit_menu_item():
 
     try:
         dbCursor.execute(sql, data)
+        result = dbCursor.rowcount
+        if result == 0:
+            return Response("No Menu Item Found", 500)
         connection.commit()
 
     except Exception as e:
@@ -336,6 +341,9 @@ def vendor_delete_menu_item():
 
     try:
         dbCursor.execute(sql, data)
+        result = dbCursor.rowcount
+        if result == 0:
+            return Response("No Menu Item Found", 500)
         connection.commit()
 
     except Exception as e:
@@ -351,7 +359,7 @@ def vendor_delete_menu_item():
 
 
 # Returns the menu of the given vendorID in JSON format
-@app.route('/menu', methods = ['POST'])
+@app.route('/menu', methods = ['GET', 'POST'])
 @cross_origin()
 def vendor_get_menu():
     connection = connect_to_db()
@@ -365,8 +373,8 @@ def vendor_get_menu():
 
     dbCursor.execute(sql, data)
     results = dbCursor.fetchall()
-    dbCursor.close()
-    disconnect_from_db(connection)
+    if len(results) == 0:
+        return Response("No Menu Found", 500)
 
     menu = []
     for i in range(len(results)):
@@ -377,25 +385,149 @@ def vendor_get_menu():
                "description": results[i][4]
            })
 
+    dbCursor.close()
+    disconnect_from_db(connection)
     return jsonify(menu)
 
 @app.route('/addOrder', methods = ['GET', 'POST'])
+@cross_origin()
 def vendor_add_order():
     payload = request.get_json(force=True)
     vendorID = payload['id']
-    name = payload['name']
-    email = payload['email']
+    name = payload['customer']['name']
+    email = payload['customer']['email']
+    phone = payload['customer']['phone']
     price = payload['price']
-    menuList = payload['item']
-    for menu in menuList:
-        menuList.append({
-                        "menuItemID": menu["menuItemID"],
-                        "quantity": menu["quantity"]
-                         })
-    print(menuList)
+    menuList = payload['items']
 
-    return Response("Sucess", 200)
+    orderID = random.randint(100000,999999)
+    # If the these IDs are already in the DB we need to create a new one
+    while check_order_id(vendorID):
+        orderID = random.randint(100000,999999)
 
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    try:
+        sql = """INSERT INTO Orders
+                    VALUES(%s, %s, %s, %s, %s, %s);"""
+        data = (orderID, vendorID, price, name, email, phone)
+        dbCursor.execute(sql, data)
+
+        sql = """INSERT INTO OrderItems
+                    VALUES(%s, %s, %s);"""
+        for menuItem in menuList:
+            itemID = menuItem["menuItemID"]
+            quantity = menuItem["quantity"]
+            data = (orderID, itemID, quantity)
+            dbCursor.execute(sql, data)
+            connection.commit()
+
+
+    except Exception as e:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response(str(e), 500)
+
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return Response(str(orderID), 200)
+
+# Get list of orders from vendor ID
+# get all orderIDs with a vendor ID
+# get all order items with a order ID
+@app.route('/getOrder', methods = ['GET', 'POST'])
+@cross_origin()
+def vendor_get_order():
+    payload = request.get_json(force=True)
+    vendorID = payload['id']
+    orders = []
+
+    sql = """SELECT orderID, price, customer_name, customer_email, customer_phone
+            FROM Orders
+            WHERE vendorID = %s;"""
+    data = (vendorID,)
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    dbCursor.execute(sql, data)
+
+    listOfOrderIDs = dbCursor.fetchall()
+    if len(listOfOrderIDs) == 0 or listOfOrderIDs == None:
+        return Response("No Orders Found", 500)
+
+    sql = """SELECT menuItemID, quantity FROM OrderItems
+            WHERE orderID = %s;"""
+
+
+    for orderID, price, name, email, phone in listOfOrderIDs:
+        items = []
+        data = (orderID,)
+        customerInfo = {
+            "name": name,
+            "email": email,
+            "phone": phone
+        }
+
+        dbCursor.execute(sql, data)
+
+        # List of all menu items with an order ID
+        orderItemQuery = dbCursor.fetchall()
+        for id, quantity in orderItemQuery:
+            menuItem = get_menu_item(id)
+            menuItem["quantity"] = quantity
+            items.append(menuItem)
+
+        orders.append({
+            "id": orderID,
+            "customer": customerInfo,
+            "items": items,
+            "price": price
+        })
+
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return jsonify(orders)
+
+# Removes the order from the Orders table and the OrderItems table
+@app.route('/removeOrder', methods = ['GET', 'POST'])
+@cross_origin()
+def order_remove():
+    payload = request.get_json(force=True)
+    orderID = payload['id']
+
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+
+    deleteFromOrdersSQL = """DELETE FROM Orders
+                            WHERE orderID = %s;"""
+
+    deleteFromOrderItemsSQL = """DELETE FROM OrderItems
+                                WHERE orderID = %s;"""
+
+    data = (orderID,)
+
+    try:
+        dbCursor.execute(deleteFromOrdersSQL, data)
+        orderDeleteCount = dbCursor.rowcount
+        if orderDeleteCount == 0:
+            dbCursor.close()
+            disconnect_from_db(connection)
+            return Response("Order Not Found")
+
+        dbCursor.execute(deleteFromOrderItemsSQL, data)
+
+    except:
+        connection.rollback()
+        dbCursor.close()
+        disconnect_from_db(connection)
+        return Response("Error Deleting Order", 500)
+
+    finally:
+        connection.commit()
+        dbCursor.close()
+        disconnect_from_db(connection)
+
+    return Response("Successfully deleted Order", 200)
 
 
 # --------- Helper Functions --------- #
@@ -409,6 +541,23 @@ def check_vendor_id(id):
     dbCursor = connection.cursor()
     sql = ("""SELECT vendorID FROM Vendors
                 WHERE vendorID = %s;""")
+    data = (id,)
+
+    dbCursor.execute(sql, data)
+    results = dbCursor.fetchall()
+    if dbCursor.rowcount > 0:
+        dbCursor.close()
+        return True
+
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return False
+
+def check_order_id(id):
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    sql = ("""SELECT orderID FROM Orders
+                WHERE orderID = %s;""")
     data = (id,)
 
     dbCursor.execute(sql, data)
@@ -441,6 +590,26 @@ def check_menu_id(id):
     dbCursor.close()
     disconnect_from_db(connection)
     return False
+
+
+# Returns a json of the given menuItemID
+def get_menu_item(id):
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
+    sql = ("""SELECT menuItemID, name, price, description FROM Menus
+                WHERE menuItemID = %s;""")
+    data = (id,)
+    dbCursor.execute(sql, data)
+
+    item = dbCursor.fetchone()
+    dbCursor.close()
+    disconnect_from_db(connection)
+    return {
+        "id": item[0],
+        "name": item[1],
+        "price": item[2],
+        "description": item[3]
+    }
 
 
 # Check to make sure email is not already in database
