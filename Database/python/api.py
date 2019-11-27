@@ -400,6 +400,7 @@ def vendor_add_order():
     price = payload['price']
     menuList = payload['items']
 
+
     orderID = random.randint(100000,999999)
     # If the these IDs are already in the DB we need to create a new one
     while check_order_id(vendorID):
@@ -443,6 +444,7 @@ def vendor_get_order():
     vendorID = payload['id']
     orders = []
 
+
     sql = """SELECT orderID, price, customer_name, customer_email, customer_phone
             FROM Orders
             WHERE vendorID = %s;"""
@@ -484,7 +486,6 @@ def vendor_get_order():
             "items": items,
             "price": float(price)
         })
-
     dbCursor.close()
     disconnect_from_db(connection)
     return jsonify(orders)
@@ -527,6 +528,7 @@ def order_remove():
         connection.commit()
         dbCursor.close()
         disconnect_from_db(connection)
+
 
     return Response("Successfully deleted Order", 200)
 
