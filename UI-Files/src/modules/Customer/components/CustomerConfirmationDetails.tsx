@@ -11,42 +11,14 @@ import {
 import { connect } from "react-redux";
 
 interface CustomerDetailsDispatchProps {
-  updateName: any;
-  updateEmail: any;
-  updatePhone: any;
-}
-
-interface CustomerDetailState {
-  customerName: any;
-  customerEmail: any;
-  customerPhone: any;
+  name: any;
+  email: any;
+  phone: any;
 }
 
 class CustomerConfirmationDetails extends React.Component<
-  CustomerDetailsDispatchProps,
-  CustomerDetailState
+  CustomerDetailsDispatchProps
 > {
-  constructor(props: CustomerDetailsDispatchProps) {
-    super(props);
-    this.state = {
-      customerName: React.createRef(),
-      customerEmail: React.createRef(),
-      customerPhone: React.createRef()
-    };
-  }
-
-  handleNameChange() {
-    this.props.updateName(this.state.customerName.current.value);
-  }
-
-  handleEmailChange() {
-    this.props.updateEmail(this.state.customerEmail.current.value);
-  }
-
-  handlePhoneChange() {
-    this.props.updatePhone(this.state.customerPhone.current.value);
-  }
-
   render() {
     return (
       <Form>
@@ -56,28 +28,28 @@ class CustomerConfirmationDetails extends React.Component<
             <Form.Group controlId="formName">
               Name:
               <Form.Control
-                onChange={() => this.handleNameChange()}
                 style={{ width: 400 }}
-                ref={this.state.customerName}
+                disabled
                 type="text"
+                defaultValue={"name"}
               ></Form.Control>
             </Form.Group>
             <Form.Group controlId="formEmail">
               Email:
               <Form.Control
-                onChange={() => this.handleEmailChange()}
                 style={{ width: 400 }}
-                ref={this.state.customerEmail}
+                disabled
                 type="text"
+                defaultValue={"email"}
               ></Form.Control>
             </Form.Group>
             <Form.Group controlId="formPhone">
               Phone:
               <Form.Control
-                onChange={() => this.handlePhoneChange()}
                 style={{ width: 400 }}
-                ref={this.state.customerPhone}
+                disabled
                 type="text"
+                defaultValue={"phone"}
               ></Form.Control>
             </Form.Group>
           </div>
@@ -87,15 +59,8 @@ class CustomerConfirmationDetails extends React.Component<
   }
 }
 
-const mapDispatchToProps = (dispatch: any): CustomerDetailsDispatchProps => ({
-  updateName: (name: string) => dispatch(updateCustomerName(name)),
-  updateEmail: (email: string) => dispatch(updateCustomerEmail(email)),
-  updatePhone: (phone: string) => dispatch(updateCustomerPhone(phone))
-});
+//mapStatetoProps
 
-const CustomerDetails = connect(
-  null,
-  mapDispatchToProps
-)(CustomerConfirmationDetails);
+const CustomerDetails = connect(null)(CustomerConfirmationDetails);
 
 export default CustomerDetails;
