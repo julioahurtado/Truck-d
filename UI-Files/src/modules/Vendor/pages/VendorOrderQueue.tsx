@@ -17,66 +17,6 @@ interface VendorOrderQueueDispatchProps {
   fetchOrders?: any;
 }
 
-const orders_test: Order[] = [
-  {
-    id: 1,
-    customer: {
-      name: "Jim",
-      email: "jim@gmail.com",
-      phone: 1234567890
-    },
-    items: [
-      {
-        id: 1,
-        name: "Big Mac",
-        description: "Cheeseburger",
-        price: 4.99,
-        quantity: 2
-      },
-      {
-        id: 2,
-        name: "Fries",
-        description: "French fries",
-        price: 1.99,
-        quantity: 3
-      }
-    ],
-    price: 15.98
-  },
-  {
-    id: 2,
-    customer: {
-      name: "Joe",
-      email: "joe@gmail.com",
-      phone: 8751209836
-    },
-    items: [
-      {
-        id: 9,
-        name: "Taco",
-        description: "Mexican taco",
-        price: 3.99,
-        quantity: 4
-      },
-      {
-        id: 54,
-        name: "Rice",
-        description: "Mexican rice",
-        price: 1.99,
-        quantity: 3
-      },
-      {
-        id: 33,
-        name: "Beans",
-        description: "Refried beans",
-        price: 1.99,
-        quantity: 1
-      }
-    ],
-    price: 23.89
-  }
-];
-
 class OrderQueue extends React.Component<VendorOrderQueueProps> {
   timer: any;
   fetch_orders() {

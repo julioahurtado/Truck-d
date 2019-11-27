@@ -673,7 +673,8 @@ const finish_order = async (order: Order): Promise<Order> => {
 };
 
 const fetch_orders = async (id: number): Promise<Order[]> => {
-  const resp = await _POST("http://localhost:5000/getOrder", id);
+  const order_query = { id }
+  const resp = await _POST("http://localhost:5000/getOrder", order_query);
   return new Promise<Order[]>(resolve => {
     if (resp.status == 200) {
       resolve(JSON.parse(resp.response));
