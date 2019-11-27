@@ -18,9 +18,6 @@ interface VendorMenuItemDispatchProps {
 }
 
 export class MenuItemElement extends React.Component<VendorMenuItemProps> {
-  handleDelete() {
-    this.props.deleteMenuItem(this.props.item);
-  }
 
   render() {
     return (
@@ -41,7 +38,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
           <Button
             variant="danger"
             style={{ margin: 0.5 }}
-            onClick={() => this.handleDelete()}
+            onClick={() => this.props.deleteMenuItem(this.props.item.id)}
           >
             Remove
           </Button>
