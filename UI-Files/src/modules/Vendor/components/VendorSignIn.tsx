@@ -72,7 +72,7 @@ export class SignIn extends React.Component<
             ></Form.Control>
           </Form.Group>
           <Button
-            variant="success"
+            variant="primary"
             type="button"
             onClick={() => this.handleSubmit()}
           >

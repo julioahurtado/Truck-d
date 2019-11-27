@@ -49,10 +49,10 @@ export class VendorOrderItem extends React.Component<
           <td>{this.props.order.price}</td>
         </tr>
         <div className="finish">
-          <Button variant="warning" onClick={() => this.handleFinish()}>
+          <Button variant="success" onClick={() => this.handleFinish()}>
             Finish
           </Button>
-          <Button variant="danger" onClick={() => this.handleCancel()}>
+          <Button variant="success" onClick={() => this.handleCancel()}>
             Cancel
           </Button>
         </div>

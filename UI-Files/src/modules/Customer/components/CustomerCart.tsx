@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { sendOrder } from "../../../Redux/ActionFiles/CustomerActions";
 
 interface CustomerCartProps extends CartState, CustomerCartDispatchProps {
+  id?: number;
   customer?: CustomerInfo;
 }
 
@@ -23,12 +24,12 @@ interface CustomerCartDispatchProps {
 class Cart extends React.Component<CustomerCartProps> {
   handleCheckout() {
     if (!this.props.customer) console.log("Fill in customer information");
-    else if (!this.props.items || !this.props.price)
+    else if (!this.props.items || !this.props.price || !this.props.id)
       console.log("Cart is empty!");
     else {
       console.log("checking out");
       const order: Order = {
-        id: -1,
+        id: this.props.id,
         customer: this.props.customer,
         items: this.props.items,
         price: this.props.price
@@ -109,6 +110,7 @@ class Cart extends React.Component<CustomerCartProps> {
 const mapStateToProps = (state: RootState): CustomerCartProps => ({
   items: state.customer.cart.items,
   price: state.customer.cart.price,
+  id: state.customer.vendor.id,
   customer: state.customer.checkout.customer
 });
 
