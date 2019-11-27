@@ -23,6 +23,7 @@ interface CartItemDispatchProps {
 
 class CartItem extends React.Component<CartItemProps> {
   handleAdd() {
+    this.forceUpdate();
     this.props.addToCart(this.props.cartItem);
   }
 

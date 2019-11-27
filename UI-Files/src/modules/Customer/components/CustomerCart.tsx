@@ -49,6 +49,7 @@ class Cart extends React.Component<CustomerCartProps> {
               return <CustomerCartItem cartItem={item}></CustomerCartItem>;
             })}
         </ListGroup>
+        <p>Price: {this.props.price && this.props.price.toFixed(2)}</p>
 
         <div className="centered">
           <Row>
@@ -96,7 +97,7 @@ class Cart extends React.Component<CustomerCartProps> {
                 }}
                 type="button"
               >
-                Checkout
+                Send Order
               </Button>
             </Col>
           </Row>
