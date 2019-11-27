@@ -71,21 +71,20 @@ def vendor_create_user():
     # Success and sends logged_in message
     dbCursor.close()
     disconnect_from_db(connection)
-    vendorInfo = []
-    vendorInfo.append({
-               "id": results[0],
-               "name": results[1],
-               "description": results[2],
-               "cuisine": results[3],
-               "hours": {
-                   "open": results[4],
-                   "close": results[5],
-               },
-               "phone": results[6],
-               "address": results[7],
-               "city": results[8],
-               "state": results[9]
-           })
+    vendorInfo = {
+        "id": results[0],
+        "name": results[1],
+        "description": results[2],
+        "cuisine": results[3],
+        "hours": {
+            "open": results[4],
+            "close": results[5],
+        },
+        "phone": results[6],
+        "address": results[7],
+        "city": results[8],
+        "state": results[9]
+    }
     return jsonify(vendorInfo)
 
 # Sign in to a vendor profile.
@@ -121,21 +120,20 @@ def vendor_login():
         else:
             dbCursor.close()
             disconnect_from_db(connection)
-            vendorInfo = []
-            vendorInfo.append({
-                       "id": results[0],
-                       "name": results[1],
-                       "description": results[2],
-                       "cuisine": results[3],
-                       "hours": {
-                           "open": results[4],
-                           "close": results[5],
-                       },
-                       "phone": results[6],
-                       "address": results[7],
-                       "city": results[8],
-                       "state": results[9]
-                   })
+            vendorInfo = {
+                "id": results[0],
+                "name": results[1],
+                "description": results[2],
+                "cuisine": results[3],
+                "hours": {
+                    "open": results[4],
+                    "close": results[5],
+                },
+                "phone": results[6],
+                "address": results[7],
+                "city": results[8],
+                "state": results[9]
+            }
             return jsonify(vendorInfo)
 
     except:
@@ -291,6 +289,7 @@ def vendor_add_menu_item():
     # finally close connection and return Response
     dbCursor.close()
     disconnect_from_db(connection)
+    print(menuItemID)
     return Response(str(menuItemID), 201)
 
 @app.route("/editItem", methods = ['GET', 'POST'])
@@ -360,7 +359,7 @@ def vendor_delete_menu_item():
 
 
 # Returns the menu of the given vendorID in JSON format
-@app.route('/menu', methods = ['GET'])
+@app.route('/menu', methods = ['GET', 'POST'])
 @cross_origin()
 def vendor_get_menu():
     connection = connect_to_db()
@@ -382,7 +381,7 @@ def vendor_get_menu():
         menu.append({
                "id": results[i][1],
                "name": results[i][2],
-               "price": results[i][3],
+               "price": float(results[i][3]),
                "description": results[i][4]
            })
 
@@ -395,11 +394,12 @@ def vendor_get_menu():
 def vendor_add_order():
     payload = request.get_json(force=True)
     vendorID = payload['id']
-    name = payload['name']
-    email = payload['email']
+    name = payload['customer']['name']
+    email = payload['customer']['email']
+    phone = payload['customer']['phone']
     price = payload['price']
-    menuList = payload['item']
-    phone = payload['phone']
+    menuList = payload['items']
+
 
     orderID = random.randint(100000,999999)
     # If the these IDs are already in the DB we need to create a new one
@@ -417,7 +417,7 @@ def vendor_add_order():
         sql = """INSERT INTO OrderItems
                     VALUES(%s, %s, %s);"""
         for menuItem in menuList:
-            itemID = menuItem["menuItemID"]
+            itemID = menuItem["id"]
             quantity = menuItem["quantity"]
             data = (orderID, itemID, quantity)
             dbCursor.execute(sql, data)
@@ -444,6 +444,7 @@ def vendor_get_order():
     vendorID = payload['id']
     orders = []
 
+
     sql = """SELECT orderID, price, customer_name, customer_email, customer_phone
             FROM Orders
             WHERE vendorID = %s;"""
@@ -466,7 +467,7 @@ def vendor_get_order():
         customerInfo = {
             "name": name,
             "email": email,
-            "phone": phone
+            "phone": int(phone)
         }
 
         dbCursor.execute(sql, data)
@@ -475,6 +476,7 @@ def vendor_get_order():
         orderItemQuery = dbCursor.fetchall()
         for id, quantity in orderItemQuery:
             menuItem = get_menu_item(id)
+            menuItem["price"] = float(menuItem["price"])
             menuItem["quantity"] = quantity
             items.append(menuItem)
 
@@ -482,9 +484,8 @@ def vendor_get_order():
             "id": orderID,
             "customer": customerInfo,
             "items": items,
-            "price": price
+            "price": float(price)
         })
-
     dbCursor.close()
     disconnect_from_db(connection)
     return jsonify(orders)
@@ -528,7 +529,8 @@ def order_remove():
         dbCursor.close()
         disconnect_from_db(connection)
 
-    return Response("Successfully deleted Order", 500)
+
+    return Response("Successfully deleted Order", 200)
 
 
 # --------- Helper Functions --------- #
