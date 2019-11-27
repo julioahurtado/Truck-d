@@ -30,11 +30,6 @@ export default class LandingPage extends React.Component<any> {
                     <Button variant="primary">Vendor</Button>
                   </Link>
                 </Col>
-                <Col className="Test">
-                  <Link to={"/Test"}>
-                    <Button variant="primary">Test</Button>
-                  </Link>
-                </Col>
               </Row>
             </Container>
           </Route>
@@ -43,9 +38,6 @@ export default class LandingPage extends React.Component<any> {
           </Route>
           <Route path="/vendor">
             <VendorLandingPage></VendorLandingPage>
-          </Route>
-          <Route path="/test">
-            <VendorOrderQueue></VendorOrderQueue>
           </Route>
         </Switch>
       </Router>
