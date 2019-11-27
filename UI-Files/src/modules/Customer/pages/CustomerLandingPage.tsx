@@ -4,6 +4,7 @@ import history from "../../History/history";
 import CustomerCheckout from "../pages/CustomerCheckout";
 import CustomerVendorSearch from "../components/CustomerVendorSearch";
 import CustomerMenuViewer from "./CustomerMenuPage";
+import CustomerConfirmation from "./CustomerConfirmation";
 
 export default class CustomerLandingPage extends React.Component<any> {
   render() {
@@ -13,15 +14,14 @@ export default class CustomerLandingPage extends React.Component<any> {
           <Route path={"/customer"} exact={true}>
             <CustomerVendorSearch></CustomerVendorSearch>
           </Route>
-          <Route path={"/customer/cart"}>
-            {/* <CustomerCart>
-                        </CustomerCart> */}
-          </Route>
           <Route path={"/customer/order"}>
             <CustomerCheckout></CustomerCheckout>
           </Route>
           <Route path={"/customer/menu"}>
             <CustomerMenuViewer></CustomerMenuViewer>
+          </Route>
+          <Route path={"/customer/confirm"}>
+            <CustomerConfirmation></CustomerConfirmation>
           </Route>
         </Switch>
       </Router>

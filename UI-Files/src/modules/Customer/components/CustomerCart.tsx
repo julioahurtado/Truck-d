@@ -53,42 +53,23 @@ class Cart extends React.Component<CustomerCartProps> {
 
         <div className="centered">
           <Row>
-            <Col xs={6}>
-              <Link to="/customer/menu/:vendorName'">
-                <Button
-                  style={{
-                    position: "relative",
-                    bottom: "-20px",
-                    margin: 5,
-                    left: "-20px"
-                  }}
-                  variant="secondary"
-                  type="button"
-                >
-                  Return
-                </Button>
-              </Link>
-            </Col>
-            <Col xs={6}>
-              <Link to="/customer">
-                <Button
-                  variant="warning"
-                  style={{
-                    position: "relative",
-                    bottom: "-20px",
-                    margin: 5,
-                    right: "-20px"
-                  }}
-                  type="button"
-                >
-                  Cancel
-                </Button>
-              </Link>
-            </Col>
-            <Col xs={6}>
+            <Link to="/customer/menu/">
+              <Button
+                style={{
+                  position: "relative",
+                  bottom: "-20px",
+                  margin: 5,
+                  left: "-20px"
+                }}
+                variant="secondary"
+                type="button"
+              >
+                Return
+              </Button>
+            </Link>
+            <Link to="/customer">
               <Button
                 variant="warning"
-                onClick={() => this.handleCheckout()}
                 style={{
                   position: "relative",
                   bottom: "-20px",
@@ -97,9 +78,22 @@ class Cart extends React.Component<CustomerCartProps> {
                 }}
                 type="button"
               >
-                Send Order
+                Cancel
               </Button>
-            </Col>
+            </Link>
+            <Button
+              variant="warning"
+              onClick={() => this.handleCheckout()}
+              style={{
+                position: "relative",
+                bottom: "-20px",
+                margin: 5,
+                right: "-20px"
+              }}
+              type="button"
+            >
+              Send Order
+            </Button>
           </Row>
         </div>
       </div>

@@ -4,6 +4,8 @@ import CustomerDetails from "../components/CustomerDetails";
 import { CheckoutState } from "../../../Redux/ReducerFiles/CustomerReducers/CheckoutReducer";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 interface CustomerCheckoutProps extends CheckoutState {}
 
@@ -14,6 +16,9 @@ class Checkout extends React.Component<CustomerCheckoutProps> {
         <CustomerDetails></CustomerDetails>
 
         <CustomerCart></CustomerCart>
+        <Link to={"/customer/confirm"}>
+          <Button>Confirmation</Button>
+        </Link>
       </div>
     );
   }
