@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, ListGroup, Button, Col, Spinner } from "react-bootstrap";
+import { Form, ListGroup, Button, Col, Spinner, Table } from "react-bootstrap";
 import CustomerVendorListItem, {
   CustomerVendorItem
 } from "./CustomerVendorListItem";
@@ -55,7 +55,7 @@ export class VendorSearch extends React.Component<
                 />
               </Col>
               <Col>
-                <Button variant="primary" type="submit">
+                <Button variant="success" type="submit">
                   Go!
                 </Button>
               </Col>
@@ -68,18 +68,49 @@ export class VendorSearch extends React.Component<
           </Spinner>
         )}
         {!this.props.isLoading && (
-          <ListGroup style={{ padding: "2px" }}>
-            {this.props.vendorList &&
-              this.props.vendorList.map((vendor: VendorInfo) => {
-                return (
-                  <CustomerVendorListItem
-                    vendor={vendor}
-                  ></CustomerVendorListItem>
-                );
-              })}
-          </ListGroup>
+          <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Food Truck</th>
+                <th>Description</th>
+                <th>Hours</th>
+                <th>Cuisine</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.vendorList &&
+                this.props.vendorList.map((vendor: VendorInfo) => {
+                  return (
+                    <CustomerVendorListItem
+                      vendor={vendor}
+                    ></CustomerVendorListItem>
+                  );
+                })}
+            </tbody>
+          </Table>
         )}
       </div>
+      /* <div>
+      <h1>Orders</h1>
+      <Table striped bordered hover variant="dark">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Order</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.orders &&
+            this.props.orders.map((order: Order) => {
+              return (
+                <VendorOrderQueueItem order={order}></VendorOrderQueueItem>
+              );
+            })}
+        </tbody>
+      </Table>
+    </div> */
     );
   }
 }

@@ -18,7 +18,6 @@ interface VendorMenuItemDispatchProps {
 }
 
 export class MenuItemElement extends React.Component<VendorMenuItemProps> {
-
   render() {
     return (
       <div className="listFood">
@@ -29,7 +28,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
         </div>
         <div className="text-right">
           <Button
-            variant="danger"
+            variant="warning"
             style={{ margin: 0.5 }}
             onClick={() => this.props.openEditModal(this.props.item.id)}
           >

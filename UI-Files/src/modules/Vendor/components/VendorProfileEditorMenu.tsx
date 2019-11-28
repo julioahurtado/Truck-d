@@ -24,7 +24,7 @@ class ProfileEditorMenu extends React.Component<VendorProfileEditorMenuProps> {
     return (
       <Container>
         <div>
-          <Button variant="primary" onClick={() => this.props.openAddModal()}>
+          <Button variant="success" onClick={() => this.props.openAddModal()}>
             Add an Item
           </Button>
         </div>
