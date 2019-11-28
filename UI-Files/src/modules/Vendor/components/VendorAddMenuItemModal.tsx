@@ -63,7 +63,7 @@ class AddMenuItemModal extends React.Component<
               <Form.Label column sm="2">
                 Name
               </Form.Label>
-              <Col sm="2">
+              <Col sm="10">
                 <Form.Control
                   type="text"
                   placeholder="Enter your Name"
@@ -75,7 +75,7 @@ class AddMenuItemModal extends React.Component<
               <Form.Label column sm="2">
                 Description
               </Form.Label>
-              <Col sm="2">
+              <Col sm="10">
                 <Form.Control
                   type="text"
                   placeholder="Enter a description about the menu item"
@@ -87,7 +87,7 @@ class AddMenuItemModal extends React.Component<
               <Form.Label column sm="2">
                 Price
               </Form.Label>
-              <Col sm="2">
+              <Col sm="10">
                 <Form.Control
                   type="text"
                   placeholder="Enter the Price"
