@@ -48,6 +48,7 @@ class AddMenuItemModal extends React.Component<
         price: this.state.priceField.current.value
       };
       this.props.addMenuItem(item);
+      this.props.closeModal();
     } else console.log("No vendor ID given to add item");
   }
 

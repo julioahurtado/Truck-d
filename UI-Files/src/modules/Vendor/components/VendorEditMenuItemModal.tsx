@@ -48,6 +48,7 @@ class EditMenuItemModal extends React.Component<
         price: this.state.priceField.current.value
       };
       this.props.editMenuItem(item);
+      this.props.closeModal();
     } else console.log("No menu item ID given to edit item");
   }
 
