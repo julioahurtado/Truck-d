@@ -665,7 +665,11 @@ def disconnect_from_db(connection):
         print("Disconnect Failure")
         return -1
 
+def create_app():
+    newApp = Flask(__name__)
+    newApp.config['TESTING'] = True
+    newApp.testing = True
+    return newApp
 
 if __name__ == '__main__':
     app.run(debug=True)
-    #main()
