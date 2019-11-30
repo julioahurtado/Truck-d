@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Button, ListGroup } from "react-bootstrap";
+import { Container, Button, ListGroup, Table } from "react-bootstrap";
 import VendorMenuItem from "./VendorMenuItem";
 import { MenuItem } from "../../../Redux/InterfaceFiles/types";
 import { RootState } from "../../../Redux/StoreFiles/store";
@@ -28,14 +28,21 @@ class ProfileEditorMenu extends React.Component<VendorProfileEditorMenuProps> {
             Add an Item
           </Button>
         </div>
-        <div>
-          <ListGroup>
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
             {this.props.menu &&
               this.props.menu.map((item: any) => {
                 return <VendorMenuItem item={item}></VendorMenuItem>;
               })}
-          </ListGroup>
-        </div>
+          </tbody>
+        </Table>
       </Container>
     );
   }

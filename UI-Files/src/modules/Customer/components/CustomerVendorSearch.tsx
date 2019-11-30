@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Form, ListGroup, Button, Col, Spinner, Table } from "react-bootstrap";
+import {
+  Form,
+  ListGroup,
+  Button,
+  Col,
+  Spinner,
+  Table,
+  Container,
+  Row
+} from "react-bootstrap";
 import CustomerVendorListItem, {
   CustomerVendorItem
 } from "./CustomerVendorListItem";
@@ -63,9 +72,15 @@ export class VendorSearch extends React.Component<
           </Form.Group>
         </div>
         {this.props.isLoading && (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
+          <Container>
+            <Row>
+              <Col>
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </Col>
+            </Row>
+          </Container>
         )}
         {!this.props.isLoading && (
           <Table striped bordered hover variant="dark">
