@@ -40,7 +40,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
           <Button
             variant="danger"
             style={{ margin: 1 }}
-            onClick={() => this.props.deleteMenuItem(this.props.item.id)}
+            onClick={() => this.props.deleteMenuItem(this.props.item)}
           >
             Remove
           </Button>
