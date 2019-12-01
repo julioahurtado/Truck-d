@@ -38,7 +38,7 @@ class OrderQueue extends React.Component<VendorOrderQueueProps> {
             <tr>
               <th>Order ID</th>
               <th>Customer</th>
-              <th>Hours</th>
+              <th>Order</th>
               <th>Price</th>
             </tr>
           </thead>

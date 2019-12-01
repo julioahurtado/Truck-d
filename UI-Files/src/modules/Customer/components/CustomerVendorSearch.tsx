@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  Form,
-  ListGroup,
-  Button,
-  Col,
-  Spinner,
-  Table,
-  Container,
-  Row
-} from "react-bootstrap";
+import { Form, ListGroup, Button, Col, Spinner } from "react-bootstrap";
 import CustomerVendorListItem, {
   CustomerVendorItem
 } from "./CustomerVendorListItem";
@@ -64,11 +55,7 @@ export class VendorSearch extends React.Component<
                 />
               </Col>
               <Col>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  style={{ padding: "14px", fontSize: "20px" }}
-                >
+                <Button variant="primary" type="submit">
                   Go!
                 </Button>
               </Col>
@@ -76,18 +63,12 @@ export class VendorSearch extends React.Component<
           </Form.Group>
         </div>
         {this.props.isLoading && (
-          <Container>
-            <Row>
-              <Col>
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              </Col>
-            </Row>
-          </Container>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
         )}
         {!this.props.isLoading && (
-          <ListGroup style={{ padding: "30px" }}>
+          <ListGroup style={{ padding: "2px" }}>
             {this.props.vendorList &&
               this.props.vendorList.map((vendor: VendorInfo) => {
                 return (

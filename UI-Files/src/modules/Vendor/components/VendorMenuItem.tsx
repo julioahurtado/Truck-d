@@ -20,32 +20,29 @@ interface VendorMenuItemDispatchProps {
 export class MenuItemElement extends React.Component<VendorMenuItemProps> {
   render() {
     return (
-      <>
-        <tr>
-          <td>{this.props.item.name}</td>
-          <td>{this.props.item.description}</td>
-          <td>${this.props.item.price}</td>
-        </tr>
-        <td>
+      <div className="listFood">
+        <div>{this.props.item.name}</div>
+        <div>
+          {this.props.item.description}
+          <p style={{ textAlign: "right" }}>{this.props.item.price}</p>
+        </div>
+        <div className="text-right">
           <Button
-            variant="warning"
-            style={{ margin: 1 }}
+            variant="danger"
+            style={{ margin: 0.5 }}
             onClick={() => this.props.openEditModal(this.props.item.id)}
           >
             Edit
           </Button>
-        </td>
-        <td></td>
-        <td>
           <Button
             variant="danger"
-            style={{ margin: 1 }}
+            style={{ margin: 0.5 }}
             onClick={() => this.props.deleteMenuItem(this.props.item.id)}
           >
             Remove
           </Button>
-        </td>
-      </>
+        </div>
+      </div>
     );
   }
 }
