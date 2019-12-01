@@ -37,17 +37,20 @@ class CartItem extends React.Component<CartItemProps> {
 
   render() {
     return (
-      <div className="listFood">
+      <div className="cart">
         <div>{this.props.cartItem && this.props.cartItem.name}</div>
         <div>
           {this.props.cartItem && this.props.cartItem.description}
           <p style={{ textAlign: "right" }}>
-            {this.props.cartItem && this.props.cartItem.price}
+            {"$" + (this.props.cartItem && this.props.cartItem.price)}
           </p>
         </div>
-        <div>{this.props.cartItem && this.props.cartItem.quantity}</div>
+        <div>
+          {"Qty: " + (this.props.cartItem && this.props.cartItem.quantity)}
+        </div>
         <div className="text-right">
           <Button
+            className="butn"
             variant="warning"
             style={{ margin: 0.5 }}
             onClick={() => this.handleRemove()}
@@ -55,6 +58,7 @@ class CartItem extends React.Component<CartItemProps> {
             -
           </Button>
           <Button
+            className="butn"
             variant="success"
             style={{ margin: 0.5 }}
             onClick={() => this.handleAdd()}
@@ -62,6 +66,7 @@ class CartItem extends React.Component<CartItemProps> {
             +
           </Button>
           <Button
+            className="butn"
             variant="danger"
             style={{ margin: 0.5 }}
             onClick={() => this.handleRemoveType()}

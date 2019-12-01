@@ -47,7 +47,7 @@ export class VendorSearch extends React.Component<
             <Form.Row>
               <Col>
                 <Form.Control
-                  style={{ width: 500 }}
+                  style={{ width: 500, padding: "30px", fontSize: "25px" }}
                   ref={this.state.searchField}
                   onChange={() => this.handleChange()}
                   type="text"
@@ -55,7 +55,11 @@ export class VendorSearch extends React.Component<
                 />
               </Col>
               <Col>
-                <Button variant="primary" type="submit">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  style={{ padding: "14px", fontSize: "20px" }}
+                >
                   Go!
                 </Button>
               </Col>
@@ -68,7 +72,7 @@ export class VendorSearch extends React.Component<
           </Spinner>
         )}
         {!this.props.isLoading && (
-          <ListGroup style={{ padding: "2px" }}>
+          <ListGroup style={{ padding: "30px" }}>
             {this.props.vendorList &&
               this.props.vendorList.map((vendor: VendorInfo) => {
                 return (

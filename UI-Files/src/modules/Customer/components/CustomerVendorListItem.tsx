@@ -29,26 +29,19 @@ export class CustomerVendorItem extends React.Component<
 
   render() {
     return (
-      <div
-        style={{
-          background: "#FFFFFF",
-          borderWidth: "3px",
-          borderColor: "black",
-          borderStyle: "solid",
-          padding: "2px"
-        }}
-      >
+      <div className="listFood" style={{ justifyContent: "space-between" }}>
         <Link to={"/customer/menu/"} onClick={() => this.handleCick()}>
-          <h1>{this.props.vendor && this.props.vendor.name}</h1>
+          <h1 className="label">
+            {this.props.vendor && this.props.vendor.name}
+          </h1>
         </Link>
         <p>{this.props.vendor && this.props.vendor.description}</p>
         <p>{this.props.vendor && this.props.vendor.cuisine}</p>
         <p>
-          {this.props.vendor &&
-            "OPEN: " +
-              this.props.vendor.hours.open +
-              ", CLOSE: " +
-              this.props.vendor.hours.close}
+          <span style={{ color: "green" }}> {"OPEN: "} </span>
+          {this.props.vendor && this.props.vendor.hours.open + ", "}
+          <span style={{ color: "red" }}> {"CLOSE: "} </span>
+          {this.props.vendor && this.props.vendor.hours.close}
         </p>
       </div>
     );

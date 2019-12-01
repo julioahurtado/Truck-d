@@ -28,7 +28,7 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
   render() {
     return (
       <div>
-        <h1>{this.props.vendor && this.props.vendor.name}</h1>
+        <h1 className="label">{this.props.vendor && this.props.vendor.name}</h1>
         <br />
         {!this.props.isLoading && (
           <ListGroup style={{ padding: "2px" }}>
@@ -53,9 +53,11 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                 <Button
                   style={{
                     position: "relative",
-                    bottom: "-20px",
                     margin: 5,
-                    left: "-20px"
+                    left: "-20px",
+                    padding: "12px",
+                    fontSize: "18px",
+                    marginBottom: "20%"
                   }}
                   variant="secondary"
                   type="button"
@@ -70,9 +72,11 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
                   variant="primary"
                   style={{
                     position: "relative",
-                    bottom: "-20px",
                     margin: 5,
-                    right: "-20px"
+                    right: "-20px",
+                    padding: "12px",
+                    fontSize: "18px",
+                    marginBottom: "20%"
                   }}
                   onClick={() => this.handleCheckout()}
                   type="button"
