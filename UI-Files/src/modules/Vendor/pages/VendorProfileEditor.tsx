@@ -6,7 +6,7 @@ import VendorEditMenuItemModal from "../components/VendorEditMenuItemModal";
 import { vendorGetMenu } from "../../../Redux/ActionFiles/VendorActions";
 import { connect } from "react-redux";
 import { RootState } from "../../../Redux/StoreFiles/store";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Container, Row, Col } from "react-bootstrap";
 
 interface VendorProfileEditorProps extends VendorProfileEditorDispatchProps {
   id?: number;
@@ -24,17 +24,21 @@ class ProfileEditor extends React.Component<VendorProfileEditorProps> {
 
   render() {
     return (
-      <div style={{ display: "flex" }}>
-        {this.props.isLoading && (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        )}
-        {!this.props.isLoading && <VendorProfileEditorFields />}
-        {!this.props.isLoading && <VendorProfileEditorMenu />}
-        {!this.props.isLoading && <VendorAddMenuItemModal />}
-        {!this.props.isLoading && <VendorEditMenuItemModal />}
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            {this.props.isLoading && (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
+            {!this.props.isLoading && <VendorProfileEditorFields />}
+            {!this.props.isLoading && <VendorProfileEditorMenu />}
+            {!this.props.isLoading && <VendorAddMenuItemModal />}
+            {!this.props.isLoading && <VendorEditMenuItemModal />}
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
