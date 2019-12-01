@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  Form,
-  ListGroup,
-  Button,
-  Col,
-  Spinner,
-  Table,
-  Container,
-  Row
-} from "react-bootstrap";
+import { Form, ListGroup, Button, Col, Spinner } from "react-bootstrap";
 import CustomerVendorListItem, {
   CustomerVendorItem
 } from "./CustomerVendorListItem";
@@ -56,7 +47,7 @@ export class VendorSearch extends React.Component<
             <Form.Row>
               <Col>
                 <Form.Control
-                  style={{ width: 500 }}
+                  style={{ width: 500, padding: "30px", fontSize: "25px" }}
                   ref={this.state.searchField}
                   onChange={() => this.handleChange()}
                   type="text"
@@ -64,7 +55,11 @@ export class VendorSearch extends React.Component<
                 />
               </Col>
               <Col>
-                <Button variant="success" type="submit">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  style={{ padding: "14px", fontSize: "20px" }}
+                >
                   Go!
                 </Button>
               </Col>
@@ -72,60 +67,23 @@ export class VendorSearch extends React.Component<
           </Form.Group>
         </div>
         {this.props.isLoading && (
-          <Container>
-            <Row>
-              <Col>
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              </Col>
-            </Row>
-          </Container>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
         )}
         {!this.props.isLoading && (
-          <Table striped bordered hover variant="dark">
-            <thead>
-              <tr>
-                <th>Food Truck</th>
-                <th>Description</th>
-                <th>Hours</th>
-                <th>Cuisine</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.vendorList &&
-                this.props.vendorList.map((vendor: VendorInfo) => {
-                  return (
-                    <CustomerVendorListItem
-                      vendor={vendor}
-                    ></CustomerVendorListItem>
-                  );
-                })}
-            </tbody>
-          </Table>
+          <ListGroup style={{ padding: "30px" }}>
+            {this.props.vendorList &&
+              this.props.vendorList.map((vendor: VendorInfo) => {
+                return (
+                  <CustomerVendorListItem
+                    vendor={vendor}
+                  ></CustomerVendorListItem>
+                );
+              })}
+          </ListGroup>
         )}
       </div>
-      /* <div>
-      <h1>Orders</h1>
-      <Table striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Order</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.orders &&
-            this.props.orders.map((order: Order) => {
-              return (
-                <VendorOrderQueueItem order={order}></VendorOrderQueueItem>
-              );
-            })}
-        </tbody>
-      </Table>
-    </div> */
     );
   }
 }

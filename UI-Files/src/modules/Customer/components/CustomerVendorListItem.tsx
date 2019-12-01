@@ -29,28 +29,21 @@ export class CustomerVendorItem extends React.Component<
 
   render() {
     return (
-      <>
-        <tr>
-          <td>
-            <Link
-              to={"/customer/menu/"}
-              onClick={() => this.handleCick()}
-              style={{ color: "white" }}
-            >
-              {this.props.vendor && this.props.vendor.name}
-            </Link>
-          </td>
-          <td>{this.props.vendor && this.props.vendor.description}</td>
-          <td>
-            {this.props.vendor &&
-              "OPEN: " +
-                this.props.vendor.hours.open +
-                ", CLOSE: " +
-                this.props.vendor.hours.close}
-          </td>
-          <td>{this.props.vendor && this.props.vendor.cuisine}</td>
-        </tr>
-      </>
+      <div className="listFood" style={{ justifyContent: "space-between" }}>
+        <Link to={"/customer/menu/"} onClick={() => this.handleCick()}>
+          <h1 className="label">
+            {this.props.vendor && this.props.vendor.name}
+          </h1>
+        </Link>
+        <p>{this.props.vendor && this.props.vendor.description}</p>
+        <p>{this.props.vendor && this.props.vendor.cuisine}</p>
+        <p>
+          <span style={{ color: "green" }}> {"OPEN: "} </span>
+          {this.props.vendor && this.props.vendor.hours.open + ", "}
+          <span style={{ color: "red" }}> {"CLOSE: "} </span>
+          {this.props.vendor && this.props.vendor.hours.close}
+        </p>
+      </div>
     );
   }
 }

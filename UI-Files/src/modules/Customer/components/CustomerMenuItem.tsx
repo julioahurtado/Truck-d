@@ -45,10 +45,11 @@ class MenuItemElement extends React.Component<MenuListProps> {
         <div>{this.props.name}</div>
         <div>
           {this.props.description}
-          <p style={{ textAlign: "right" }}>{this.props.price}</p>
+          <p style={{ textAlign: "right" }}>{"$" + this.props.price}</p>
         </div>
         <div className="text-right">
           <Button
+            className="butn"
             variant="warning"
             style={{ margin: 0.5 }}
             onClick={() => this.handleRemove()}
@@ -56,6 +57,7 @@ class MenuItemElement extends React.Component<MenuListProps> {
             -
           </Button>
           <Button
+            className="butn"
             variant="success"
             style={{ margin: 0.5 }}
             onClick={() => this.handleAdd()}
