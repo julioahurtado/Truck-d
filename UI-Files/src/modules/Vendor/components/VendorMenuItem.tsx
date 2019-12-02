@@ -28,7 +28,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
         </tr>
         <td>
           <Button
-            variant="warning"
+            variant="primary"
             style={{ margin: 1 }}
             onClick={() => this.props.openEditModal(this.props.item.id)}
           >
@@ -38,7 +38,7 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
         <td></td>
         <td>
           <Button
-            variant="danger"
+            variant="primary"
             style={{ margin: 1 }}
             onClick={() => this.props.deleteMenuItem(this.props.item)}
           >

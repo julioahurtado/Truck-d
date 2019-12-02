@@ -192,7 +192,7 @@ class ProfileEditorFields extends React.Component<
             </Col>
           </Row>
           <Button
-            variant="success"
+            variant="primary"
             type="submit"
             onClick={() => this.handleSubmit()}
           >

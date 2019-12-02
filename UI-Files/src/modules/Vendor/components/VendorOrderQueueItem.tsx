@@ -12,7 +12,6 @@ interface VendorOrderQueueItemProps extends VendorOrderQueueItemDispatchProps {
 }
 
 interface VendorOrderQueueItemDispatchProps {
-  cancelOrder: any;
   finishOrder: any;
 }
 
@@ -21,10 +20,6 @@ export class VendorOrderItem extends React.Component<
 > {
   handleFinish() {
     this.props.finishOrder(this.props.order);
-  }
-
-  handleCancel() {
-    this.props.cancelOrder(this.props.order);
   }
 
   render() {
@@ -47,15 +42,14 @@ export class VendorOrderItem extends React.Component<
             </ul>
           </td>
           <td>{this.props.order.price}</td>
+          <td>
+            <div className="finish" style={{ display: "flex" }}>
+              <Button variant="primary" onClick={() => this.handleFinish()}>
+                Finish
+              </Button>
+            </div>
+          </td>
         </tr>
-        <div className="finish">
-          <Button variant="warning" onClick={() => this.handleFinish()}>
-            Finish
-          </Button>
-          <Button variant="danger" onClick={() => this.handleCancel()}>
-            Cancel
-          </Button>
-        </div>
       </>
     );
   }
@@ -64,7 +58,6 @@ export class VendorOrderItem extends React.Component<
 const mapDispatchToProps = (
   dispatch: any
 ): VendorOrderQueueItemDispatchProps => ({
-  cancelOrder: (order: Order) => dispatch(cancelOrder(order)),
   finishOrder: (order: Order) => dispatch(finishOrder(order))
 });
 

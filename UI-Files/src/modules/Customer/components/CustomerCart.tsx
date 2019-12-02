@@ -81,7 +81,7 @@ class Cart extends React.Component<CustomerCartProps> {
             </Col>
             <Col xs={6}>
               <Button
-                variant="warning"
+                variant="primary"
                 disabled={this.props.isLoading}
                 type="button"
                 onClick={() => this.handleCheckout()}
