@@ -61,8 +61,10 @@ class ProfileEditorFields extends React.Component<
         description: this.state.descriptionField.current.value,
         cuisine: this.state.cuisineField.current.value,
         hours: {
-          open: this.state.beginHoursField.current.value,
-          close: this.state.endHoursField.current.value
+          open: this.StringtoNumberTime(
+            this.state.beginHoursField.current.value
+          ),
+          close: this.StringtoNumberTime(this.state.endHoursField.current.value)
         },
         phone: this.state.phoneField.current.value,
         city: this.state.cityField.current.value,
@@ -70,6 +72,7 @@ class ProfileEditorFields extends React.Component<
         address: this.state.AddressField.current.value,
         menu: []
       };
+      console.log(vendor);
       this.props.updateProfile(vendor);
     } else console.log("You must sign in before using the profile editor");
   }
