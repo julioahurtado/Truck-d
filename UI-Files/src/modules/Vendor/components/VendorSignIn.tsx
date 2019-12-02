@@ -85,7 +85,7 @@ export class SignIn extends React.Component<
             ></Form.Control>
           </Form.Group>
           <Button
-            variant="success"
+            variant="primary"
             disabled={this.props.isLoading}
             type="button"
             onClick={() => this.handleSubmit()}

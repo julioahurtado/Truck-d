@@ -240,7 +240,7 @@ export class SignUp extends React.Component<
           <Row>
             <Col className="buttonContainer">
               <Button
-                variant="success"
+                variant="primary"
                 disabled={this.props.isLoading}
                 type="button"
                 onClick={() => this.handleSubmit()}
