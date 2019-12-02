@@ -9,7 +9,6 @@ import {
 } from "../../../Redux/ActionFiles/VendorActions";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 
 interface VendorSignUpProps {
   isLoading?: boolean;
@@ -60,8 +59,44 @@ export class SignUp extends React.Component<
     return time;
   }
 
+  checkIfFormFilled(): Boolean {
+    var email = this.state.emailField.current.value;
+    var password = this.state.passwordField.current.value;
+    var name = this.state.restaurantField.current.value;
+    var description = "";
+    var cuisine = this.state.cuisineField.current.value;
+    var phone = "";
+    var address = this.state.addressField.current.value;
+    var city = this.state.cityField.current.value;
+    var state = this.state.stateField.current.value;
+    var open = this.state.beginHoursField.current.value;
+    var close = this.state.endHoursField.current.value;
+
+    if (
+      email === "" ||
+      password === "" ||
+      name === "" ||
+      description === "" ||
+      cuisine === "" ||
+      phone === "" ||
+      address === "" ||
+      city === "" ||
+      state === "" ||
+      open === "" ||
+      close === ""
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   // Initiates user sign-up on form submission
   handleSubmit(): boolean {
+    if (!this.checkIfFormFilled()) {
+      alert("Not all form fields filled!");
+    }
+
     const form: signUpForm = {
       email: this.state.emailField.current.value,
       password: this.state.passwordField.current.value,
@@ -78,7 +113,7 @@ export class SignUp extends React.Component<
 
     // Make sure password and confirmation fields match
     if (form.password !== this.state.passwordConfirmField.current.value) {
-      console.log("Passwords do not match");
+      alert("Passwords do not match");
       return false;
     }
 
@@ -180,6 +215,13 @@ export class SignUp extends React.Component<
                 <Form.Control
                   ref={this.state.stateField}
                   type="text"
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formStatey">
+                <Form.Label>Phone</Form.Label>
+                <Form.Control
+                  ref={this.state.phoneNumberField}
+                  type="number"
                 ></Form.Control>
               </Form.Group>
             </Col>
