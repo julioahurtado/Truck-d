@@ -61,8 +61,10 @@ class ProfileEditorFields extends React.Component<
         description: this.state.descriptionField.current.value,
         cuisine: this.state.cuisineField.current.value,
         hours: {
-          open: this.state.beginHoursField.current.value,
-          close: this.state.endHoursField.current.value
+          open: this.StringtoNumberTime(
+            this.state.beginHoursField.current.value
+          ),
+          close: this.StringtoNumberTime(this.state.endHoursField.current.value)
         },
         phone: this.state.phoneField.current.value,
         city: this.state.cityField.current.value,
