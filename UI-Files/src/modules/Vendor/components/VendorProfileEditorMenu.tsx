@@ -34,6 +34,7 @@ class ProfileEditorMenu extends React.Component<VendorProfileEditorMenuProps> {
               <th>Name</th>
               <th>Description</th>
               <th>Price</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
