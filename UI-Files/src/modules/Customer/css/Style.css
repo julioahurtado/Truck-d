@@ -69,3 +69,14 @@ button {
   margin-bottom: 20px;
   font-size: 30px;
 }
+
+.spin {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  padding: 5px;
+  left: 50%;
+  margin-left: -50px;
+  top: 50%;
+  margin-top: -50px;
+}
