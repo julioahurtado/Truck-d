@@ -21,7 +21,6 @@ interface VendorSignInProps {
 interface VendorSignInState {
   emailField: React.RefObject<any>;
   passwordField: React.RefObject<any>;
-  redirect: Boolean;
 }
 
 export class SignIn extends React.Component<
@@ -32,20 +31,34 @@ export class SignIn extends React.Component<
     super(props);
     this.state = {
       emailField: React.createRef(),
-      passwordField: React.createRef(),
-      redirect: false
+      passwordField: React.createRef()
     };
+  }
+
+  checkFields(): boolean {
+    var email = this.state.emailField.current.value;
+    var password = this.state.passwordField.current.value;
+
+    if (email === "" || password === "") {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // Initiates user sign-in on form submission
   handleSubmit(): boolean {
+    if (!this.checkFields()) {
+      alert("Please fill out both email and password fields!");
+      return false;
+    }
+
     const form: signInForm = {
       email: this.state.emailField.current.value,
       password: this.state.passwordField.current.value
     };
 
     this.props.signIn(form);
-    this.setState({ redirect: true });
     return true;
   }
 
