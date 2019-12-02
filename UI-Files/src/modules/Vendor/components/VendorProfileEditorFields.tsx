@@ -92,7 +92,7 @@ class ProfileEditorFields extends React.Component<
       time = "0" + time;
     }
 
-    time = time.substring(0, 2) + ":" + time.substring(3);
+    time = time.substring(0, 2) + ":" + time.substring(2);
     return time;
   }
 

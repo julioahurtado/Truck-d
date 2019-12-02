@@ -72,6 +72,9 @@ export class SignUp extends React.Component<
     var open = this.state.beginHoursField.current.value;
     var close = this.state.endHoursField.current.value;
 
+    this.translateTime(open);
+    this.translateTime(close);
+
     if (
       email === "" ||
       password === "" ||
@@ -108,8 +111,8 @@ export class SignUp extends React.Component<
       address: this.state.addressField.current.value,
       city: this.state.cityField.current.value,
       state: this.state.stateField.current.value,
-      open: this.state.beginHoursField.current.value,
-      close: this.state.endHoursField.current.value
+      open: this.translateTime(this.state.beginHoursField.current.value),
+      close: this.translateTime(this.state.endHoursField.current.value)
     };
 
     // Make sure password and confirmation fields match
