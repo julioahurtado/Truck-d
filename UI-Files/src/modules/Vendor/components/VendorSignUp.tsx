@@ -262,6 +262,7 @@ export class SignUp extends React.Component<
 }
 
 const mapStateToProps = (state: RootState): VendorSignUpProps => ({
+  id: state.vendor.profile.id,
   isLoading: state.vendor.login.isLoading
 });
 
