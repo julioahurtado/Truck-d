@@ -90,9 +90,9 @@ class ProfileEditorFields extends React.Component<
       time = "00:" + time;
     } else if (timeNum < 1000) {
       time = "0" + time;
+      time = time.substring(0, 2) + ":" + time.substring(2);
     }
 
-    time = time.substring(0, 2) + ":" + time.substring(2);
     return time;
   }
 
