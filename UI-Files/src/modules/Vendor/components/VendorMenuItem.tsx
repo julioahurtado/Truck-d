@@ -25,26 +25,25 @@ export class MenuItemElement extends React.Component<VendorMenuItemProps> {
           <td>{this.props.item.name}</td>
           <td>{this.props.item.description}</td>
           <td>${this.props.item.price}</td>
+          <td>
+            <div>
+              <Button
+                variant="primary"
+                style={{ margin: 1 }}
+                onClick={() => this.props.openEditModal(this.props.item.id)}
+              >
+                Edit
+              </Button>
+              <Button
+                variant="primary"
+                style={{ margin: 1 }}
+                onClick={() => this.props.deleteMenuItem(this.props.item)}
+              >
+                Remove
+              </Button>
+            </div>
+          </td>
         </tr>
-        <td>
-          <Button
-            variant="primary"
-            style={{ margin: 1 }}
-            onClick={() => this.props.openEditModal(this.props.item.id)}
-          >
-            Edit
-          </Button>
-        </td>
-        <td></td>
-        <td>
-          <Button
-            variant="primary"
-            style={{ margin: 1 }}
-            onClick={() => this.props.deleteMenuItem(this.props.item)}
-          >
-            Remove
-          </Button>
-        </td>
       </>
     );
   }
