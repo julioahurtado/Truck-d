@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Container, Button, Row, Col } from "react-bootstrap";
+import { Form, Container, Button, Row, Col, Spinner } from "react-bootstrap";
 import "../css/Style.css";
 
 import {
@@ -187,8 +187,19 @@ export class SignUp extends React.Component<
 
           <Row>
             <Col className="buttonContainer">
-              <Button variant="warning" onClick={() => this.handleSubmit()}>
-                Create Account
+              <Button
+                variant="success"
+                disabled={this.props.isLoading}
+                type="button"
+                onClick={() => this.handleSubmit()}
+              >
+                {this.props.isLoading ? (
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                ) : (
+                  "Create Account"
+                )}
               </Button>
             </Col>
           </Row>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Container, Button } from "react-bootstrap";
+import { Form, Container, Button, Spinner } from "react-bootstrap";
 import "../css/Style.css";
 
 import {
@@ -73,10 +73,17 @@ export class SignIn extends React.Component<
           </Form.Group>
           <Button
             variant="success"
+            disabled={this.props.isLoading}
             type="button"
             onClick={() => this.handleSubmit()}
           >
-            Sign In
+            {this.props.isLoading ? (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            ) : (
+              "Sign In"
+            )}
           </Button>
         </Form>
       </Container>

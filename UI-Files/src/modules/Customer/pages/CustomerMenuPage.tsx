@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ListGroup, Row, Col, Button } from "react-bootstrap";
+import { ListGroup, Row, Col, Button, Spinner } from "react-bootstrap";
 import { CustomerMenuItem } from "../components/CustomerMenuItem";
 import {
   MenuItem,
@@ -30,6 +30,11 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
       <div>
         <h1 className="label">{this.props.vendor && this.props.vendor.name}</h1>
         <br />
+        {this.props.isLoading && (
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        )}
         {!this.props.isLoading && (
           <ListGroup style={{ padding: "2px" }}>
             {this.props.vendor &&

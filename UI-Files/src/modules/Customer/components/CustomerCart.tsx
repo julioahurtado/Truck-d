@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, ListGroup, Button } from "react-bootstrap";
+import { Row, Col, ListGroup, Button, Spinner, Alert } from "react-bootstrap";
 import { CustomerCartItem } from "./CustomerCartItem";
 import { Link } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import { sendOrder } from "../../../Redux/ActionFiles/CustomerActions";
 interface CustomerCartProps extends CartState, CustomerCartDispatchProps {
   id?: number;
   customer?: CustomerInfo;
+  isLoading?: boolean;
 }
 
 interface CustomerCartDispatchProps {
@@ -81,11 +82,18 @@ class Cart extends React.Component<CustomerCartProps> {
             <Col xs={6}>
               <Button
                 variant="warning"
-                onClick={() => this.handleCheckout()}
+                disabled={this.props.isLoading}
                 type="button"
+                onClick={() => this.handleCheckout()}
                 style={{ padding: "12px", fontSize: "18px" }}
               >
-                Send Order
+                {this.props.isLoading ? (
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                ) : (
+                  "Send Order"
+                )}
               </Button>
             </Col>
           </Row>
@@ -99,7 +107,8 @@ const mapStateToProps = (state: RootState): CustomerCartProps => ({
   items: state.customer.cart.items,
   price: state.customer.cart.price,
   id: state.customer.vendor.id,
-  customer: state.customer.checkout.customer
+  customer: state.customer.checkout.customer,
+  isLoading: state.customer.checkout.isLoading
 });
 
 const mapDispatchtoProps = (dispatch: any): CustomerCartDispatchProps => ({
