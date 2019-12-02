@@ -72,6 +72,7 @@ class ProfileEditorFields extends React.Component<
         address: this.state.AddressField.current.value,
         menu: []
       };
+      console.log(vendor);
       this.props.updateProfile(vendor);
     } else console.log("You must sign in before using the profile editor");
   }
