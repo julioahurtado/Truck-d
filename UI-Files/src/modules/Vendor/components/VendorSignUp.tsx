@@ -63,9 +63,9 @@ export class SignUp extends React.Component<
     var email = this.state.emailField.current.value;
     var password = this.state.passwordField.current.value;
     var name = this.state.restaurantField.current.value;
-    var description = "";
+    var description = this.state.descriptionField.value;
     var cuisine = this.state.cuisineField.current.value;
-    var phone = "";
+    var phone = this.state.phoneNumberField.current.value;
     var address = this.state.addressField.current.value;
     var city = this.state.cityField.current.value;
     var state = this.state.stateField.current.value;
@@ -95,6 +95,7 @@ export class SignUp extends React.Component<
   handleSubmit(): boolean {
     if (!this.checkIfFormFilled()) {
       alert("Not all form fields filled!");
+      return false;
     }
 
     const form: signUpForm = {
