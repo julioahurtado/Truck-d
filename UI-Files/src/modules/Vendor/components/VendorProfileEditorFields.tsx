@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Container, Button } from "react-bootstrap";
+import { Form, Container, Button, Row, Col } from "react-bootstrap";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { vendorUpdateProfile } from "../../../Redux/ActionFiles/VendorActions";
 import { VendorInfo, VendorHours } from "../../../Redux/InterfaceFiles/types";
@@ -84,9 +84,15 @@ class ProfileEditorFields extends React.Component<
   NumbertoStringTime(timeNum: number): string {
     let time = timeNum.toString();
 
-    if (timeNum < 1000) {
+    if (timeNum < 10) {
+      time = "00:0" + time;
+    } else if (timeNum < 100) {
+      time = "00:" + time;
+    } else if (timeNum < 1000) {
       time = "0" + time;
+      time = time.substring(0, 2) + ":" + time.substring(2);
     }
+
     return time;
   }
 
@@ -94,81 +100,103 @@ class ProfileEditorFields extends React.Component<
     return (
       <Container>
         <Form>
-          <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="text"
-              ref={this.state.nameField}
-              defaultValue={this.props.name}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formDescription">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              ref={this.state.descriptionField}
-              type="text"
-              defaultValue={this.props.description}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formDescription">
-            <Form.Label>Cuisine</Form.Label>
-            <Form.Control
-              ref={this.state.cuisineField}
-              type="text"
-              defaultValue={this.props.cuisine}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formBeginHours">
-            <Form.Label>Hours</Form.Label>
-            <div style={{ display: "flex" }}>
-              <Form.Label>Opening</Form.Label>
-              <Form.Control
-                ref={this.state.beginHoursField}
-                type="time"
-                defaultValue={this.props.hours && this.NumbertoStringTime(this.props.hours.open)}
-              ></Form.Control>
-            </div>
-            <div style={{ display: "flex" }}>
-              <Form.Label>Closing</Form.Label>
-              <Form.Control
-                ref={this.state.endHoursField}
-                type="time"
-                defaultValue={this.props.hours && this.NumbertoStringTime(this.props.hours.close)}
-              ></Form.Control>
-            </div>
-          </Form.Group>
-          <Form.Group controlId="formPhone">
-            <Form.Label>Phone</Form.Label>
-            <Form.Control
-              ref={this.state.phoneField}
-              type="text"
-              defaultValue={this.props.phone}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formCity">
-            <Form.Label>City</Form.Label>
-            <Form.Control
-              ref={this.state.cityField}
-              type="text"
-              defaultValue={this.props.city}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formState">
-            <Form.Label>State</Form.Label>
-            <Form.Control
-              type="text"
-              ref={this.state.stateField}
-              defaultValue={this.props.state}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId="formAddress">
-            <Form.Label>Address</Form.Label>
-            <Form.Control
-              ref={this.state.AddressField}
-              type="text"
-              defaultValue={this.props.address}
-            ></Form.Control>
-          </Form.Group>
+          <Row>
+            <Col>
+              <Form.Group controlId="formName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={this.state.nameField}
+                  defaultValue={this.props.name}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  ref={this.state.descriptionField}
+                  type="text"
+                  defaultValue={this.props.description}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formDescription">
+                <Form.Label>Cuisine</Form.Label>
+                <Form.Control
+                  ref={this.state.cuisineField}
+                  type="text"
+                  defaultValue={this.props.cuisine}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formCity">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  ref={this.state.cityField}
+                  type="text"
+                  defaultValue={this.props.city}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formState">
+                <Form.Label>State</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={this.state.stateField}
+                  defaultValue={this.props.state}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+
+            <Col>
+              <Form.Group controlId="formBeginHours">
+                <Row>
+                  <Col>
+                    <Form.Label>Opening</Form.Label>
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      ref={this.state.beginHoursField}
+                      type="time"
+                      defaultValue={
+                        this.props.hours &&
+                        this.NumbertoStringTime(this.props.hours.open)
+                      }
+                    ></Form.Control>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Label>Closing</Form.Label>
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      ref={this.state.endHoursField}
+                      type="time"
+                      defaultValue={
+                        this.props.hours &&
+                        this.NumbertoStringTime(this.props.hours.close)
+                      }
+                    ></Form.Control>
+                  </Col>
+                </Row>
+              </Form.Group>
+
+              <Form.Group controlId="formPhone">
+                <Form.Label>Phone</Form.Label>
+                <Form.Control
+                  ref={this.state.phoneField}
+                  type="text"
+                  defaultValue={this.props.phone}
+                ></Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="formAddress">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  ref={this.state.AddressField}
+                  type="text"
+                  defaultValue={this.props.address}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
           <Button
             variant="primary"
             type="submit"

@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Form, ListGroup, Button, Col, Spinner } from "react-bootstrap";
-import CustomerVendorListItem, {
-  CustomerVendorItem
-} from "./CustomerVendorListItem";
+import CustomerVendorListItem from "./CustomerVendorListItem";
 
 import {
   fetchVendors,
@@ -34,7 +32,7 @@ export class VendorSearch extends React.Component<
   }
 
   // Fetch vendors based on search query
-  handleChange() {
+  handleSearch() {
     const query: String = this.state.searchField.current.value;
     this.props.fetchVendors(query);
   }
@@ -49,7 +47,6 @@ export class VendorSearch extends React.Component<
                 <Form.Control
                   style={{ width: 500, padding: "30px", fontSize: "25px" }}
                   ref={this.state.searchField}
-                  onChange={() => this.handleChange()}
                   type="text"
                   placeholder="Search Food Truck by Name, city, type"
                 />
@@ -57,20 +54,23 @@ export class VendorSearch extends React.Component<
               <Col>
                 <Button
                   variant="primary"
+                  disabled={this.props.isLoading}
                   type="submit"
                   style={{ padding: "14px", fontSize: "20px" }}
+                  onClick={() => this.handleSearch()}
                 >
-                  Go!
+                  {this.props.isLoading ? (
+                    <Spinner animation="border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  ) : (
+                    "Go!"
+                  )}
                 </Button>
               </Col>
             </Form.Row>
           </Form.Group>
         </div>
-        {this.props.isLoading && (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        )}
         {!this.props.isLoading && (
           <ListGroup style={{ padding: "30px" }}>
             {this.props.vendorList &&

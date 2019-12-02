@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Container, Button } from "react-bootstrap";
+import { Form, Container, Button, Spinner } from "react-bootstrap";
 import "../css/Style.css";
 
 import {
@@ -21,7 +21,6 @@ interface VendorSignInProps {
 interface VendorSignInState {
   emailField: React.RefObject<any>;
   passwordField: React.RefObject<any>;
-  redirect: Boolean;
 }
 
 export class SignIn extends React.Component<
@@ -32,20 +31,34 @@ export class SignIn extends React.Component<
     super(props);
     this.state = {
       emailField: React.createRef(),
-      passwordField: React.createRef(),
-      redirect: false
+      passwordField: React.createRef()
     };
+  }
+
+  checkFields(): boolean {
+    var email = this.state.emailField.current.value;
+    var password = this.state.passwordField.current.value;
+
+    if (email === "" || password === "") {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // Initiates user sign-in on form submission
   handleSubmit(): boolean {
+    if (!this.checkFields()) {
+      alert("Please fill out both email and password fields!");
+      return false;
+    }
+
     const form: signInForm = {
       email: this.state.emailField.current.value,
       password: this.state.passwordField.current.value
     };
 
     this.props.signIn(form);
-    this.setState({ redirect: true });
     return true;
   }
 
@@ -73,10 +86,17 @@ export class SignIn extends React.Component<
           </Form.Group>
           <Button
             variant="primary"
+            disabled={this.props.isLoading}
             type="button"
             onClick={() => this.handleSubmit()}
           >
-            Sign In
+            {this.props.isLoading ? (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            ) : (
+              "Sign In"
+            )}
           </Button>
         </Form>
       </Container>

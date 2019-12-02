@@ -20,8 +20,12 @@ interface VendorOrderQueueDispatchProps {
 class OrderQueue extends React.Component<VendorOrderQueueProps> {
   timer: any;
   fetch_orders() {
-    this.props.fetchOrders(this.props.id);
-    this.timer = setTimeout(this.fetch_orders.bind(this), 10000);
+    if (this.props.isLoading) {
+      setTimeout(this.fetch_orders, 1000);
+    } else {
+      this.props.fetchOrders(this.props.id);
+      this.timer = setTimeout(this.fetch_orders.bind(this), 10000);
+    }
   }
   componentDidMount() {
     this.fetch_orders();
@@ -33,13 +37,14 @@ class OrderQueue extends React.Component<VendorOrderQueueProps> {
     return (
       <div>
         <h1>Orders</h1>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
           <thead>
             <tr>
               <th>Order ID</th>
               <th>Customer</th>
-              <th>Order</th>
+              <th>Hours</th>
               <th>Price</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

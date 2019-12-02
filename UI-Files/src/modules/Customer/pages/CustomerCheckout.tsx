@@ -4,15 +4,28 @@ import CustomerDetails from "../components/CustomerDetails";
 import { CheckoutState } from "../../../Redux/ReducerFiles/CustomerReducers/CheckoutReducer";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
+import { Alert } from "react-bootstrap";
 
 interface CustomerCheckoutProps extends CheckoutState {}
 
 class Checkout extends React.Component<CustomerCheckoutProps> {
+  showAlert() {
+    window.scrollTo(0, 0);
+    return (
+      <Alert variant="success">
+        <Alert.Heading>Order Successfully Placed!</Alert.Heading>
+        <p> Order Number: {this.props.orderNumber} </p>
+      </Alert>
+    );
+  }
+
   render() {
     return (
       <div>
+        {!this.props.isLoading &&
+          this.props.orderNumber != -1 &&
+          this.showAlert()}
         <CustomerDetails></CustomerDetails>
-
         <CustomerCart></CustomerCart>
       </div>
     );

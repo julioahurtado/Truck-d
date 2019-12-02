@@ -80,7 +80,7 @@ class Details extends React.Component<
                 onChange={() => this.handlePhoneChange()}
                 style={{ width: 400 }}
                 ref={this.state.customerPhone}
-                type="text"
+                type="number"
               ></Form.Control>
             </Form.Group>
           </div>

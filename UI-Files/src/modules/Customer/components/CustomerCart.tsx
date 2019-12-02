@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Row, Col, ListGroup, Button } from "react-bootstrap";
+import { Row, Col, ListGroup, Button, Spinner, Alert } from "react-bootstrap";
 import { CustomerCartItem } from "./CustomerCartItem";
 import { Link } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import { sendOrder } from "../../../Redux/ActionFiles/CustomerActions";
 interface CustomerCartProps extends CartState, CustomerCartDispatchProps {
   id?: number;
   customer?: CustomerInfo;
+  isLoading?: boolean;
 }
 
 interface CustomerCartDispatchProps {
@@ -23,10 +24,26 @@ interface CustomerCartDispatchProps {
 
 class Cart extends React.Component<CustomerCartProps> {
   handleCheckout() {
-    if (!this.props.customer) console.log("Fill in customer information");
-    else if (!this.props.items || !this.props.price || !this.props.id)
-      console.log("Cart is empty!");
-    else {
+    if (this.props && this.props.customer && this.props.customer.name === "") {
+      alert("Please enter a name into the name field");
+      return;
+    }
+    if (this.props && this.props.customer && this.props.customer.email === "") {
+      alert("Please enter an email into the email field");
+      return;
+    }
+    if (
+      this.props &&
+      this.props.customer &&
+      (this.props.customer.phone === NaN || this.props.customer.phone === -1)
+    ) {
+      alert("Please enter a number into the phone field");
+      return;
+    }
+
+    if (!this.props.items || !this.props.price || !this.props.id) {
+      alert("Cart is empty!");
+    } else if (this.props.customer) {
       console.log("checking out");
       const order: Order = {
         id: this.props.id,
@@ -80,12 +97,19 @@ class Cart extends React.Component<CustomerCartProps> {
             </Col>
             <Col xs={6}>
               <Button
-                variant="warning"
-                onClick={() => this.handleCheckout()}
+                variant="primary"
+                disabled={this.props.isLoading}
                 type="button"
+                onClick={() => this.handleCheckout()}
                 style={{ padding: "12px", fontSize: "18px" }}
               >
-                Send Order
+                {this.props.isLoading ? (
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                ) : (
+                  "Send Order"
+                )}
               </Button>
             </Col>
           </Row>
@@ -99,7 +123,8 @@ const mapStateToProps = (state: RootState): CustomerCartProps => ({
   items: state.customer.cart.items,
   price: state.customer.cart.price,
   id: state.customer.vendor.id,
-  customer: state.customer.checkout.customer
+  customer: state.customer.checkout.customer,
+  isLoading: state.customer.checkout.isLoading
 });
 
 const mapDispatchtoProps = (dispatch: any): CustomerCartDispatchProps => ({
