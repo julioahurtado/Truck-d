@@ -32,7 +32,7 @@ def vendor_create_user():
     if email == "" or email == " ":
         return Response('That is not a valid email address!', 500)
     if check_vendor_email(email):
-        response = Response('That email is already registered!', 409)
+        response = Response('That email is already registered!', 500)
         return response
 
     # IDs will be in range 1000 - 10000
@@ -97,11 +97,11 @@ def vendor_login():
            WHERE email = %s
            AND pswd = %s;""")
     data = (email, password)
+    connection = connect_to_db()
+    dbCursor = connection.cursor()
 
     try:
         # Query with the email and password
-        connection = connect_to_db()
-        dbCursor = connection.cursor()
 
         dbCursor.execute(sql, data)
         results = dbCursor.fetchone()
@@ -187,7 +187,7 @@ def vendor_edit_profile():
 
     dbCursor.close()
     disconnect_from_db(connection)
-    return Response("Successfully updated.", 201)
+    return Response("Successfully updated.", 200)
 
 
 # Searches for the given restuarant, address, city or state
@@ -514,7 +514,7 @@ def order_remove():
         if orderDeleteCount == 0:
             dbCursor.close()
             disconnect_from_db(connection)
-            return Response("Order Not Found")
+            return Response("Order Not Found", 500)
 
         dbCursor.execute(deleteFromOrderItemsSQL, data)
 
@@ -559,7 +559,6 @@ def check_order_id(id):
     sql = ("""SELECT orderID FROM Orders
                 WHERE orderID = %s;""")
     data = (id,)
-
     dbCursor.execute(sql, data)
     results = dbCursor.fetchall()
     if dbCursor.rowcount > 0:
@@ -665,7 +664,7 @@ def disconnect_from_db(connection):
         print("Disconnect Failure")
         return -1
 
-def create_app():
+def api_create_app():
     newApp = Flask(__name__)
     newApp.config['TESTING'] = True
     newApp.testing = True

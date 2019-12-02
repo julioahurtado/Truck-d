@@ -46,7 +46,7 @@ CREATE TABLE Orders(
 	price DECIMAL(6,2),
 	customer_name VARCHAR(64),
 	customer_email VARCHAR(64),
-	customer_phone VARCHAR(10),
+	customer_phone VARCHAR(32),
 	PRIMARY KEY(orderID)
 );
 
