@@ -9,10 +9,12 @@ import {
 } from "../../../Redux/ActionFiles/VendorActions";
 import { RootState } from "../../../Redux/StoreFiles/store";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 interface VendorSignUpProps {
   isLoading?: boolean;
   signUp?: any;
+  id?: number;
 }
 
 interface VendorSignUpState {
@@ -126,6 +128,10 @@ export class SignUp extends React.Component<
   }
 
   render() {
+    if (this.props.id != -1) {
+      return <Redirect to={"/vendor/actions"} />;
+    }
+
     return (
       <Container>
         <Form>
