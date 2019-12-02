@@ -339,6 +339,14 @@ def vendor_delete_menu_item():
 
     menuDeleteSql = """DELETE FROM Menus
                 WHERE menuItemID = %s;"""
+
+    getOrdersSQL = """SELECT orderID
+                            FROM OrderItems
+                            WHERE menuItemID = %s;"""
+
+    deleteOrdersSql = """ DELETE FROM Orders
+                            WHERE orderID = %s;"""
+
     orderItemDeleteSql = """DELETE FROM OrderItems
                             WHERE menuItemID = %s;"""
     data = (menuItemID,)
@@ -348,10 +356,17 @@ def vendor_delete_menu_item():
         dbCursor = connection.cursor()
         dbCursor.execute(menuDeleteSql, data)
         result = dbCursor.rowcount
-        dbCursor.execute(orderItemDeleteSql, data)
 
         if result == 0:
             return Response("No Menu Item Found", 500)
+
+        dbCursor.execute(getOrdersSQL, data)
+        results = dbCursor.fetchall()
+        print(results)
+        dbCursor.execute(orderItemDeleteSql, data)
+        for id in results:
+            data = (id[0],)
+            dbCursor.execute(deleteOrdersSql, data)
         connection.commit()
 
     except Exception as e:
