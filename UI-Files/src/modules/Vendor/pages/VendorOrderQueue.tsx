@@ -33,13 +33,14 @@ class OrderQueue extends React.Component<VendorOrderQueueProps> {
     return (
       <div>
         <h1>Orders</h1>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
           <thead>
             <tr>
               <th>Order ID</th>
               <th>Customer</th>
               <th>Hours</th>
               <th>Price</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

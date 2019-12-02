@@ -38,8 +38,6 @@ button {
 .listFood {
   background: #ecf0f5;
   border-width: 3px;
-  border-color: rgb(195, 27, 14);
-  border-style: double solid;
   border-radius: 5px;
   padding: 50px;
   margin: auto;
@@ -64,8 +62,6 @@ button {
 .cart {
   background: #ecf0f5;
   border-width: 3px;
-  border-color: rgb(195, 27, 14);
-  border-style: double solid;
   border-radius: 5px;
   padding: 50px;
   margin: auto;

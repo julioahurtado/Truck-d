@@ -4,7 +4,9 @@ import {
   REMOVE_ITEM_TYPE_FROM_CART,
   AddItemToCartAction,
   RemoveItemFromCartAction,
-  RemoveItemTypeFromCartAction
+  RemoveItemTypeFromCartAction,
+  SEND_ORDER_STATUS,
+  SendOrderAction
 } from "../../ActionFiles/CustomerActions";
 import { OrderItem } from "../../InterfaceFiles/types";
 
@@ -21,12 +23,20 @@ let cartState: CartState = {
 export type CartActions =
   | AddItemToCartAction
   | RemoveItemFromCartAction
-  | RemoveItemTypeFromCartAction;
+  | RemoveItemTypeFromCartAction
+  | SendOrderAction;
 export const Cart = (
   state: CartState = cartState,
   action: CartActions
 ): CartState => {
   switch (action.type) {
+    case SEND_ORDER_STATUS.SUCCESS:
+      return {
+        ...state,
+        items: [],
+        price: 0
+      };
+
     // Add or update item in cart
     case ADD_ITEM_TO_CART:
       let itemIndex = -1;

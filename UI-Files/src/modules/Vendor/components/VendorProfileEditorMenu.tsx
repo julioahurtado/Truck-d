@@ -24,11 +24,11 @@ class ProfileEditorMenu extends React.Component<VendorProfileEditorMenuProps> {
     return (
       <Container>
         <div>
-          <Button variant="success" onClick={() => this.props.openAddModal()}>
+          <Button variant="primary" onClick={() => this.props.openAddModal()}>
             Add an Item
           </Button>
         </div>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
           <thead>
             <tr>
               <th>Name</th>

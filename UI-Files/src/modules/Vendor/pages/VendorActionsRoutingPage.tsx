@@ -14,12 +14,12 @@ export default class VendorActionsRouting extends React.Component<any> {
             <Row>
               <Col>
                 <Link to={"/vendor/actions/editprofile"}>
-                  <Button style={{ margin: 2 }} variant="warning">
+                  <Button style={{ margin: 2 }} variant="primary">
                     Profile Editor
                   </Button>
                 </Link>
                 <Link to={"/vendor/actions/orderqueue"}>
-                  <Button style={{ margin: 2 }} variant="danger">
+                  <Button style={{ margin: 2 }} variant="primary">
                     Order Queue
                   </Button>
                 </Link>

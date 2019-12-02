@@ -19,10 +19,10 @@ export default class VendorLandingPage extends React.Component<any> {
               <Row>
                 <Col>
                   <Link to={"/vendor/signin"}>
-                    <Button variant="warning">Sign In</Button>
+                    <Button variant="primary">Sign In</Button>
                   </Link>{" "}
                   <Link to={"/vendor/signup"}>
-                    <Button variant="danger">Sign Up</Button>
+                    <Button variant="primary">Sign Up</Button>
                   </Link>
                 </Col>
               </Row>
