@@ -50,30 +50,33 @@ class Details extends React.Component<
   render() {
     return (
       <Form>
-        <h1>Details</h1>
+        <h1 className="label">Details</h1>
         <div className="centered">
           <div style={{ margin: 10 }}>
-            <Form.Group controlId="formName">
+            <Form.Group controlId="formName" className="pad">
               Name:
               <Form.Control
+                className="pad"
                 onChange={() => this.handleNameChange()}
                 style={{ width: 400 }}
                 ref={this.state.customerName}
                 type="text"
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="formEmail">
+            <Form.Group controlId="formEmail" className="pad">
               Email:
               <Form.Control
+                className="pad"
                 onChange={() => this.handleEmailChange()}
                 style={{ width: 400 }}
                 ref={this.state.customerEmail}
                 type="text"
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="formPhone">
+            <Form.Group controlId="formPhone" className="pad">
               Phone:
               <Form.Control
+                className="pad"
                 onChange={() => this.handlePhoneChange()}
                 style={{ width: 400 }}
                 ref={this.state.customerPhone}

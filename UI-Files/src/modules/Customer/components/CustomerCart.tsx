@@ -41,45 +41,38 @@ class Cart extends React.Component<CustomerCartProps> {
   render() {
     return (
       <div>
-        <h1>Cart</h1>
+        <h1 className="label">Cart</h1>
         <br />
-        <ListGroup style={{ padding: "2px" }}>
+        <ListGroup style={{ padding: "20px" }}>
           {this.props.items &&
             this.props.items.map((item: OrderItem) => {
               return <CustomerCartItem cartItem={item}></CustomerCartItem>;
             })}
         </ListGroup>
-        <p>Price: {this.props.price && this.props.price.toFixed(2)}</p>
-
-        <div className="centered">
+        <p
+          style={{ textAlign: "center", fontSize: "35px", marginBottom: "5%" }}
+        >
+          Subtotal: {"$" + (this.props.price && this.props.price.toFixed(2))}
+        </p>
+        <div className="centered" style={{ marginBottom: "5%" }}>
           <Row>
-            <Col xs={6}>
-              <Link to="/customer/menu/:vendorName'">
+            <Col xs={3}>
+              <Link to="/customer/menu/">
                 <Button
-                  style={{
-                    position: "relative",
-                    bottom: "-20px",
-                    margin: 5,
-                    left: "-20px"
-                  }}
                   variant="secondary"
                   type="button"
+                  style={{ padding: "12px", fontSize: "18px" }}
                 >
                   Return
                 </Button>
               </Link>
             </Col>
-            <Col xs={6}>
+            <Col xs={3}>
               <Link to="/customer">
                 <Button
-                  variant="warning"
-                  style={{
-                    position: "relative",
-                    bottom: "-20px",
-                    margin: 5,
-                    right: "-20px"
-                  }}
+                  variant="danger"
                   type="button"
+                  style={{ padding: "12px", fontSize: "18px" }}
                 >
                   Cancel
                 </Button>
@@ -89,13 +82,8 @@ class Cart extends React.Component<CustomerCartProps> {
               <Button
                 variant="warning"
                 onClick={() => this.handleCheckout()}
-                style={{
-                  position: "relative",
-                  bottom: "-20px",
-                  margin: 5,
-                  right: "-20px"
-                }}
                 type="button"
+                style={{ padding: "12px", fontSize: "18px" }}
               >
                 Send Order
               </Button>
