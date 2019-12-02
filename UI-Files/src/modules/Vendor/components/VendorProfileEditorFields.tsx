@@ -84,9 +84,15 @@ class ProfileEditorFields extends React.Component<
   NumbertoStringTime(timeNum: number): string {
     let time = timeNum.toString();
 
-    if (timeNum < 1000) {
+    if (timeNum < 10) {
+      time = "00:0" + time;
+    } else if (timeNum < 100) {
+      time = "00:" + time;
+    } else if (timeNum < 1000) {
       time = "0" + time;
     }
+
+    time = time.substring(0, 2) + ":" + time.substring(3);
     return time;
   }
 
