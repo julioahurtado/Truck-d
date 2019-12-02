@@ -39,8 +39,8 @@ export class CustomerVendorItem extends React.Component<
         <p>{this.props.vendor && this.props.vendor.cuisine}</p>
         <p>
           <span style={{ color: "green" }}> {"OPEN: "} </span>
-          {this.props.vendor && this.props.vendor.hours.open + ", "}
-          <span style={{ color: "red" }}> {"CLOSE: "} </span>
+          {this.props.vendor && this.props.vendor.hours.open + ","}
+          <span style={{ color: "red" }}> {" CLOSE: "} </span>
           {this.props.vendor && this.props.vendor.hours.close}
         </p>
       </div>

@@ -31,7 +31,12 @@ export class CustomerMenu extends React.Component<CustomerMenuProps> {
         <h1 className="label">{this.props.vendor && this.props.vendor.name}</h1>
         <br />
         {this.props.isLoading && (
-          <Spinner animation="border" role="status">
+          <Spinner
+            className="spin"
+            animation="border"
+            role="status"
+            variant="info"
+          >
             <span className="sr-only">Loading...</span>
           </Spinner>
         )}
