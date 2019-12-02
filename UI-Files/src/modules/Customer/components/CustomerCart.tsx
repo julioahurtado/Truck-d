@@ -24,10 +24,26 @@ interface CustomerCartDispatchProps {
 
 class Cart extends React.Component<CustomerCartProps> {
   handleCheckout() {
-    if (!this.props.customer) console.log("Fill in customer information");
-    else if (!this.props.items || !this.props.price || !this.props.id)
-      console.log("Cart is empty!");
-    else {
+    if (this.props && this.props.customer && this.props.customer.name === "") {
+      alert("Please enter a name into the name field");
+      return;
+    }
+    if (this.props && this.props.customer && this.props.customer.email === "") {
+      alert("Please enter an email into the email field");
+      return;
+    }
+    if (
+      this.props &&
+      this.props.customer &&
+      (this.props.customer.phone === NaN || this.props.customer.phone === -1)
+    ) {
+      alert("Please enter a number into the phone field");
+      return;
+    }
+
+    if (!this.props.items || !this.props.price || !this.props.id) {
+      alert("Cart is empty!");
+    } else if (this.props.customer) {
       console.log("checking out");
       const order: Order = {
         id: this.props.id,
