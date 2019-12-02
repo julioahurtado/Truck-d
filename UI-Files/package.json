@@ -10,7 +10,6 @@
     "@types/react-router-dom": "^5.1.0",
     "bootstrap": "^4.4.0",
     "husky": "^3.1.0",
-    "jquery": "^1.9.1",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "react": "^16.10.2",

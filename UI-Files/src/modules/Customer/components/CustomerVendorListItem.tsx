@@ -63,6 +63,7 @@ export class CustomerVendorItem extends React.Component<
           <span style={{ color: "red" }}> {"CLOSE: "} </span>
           {this.props.vendor &&
             this.NumbertoStringTime(this.props.vendor.hours.close)}
+
         </p>
       </div>
     );
