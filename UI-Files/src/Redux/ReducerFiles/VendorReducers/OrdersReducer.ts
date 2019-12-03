@@ -44,6 +44,7 @@ export const Orders = (
     case FETCH_ORDERS_STATUS.FAILURE:
       return {
         ...state,
+        orders: [],
         isFetching: false,
         error: action.error
       };

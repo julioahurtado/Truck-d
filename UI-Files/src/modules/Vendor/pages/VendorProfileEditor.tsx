@@ -26,7 +26,7 @@ class ProfileEditor extends React.Component<VendorProfileEditorProps> {
     return (
       <div style={{ display: "flex" }}>
         {this.props.isLoading && (
-          <Spinner animation="border" role="status">
+          <Spinner className="spinner" animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
         )}

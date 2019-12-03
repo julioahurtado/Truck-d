@@ -337,18 +337,36 @@ def vendor_delete_menu_item():
     payload = request.get_json(force=True)
     menuItemID = payload['id']
 
-    sql = """DELETE FROM Menus
+    menuDeleteSql = """DELETE FROM Menus
                 WHERE menuItemID = %s;"""
+
+    getOrdersSQL = """SELECT orderID
+                            FROM OrderItems
+                            WHERE menuItemID = %s;"""
+
+    deleteOrdersSql = """ DELETE FROM Orders
+                            WHERE orderID = %s;"""
+
+    orderItemDeleteSql = """DELETE FROM OrderItems
+                            WHERE menuItemID = %s;"""
     data = (menuItemID,)
 
     try:
         connection = connect_to_db()
         dbCursor = connection.cursor()
-        dbCursor.execute(sql, data)
+        dbCursor.execute(menuDeleteSql, data)
         result = dbCursor.rowcount
 
         if result == 0:
             return Response("No Menu Item Found", 500)
+
+        dbCursor.execute(getOrdersSQL, data)
+        results = dbCursor.fetchall()
+        print(results)
+        dbCursor.execute(orderItemDeleteSql, data)
+        for id in results:
+            data = (id[0],)
+            dbCursor.execute(deleteOrdersSql, data)
         connection.commit()
 
     except Exception as e:
@@ -406,6 +424,7 @@ def vendor_add_order():
 
     # Assign random orderID and if it already exists, get a new one
     orderID = random.randint(100000,999999)
+    print(orderID)
     while check_order_id(vendorID):
         orderID = random.randint(100000,999999)
 
@@ -431,7 +450,7 @@ def vendor_add_order():
         connection.rollback()
         dbCursor.close()
         disconnect_from_db(connection)
-        return Response(str(e), 500)
+        return Response("Error adding order: " + str(e), 500)
 
     dbCursor.close()
     disconnect_from_db(connection)
