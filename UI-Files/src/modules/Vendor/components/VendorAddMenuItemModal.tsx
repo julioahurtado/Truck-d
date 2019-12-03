@@ -44,7 +44,7 @@ class AddMenuItemModal extends React.Component<
     var description = this.state.descriptionField.current.value;
     var price = Number(this.state.priceField.current.value);
 
-    if (name === "" || description === "" || price === -1) {
+    if (name === "" || description === "" || price === 0) {
       return false;
     } else {
       return true;
@@ -109,7 +109,6 @@ class AddMenuItemModal extends React.Component<
                   type="number"
                   placeholder="Enter the Price"
                   ref={this.state.priceField}
-                  defaultValue={-1}
                 />
               </Col>
             </Form.Group>
