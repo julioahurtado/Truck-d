@@ -18,6 +18,30 @@ interface VendorProfileEditorFieldsProps
   address?: string;
 }
 
+export function StringtoNumberTime(timeStr: string): number {
+  let hours = parseInt(timeStr.substring(0, 2)) * 100;
+  let mins = parseInt(timeStr.substring(3));
+  let time = hours + mins;
+  return time;
+}
+
+export function NumbertoStringTime(timeNum: number): string {
+  let time = timeNum.toString();
+
+  if (timeNum < 10) {
+    time = "00:0" + time;
+  } else if (timeNum < 100) {
+    time = "00:" + time;
+  } else if (timeNum < 1000) {
+    time = "0" + time;
+    time = time.substring(0, 2) + ":" + time.substring(2);
+  } else {
+    time = time.substring(0, 2) + ":" + time.substring(2);
+  }
+
+  return time;
+}
+
 interface VendorProfileEditorFieldsDispatchProps {
   updateProfile?: any;
 }
@@ -61,10 +85,8 @@ class ProfileEditorFields extends React.Component<
         description: this.state.descriptionField.current.value,
         cuisine: this.state.cuisineField.current.value,
         hours: {
-          open: this.StringtoNumberTime(
-            this.state.beginHoursField.current.value
-          ),
-          close: this.StringtoNumberTime(this.state.endHoursField.current.value)
+          open: StringtoNumberTime(this.state.beginHoursField.current.value),
+          close: StringtoNumberTime(this.state.endHoursField.current.value)
         },
         phone: this.state.phoneField.current.value,
         city: this.state.cityField.current.value,
@@ -74,28 +96,6 @@ class ProfileEditorFields extends React.Component<
       };
       this.props.updateProfile(vendor);
     } else console.log("You must sign in before using the profile editor");
-  }
-
-  StringtoNumberTime(timeStr: string): number {
-    let hours = parseInt(timeStr.substring(0, 2)) * 100;
-    let mins = parseInt(timeStr.substring(3));
-    let time = hours + mins;
-    return time;
-  }
-
-  NumbertoStringTime(timeNum: number): string {
-    let time = timeNum.toString();
-
-    if (timeNum < 10) {
-      time = "00:0" + time;
-    } else if (timeNum < 100) {
-      time = "00:" + time;
-    } else if (timeNum < 1000) {
-      time = "0" + time;
-      time = time.substring(0, 2) + ":" + time.substring(2);
-    }
-
-    return time;
   }
 
   render() {
@@ -158,7 +158,7 @@ class ProfileEditorFields extends React.Component<
                       type="time"
                       defaultValue={
                         this.props.hours &&
-                        this.NumbertoStringTime(this.props.hours.open)
+                        NumbertoStringTime(this.props.hours.open)
                       }
                     ></Form.Control>
                   </Col>
@@ -173,7 +173,7 @@ class ProfileEditorFields extends React.Component<
                       type="time"
                       defaultValue={
                         this.props.hours &&
-                        this.NumbertoStringTime(this.props.hours.close)
+                        NumbertoStringTime(this.props.hours.close)
                       }
                     ></Form.Control>
                   </Col>
