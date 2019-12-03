@@ -1,27 +1,46 @@
 export interface MenuItem {
-    name: String
-    description: String
-    price: Number
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+export interface OrderItem extends MenuItem {
+  quantity: number;
+}
+
+export interface CartInfo {
+  cart: OrderItem[];
+  vendor: VendorInfo;
+}
+
+export interface VendorHours {
+  open: number;
+  close: number;
 }
 
 export interface VendorInfo {
-    name: String
-    description: String
-    phone: Number
-    city: String
-    state: String
-    address: String
-    menu: MenuItem[]
+  id: number;
+  name: string;
+  description: string;
+  cuisine: string;
+  hours: VendorHours;
+  phone: number;
+  city: string;
+  state: string;
+  address: string;
+  menu: MenuItem[];
 }
 
 export interface CustomerInfo {
-    name: String
-    email: String
-    phone: Number
+  name: string;
+  email: string;
+  phone: number;
 }
 
 export interface Order {
-    customerInfo: CustomerInfo
-    orderNumber: Number
-    orderItems: MenuItem[]
+  id: number;
+  customer: CustomerInfo;
+  items: OrderItem[];
+  price: number;
 }

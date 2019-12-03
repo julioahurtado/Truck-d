@@ -1,12 +1,26 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 100vh;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
 }
 
-.Label{
-    text-align: left;
+.Label {
+  text-align: left;
+}
+.finish {
+  display: flex;
+  justify-content: space-between;
+  width: 323%;
+}
+
+/* from https://stackoverflow.com/questions/49365372/how-to-center-a-spinner-horizontally-and-vertically-in-page */
+.spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: calc(50% - (100px / 2));
+  right: calc(50% - (100px / 2));
 }

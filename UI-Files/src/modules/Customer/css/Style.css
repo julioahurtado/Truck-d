@@ -1,9 +1,94 @@
+<<<<<<< HEAD
 .customer{
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-grow: 0;
     padding: 3%;
+=======
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.RestaurantName,
+h1 {
+  text-align: center;
+}
+
+.CustomerMenu,
+button {
+  position: relative;
+}
+
+.MenuList {
+  position: relative;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  justify-content: right;
+  align-items: flex-start;
+}
+
+.listFood {
+  background: #ecf0f5;
+  border-width: 3px;
+  border-radius: 5px;
+  padding: 50px;
+  margin: auto;
+  width: 60%;
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+
+.pad {
+  padding: 10px;
+  font-size: 30px;
+}
+
+.label {
+  font-size: 40px;
+}
+
+.butn {
+  font-size: 18px;
+}
+
+.cart {
+  background: #ecf0f5;
+  border-width: 3px;
+  border-radius: 5px;
+  padding: 50px;
+  margin: auto;
+  width: 55%;
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+
+.spin {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  padding: 5px;
+  left: 50%;
+  margin-left: -50px;
+  top: 50%;
+  margin-top: -50px;
+
+>>>>>>> 96a1b55b3a8147f964aca345cb97a60d52ded599
 }
 img{
     width:30%;

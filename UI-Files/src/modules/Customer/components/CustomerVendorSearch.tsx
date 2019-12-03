@@ -1,70 +1,107 @@
+import * as React from "react";
+import { Form, ListGroup, Button, Col, Spinner } from "react-bootstrap";
+import CustomerVendorListItem from "./CustomerVendorListItem";
 
-import * as React from 'react'
-import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap'
-import CustomerVendorListItem from './CustomerVendorListItem'
+import {
+  fetchVendors,
+  SearchThunkDispatch
+} from "../../../Redux/ActionFiles/CustomerActions";
+import { VendorInfo } from "../../../Redux/InterfaceFiles/types";
+import { RootState } from "../../../Redux/StoreFiles/store";
+import { connect } from "react-redux";
 
 interface CustomerVendorSearchProps {
-    vendorList?: any[];
+  vendorList?: VendorInfo[] | null;
+  isLoading?: boolean;
+  fetchVendors?: any;
 }
 
 interface CustomerVendorSearchState {
-    searchField: any;
+  searchField: any;
 }
 
+export class VendorSearch extends React.Component<
+  CustomerVendorSearchProps,
+  CustomerVendorSearchState
+> {
+  constructor(props: CustomerVendorSearchProps) {
+    super(props);
+    this.state = {
+      searchField: React.createRef()
+    };
+  }
 
-export default class CustomerVendorSearch extends React.Component<CustomerVendorSearchProps,CustomerVendorSearchState> {
+  // Fetch vendors based on search query
+  handleSearch() {
+    const query: String = this.state.searchField.current.value;
+    this.props.fetchVendors(query);
+  }
 
-    constructor(props: CustomerVendorSearchProps){
-        super(props);
-        this.state = {
-            searchField: React.createRef()
-        }
-    }
-
-    handleChange(){
-        console.log(this.state.searchField.current.value);
-    }
-
-    render() {
-        return (
-            <div>
-                <div style={{margin: 10}}>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Control ref={this.state.searchField} onChange={() => this.handleChange()} type="text" placeholder="Search..." />
-                    </Form.Group>
-                </div>
-                <ListGroup style={{padding: '2px'}}>
-                    {/* {this.props.vendorList.map((vendor, key) => {
-                        <CustomerVendorListItem 
-                            vendorName={vendor.name}
-                            vendorDesription={vendor.desription}
-                            vendorCuisine={vendor.cuisine}
-                            vendorHours={vendor.hours}
-                        ></CustomerVendorListItem>
-                    })} */}
-                    <CustomerVendorListItem 
-                        vendorName="Vallarta"
-                        vendorDesription="Amazing Burritos"
-                        vendorCuisine="Mexican"
-                        vendorHours="9am-10pm"
-                        >
-                    </CustomerVendorListItem>
-                    <CustomerVendorListItem 
-                        vendorName="Los Pericos"
-                        vendorDesription="Amazing Burritos"
-                        vendorCuisine="Mexican"
-                        vendorHours="9am-10pm"
-                        >
-                    </CustomerVendorListItem>
-                    <CustomerVendorListItem 
-                        vendorName="Kianti's"
-                        vendorDesription="Yummy pasta"
-                        vendorCuisine="Italian"
-                        vendorHours="12pm-10pm"
-                        >
-                    </CustomerVendorListItem>
-                </ListGroup>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <div className="centered" style={{ margin: 10 }}>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Row>
+              <Col>
+                <Form.Control
+                  style={{ width: 500, padding: "30px", fontSize: "25px" }}
+                  ref={this.state.searchField}
+                  type="text"
+                  placeholder="Search Food Truck by Name, city, type"
+                />
+              </Col>
+              <Col>
+                <Button
+                  variant="primary"
+                  disabled={this.props.isLoading}
+                  type="submit"
+                  style={{ padding: "14px", fontSize: "20px" }}
+                  onClick={() => this.handleSearch()}
+                >
+                  {this.props.isLoading ? (
+                    <Spinner animation="border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  ) : (
+                    "Go!"
+                  )}
+                </Button>
+              </Col>
+            </Form.Row>
+          </Form.Group>
+        </div>
+        {!this.props.isLoading && (
+          <ListGroup style={{ padding: "30px" }}>
+            {this.props.vendorList &&
+              this.props.vendorList.map((vendor: VendorInfo) => {
+                return (
+                  <CustomerVendorListItem
+                    vendor={vendor}
+                  ></CustomerVendorListItem>
+                );
+              })}
+          </ListGroup>
+        )}
+      </div>
+    );
+  }
 }
+
+const mapStateToProps = (state: RootState): CustomerVendorSearchProps => ({
+  vendorList: state.customer.search.vendors,
+  isLoading: state.customer.search.isLoading
+});
+
+const mapDispatchToProps = (
+  dispatch: SearchThunkDispatch
+): CustomerVendorSearchProps => ({
+  fetchVendors: (query: String) => dispatch(fetchVendors(query))
+});
+
+const CustomerVendorSearch = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(VendorSearch);
+
+export default CustomerVendorSearch;
