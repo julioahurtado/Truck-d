@@ -14,6 +14,27 @@ interface CustomerVendorListItemProps {
   updateVendor?: any;
 }
 
+export function NumbertoStringTime(timeNum: number): string {
+  let amPM = timeNum < 1200 ? " A.M." : " P.M.";
+  if (timeNum > 1259) {
+    timeNum = timeNum - 1200;
+  }
+  let time = timeNum.toString();
+
+  if (timeNum < 10) {
+    time = "12:0" + time;
+  } else if (timeNum < 100) {
+    time = "12:" + time;
+  } else if (timeNum < 1000) {
+    time = "0" + time;
+    time = time.substring(0, 2) + ":" + time.substring(2);
+  } else {
+    time = time.substring(0, 2) + ":" + time.substring(2);
+  }
+
+  return time + amPM;
+}
+
 export class CustomerVendorItem extends React.Component<
   CustomerVendorListItemProps
 > {
@@ -25,25 +46,6 @@ export class CustomerVendorItem extends React.Component<
     } else {
       console.log("Vendor is undefined");
     }
-  }
-
-  NumbertoStringTime(timeNum: number): string {
-    let amPM = timeNum < 1200 ? " A.M." : " P.M.";
-    if (timeNum > 1259) {
-      timeNum = timeNum - 1200;
-    }
-    let time = timeNum.toString();
-
-    if (timeNum < 10) {
-      time = "01:0" + time;
-    } else if (timeNum < 100) {
-      time = "01:" + time;
-    } else if (timeNum < 1000) {
-      time = "0" + time;
-      time = time.substring(0, 2) + ":" + time.substring(2);
-    }
-
-    return time + amPM;
   }
 
   render() {
@@ -59,11 +61,10 @@ export class CustomerVendorItem extends React.Component<
         <p>
           <span style={{ color: "green" }}> {"OPEN: "} </span>
           {this.props.vendor &&
-            this.NumbertoStringTime(this.props.vendor.hours.open)}
+            NumbertoStringTime(this.props.vendor.hours.open)}
           <span style={{ color: "red" }}> {"CLOSE: "} </span>
           {this.props.vendor &&
-            this.NumbertoStringTime(this.props.vendor.hours.close)}
-
+            NumbertoStringTime(this.props.vendor.hours.close)}
         </p>
       </div>
     );

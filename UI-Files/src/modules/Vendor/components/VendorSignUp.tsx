@@ -31,7 +31,12 @@ interface VendorSignUpState {
   beginHoursField: any;
   endHoursField: any;
 }
-
+export function translateTime(timeStr: String): Number {
+  let hours = parseInt(timeStr.substring(0, 2)) * 100;
+  let mins = parseInt(timeStr.substring(3));
+  let time = hours + mins;
+  return time;
+}
 export class SignUp extends React.Component<
   VendorSignUpProps,
   VendorSignUpState
@@ -54,13 +59,6 @@ export class SignUp extends React.Component<
     };
   }
 
-  translateTime(timeStr: String): Number {
-    let hours = parseInt(timeStr.substring(0, 2)) * 100;
-    let mins = parseInt(timeStr.substring(3));
-    let time = hours + mins;
-    return time;
-  }
-
   checkIfFormFilled(): Boolean {
     var email = this.state.emailField.current.value;
     var password = this.state.passwordField.current.value;
@@ -73,9 +71,6 @@ export class SignUp extends React.Component<
     var state = this.state.stateField.current.value;
     var open = this.state.beginHoursField.current.value;
     var close = this.state.endHoursField.current.value;
-
-    this.translateTime(open);
-    this.translateTime(close);
 
     if (
       email === "" ||
@@ -113,8 +108,8 @@ export class SignUp extends React.Component<
       address: this.state.addressField.current.value,
       city: this.state.cityField.current.value,
       state: this.state.stateField.current.value,
-      open: this.translateTime(this.state.beginHoursField.current.value),
-      close: this.translateTime(this.state.endHoursField.current.value)
+      open: translateTime(this.state.beginHoursField.current.value),
+      close: translateTime(this.state.endHoursField.current.value)
     };
 
     // Make sure password and confirmation fields match
