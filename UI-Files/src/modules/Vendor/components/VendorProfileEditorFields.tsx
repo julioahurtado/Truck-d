@@ -88,7 +88,7 @@ class ProfileEditorFields extends React.Component<
           open: StringtoNumberTime(this.state.beginHoursField.current.value),
           close: StringtoNumberTime(this.state.endHoursField.current.value)
         },
-        phone: this.state.phoneField.current.value,
+        phone: Number(this.state.phoneField.current.value),
         city: this.state.cityField.current.value,
         state: this.state.stateField.current.value,
         address: this.state.AddressField.current.value,
@@ -184,7 +184,7 @@ class ProfileEditorFields extends React.Component<
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
                   ref={this.state.phoneField}
-                  type="text"
+                  type="number"
                   defaultValue={this.props.phone}
                 ></Form.Control>
               </Form.Group>

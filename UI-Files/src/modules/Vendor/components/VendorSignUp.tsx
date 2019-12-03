@@ -65,7 +65,7 @@ export class SignUp extends React.Component<
     var name = this.state.restaurantField.current.value;
     var description = this.state.descriptionField.value;
     var cuisine = this.state.cuisineField.current.value;
-    var phone = this.state.phoneNumberField.current.value;
+    var phone = Number(this.state.phoneNumberField.current.value);
     var address = this.state.addressField.current.value;
     var city = this.state.cityField.current.value;
     var state = this.state.stateField.current.value;
@@ -78,7 +78,7 @@ export class SignUp extends React.Component<
       name === "" ||
       description === "" ||
       cuisine === "" ||
-      phone === "" ||
+      phone === -1 ||
       address === "" ||
       city === "" ||
       state === "" ||
@@ -104,7 +104,7 @@ export class SignUp extends React.Component<
       name: this.state.restaurantField.current.value,
       description: this.state.descriptionField.current.value,
       cuisine: this.state.cuisineField.current.value,
-      phone: this.state.descriptionField.current.value,
+      phone: Number(this.state.phoneNumberField.current.value),
       address: this.state.addressField.current.value,
       city: this.state.cityField.current.value,
       state: this.state.stateField.current.value,
@@ -258,7 +258,7 @@ export class SignUp extends React.Component<
 
 const mapStateToProps = (state: RootState): VendorSignUpProps => ({
   id: state.vendor.profile.id,
-  isLoading: state.vendor.profile.isLoading
+  isLoading: state.vendor.login.isLoading
 });
 
 const mapDispatchToProps = (

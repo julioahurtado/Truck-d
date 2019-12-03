@@ -39,13 +39,29 @@ class EditMenuItemModal extends React.Component<
     };
   }
 
+  checkFields(): boolean {
+    var name = this.state.nameField.current.value;
+    var description = this.state.descriptionField.current.value;
+    var price = Number(this.state.priceField.current.value);
+
+    if (name === "" || description === "" || price === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   handleEdit() {
+    if (!this.checkFields()) {
+      alert("Please properly fill out all form fields!");
+      return false;
+    }
     if (this.props.id) {
       const item: MenuItem = {
         id: this.props.id,
         name: this.state.nameField.current.value,
         description: this.state.descriptionField.current.value,
-        price: this.state.priceField.current.value
+        price: Number(this.state.priceField.current.value)
       };
       this.props.editMenuItem(item);
       this.props.closeModal();

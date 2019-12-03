@@ -569,7 +569,7 @@ export interface signUpForm {
   name: String;
   description: String;
   cuisine: String;
-  phone: String;
+  phone: Number;
   address: String;
   city: String;
   state: String;
